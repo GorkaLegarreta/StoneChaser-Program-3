@@ -4,32 +4,25 @@ import java.awt.Frame;
 
 import javax.swing.JFrame;
 
-public class Window {
+public class Window extends JFrame{
 
 	JFrame frame;
 	Canvas canvas = new Canvas();
 	
-	int width, height;
-	String title;
-	
 	public Window(int width, int height, String title) {
-		this.width = width;
-		this.height = height;
-		this.title = title;
 		
-		crearVentana();
-	}
-	
-	public void crearVentana() {
-		frame = new JFrame(title);
-		frame.setSize(width, height);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+		setTitle(title);
+		setSize(width, height);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
+		setLocationRelativeTo(null);
+		setVisible(true);
 		
 		canvas = new Canvas();
+		canvas.setSize(width, height);
 		canvas.setFocusable(false);
+		
+		add(canvas);
 	}
 
 	public JFrame getFrame() {
