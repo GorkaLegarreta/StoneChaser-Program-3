@@ -2,8 +2,8 @@ package main;
 
 public class Launcher {
 
-	public static void main(String[] args) {
-		Main main = new Main(1000, 700, "Stone Chaser");
-		main.start();
+	public static void main(String args[]) {
+		Game game = new Game("StoneChaser", 700, 400);
+		game.start();
 	}
 }

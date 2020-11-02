@@ -1,45 +1,51 @@
+
 package main;
+
 import java.awt.Canvas;
 import java.awt.Dimension;
-import java.awt.Frame;
 
 import javax.swing.JFrame;
 
-public class Window extends JFrame{
+public class Window {
 
-	JFrame frame;
-	Canvas canvas = new Canvas();
+	private JFrame frame;
+	private Canvas canvas;
 	
-	public Window(int width, int height, String title) {
+	private String title;
+	private int width, height;
+	
+	public Window(String title, int width, int height) {
+		this.title = title;
+		this.width = width;
+		this.height = height;
 		
-		setTitle(title);
-		setSize(width, height);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		setVisible(true);
+		createWindow();
+	}
+	
+	private void createWindow(){
+		frame = new JFrame(title);
+		frame.setSize(width, height);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 		
 		canvas = new Canvas();
-		canvas.setSize(width, height);
+		canvas.setPreferredSize(new Dimension(width, height));
+		canvas.setMaximumSize(new Dimension(width, height));
+		canvas.setMinimumSize(new Dimension(width, height));
 		canvas.setFocusable(false);
 		
-		add(canvas);
-	}
-
-	public JFrame getFrame() {
-		return frame;
-	}
-
-	public void setFrame(JFrame frame) {
-		this.frame = frame;
-	}
-
-	public Canvas getCanvas() {
-		return canvas;
-	}
-
-	public void setCanvas(Canvas canvas) {
-		this.canvas = canvas;
+		frame.add(canvas);
+		frame.pack();
 	}
 	
+	public Canvas getCanvas(){
+		return canvas;
+		
+	}
+	
+	public JFrame getFrame(){
+		return frame;
+	}
 }
