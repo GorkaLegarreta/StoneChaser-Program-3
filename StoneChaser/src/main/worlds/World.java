@@ -18,16 +18,20 @@ public class World {
 	
 	public World(Handler handler) {
 		this.handler = handler;
+		
+		entityManager = new EntityManager(handler, new Player(handler, 150, 170));
 
 	}
 	
 	public void tick() {
+		
 		entityManager.tick();
 	}
 	
 	public void render(Graphics g) {
 		
 		//Entities
+		
 		entityManager.render(g);
 		
 	}

@@ -17,7 +17,7 @@ public class KeyManager implements KeyListener{
 		down = keys[KeyEvent.VK_S];
 		right = keys[KeyEvent.VK_D];
 		left = keys[KeyEvent.VK_A];
-		space = keys[KeyEvent.VK_A];
+		//space = keys[KeyEvent.VK_A];
 	}
 	
 	public void keyPressed(KeyEvent e) {

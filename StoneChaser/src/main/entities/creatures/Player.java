@@ -27,6 +27,8 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 
 
 	public void tick() {
+		/*
+		
 		//Animations
 		animRight.tick();
 		animLeft.tick();
@@ -36,7 +38,8 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 		
 		//handler.getGameCamera().centerOnEntity(this); //to center THIS player
 		
-		
+		*/
+		getInput();
 	}
 	
 	public void die() {
@@ -58,6 +61,7 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 	}
 
 	public void render(Graphics g) {
+		g.drawRect((int)x, (int) y, 60, 45);
 		//g.drawImage(getCurrentAnimationFrame(), (int) (x), (int) (y), width, height,  null);
 		//g.setColor(Color.red);
 		//g.fillRect((int) (x + bounds.x), (int) (y + bounds.y), bounds.width, bounds.height);

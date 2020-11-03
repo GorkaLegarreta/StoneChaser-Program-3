@@ -42,7 +42,7 @@ public class EntityManager {
 			if(!e.isActive())
 				entities.remove(e);
 		}
-		entities.sort(renderSorter);
+		entities.sort(renderSorter);	//ordena la lista de entidades según el metodo compare
 	}
 	
 	public void render(Graphics g) {
