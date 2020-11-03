@@ -70,7 +70,7 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 
 	public void render(Graphics g) {
 		g.setColor(Color.BLUE);
-		g.fillRect((int)x, (int) y, 60, 45);
+		g.fillRect((int)x, (int) y, 50, 50);
 		//g.drawImage(getCurrentAnimationFrame(), (int) (x), (int) (y), width, height,  null);
 		//g.setColor(Color.red);
 		//g.fillRect((int) (x + bounds.x), (int) (y + bounds.y), bounds.width, bounds.height);

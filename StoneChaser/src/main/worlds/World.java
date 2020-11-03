@@ -7,7 +7,7 @@ import main.Handler;
 import main.entities.EntityManager;
 import main.entities.creatures.BasicEnemy;
 import main.entities.creatures.Player;
-import main.gfx.Assets;
+import main.items.Item;
 
 public class World {
 
@@ -18,11 +18,13 @@ public class World {
 	//Entities
 	private EntityManager entityManager;
 	
+	private Item woodItem;
+	
 	public World(Handler handler) {
 		this.handler = handler;
 		
 		entityManager = new EntityManager(handler, new Player(handler, 150, 170), new BasicEnemy(handler,20,20,50,50));
-
+		woodItem = new Item("wood", 20, 20, 50);
 	}
 	
 	public void tick() {
@@ -37,7 +39,8 @@ public class World {
 		g.setColor(Color.BLACK);
 		entityManager.render(g);
 		
-		
+		//código temporal:
+		woodItem.render(g);
 		
 	}
 	
