@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import main.Handler;
+import main.entities.creatures.BasicEnemy;
 import main.entities.creatures.Player;
 
 public class EntityManager {
@@ -26,13 +27,14 @@ public class EntityManager {
 		}
 	};
 	
-	public EntityManager(Handler handler, Player player) {
+	public EntityManager(Handler handler, Player player, BasicEnemy enemy) {
 		
 		this.handler = handler;
 		this.player = player;
 		
 		entities = new ArrayList<Entity>();
 		addEntity(player);
+		addEntity(enemy);
 	}
 	
 	public void tick() {

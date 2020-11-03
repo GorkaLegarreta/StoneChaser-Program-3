@@ -1,5 +1,6 @@
 package main.entities.creatures;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -39,6 +40,7 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 		//handler.getGameCamera().centerOnEntity(this); //to center THIS player
 		
 		*/
+		move();
 		getInput();
 	}
 	
@@ -50,18 +52,25 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 		xMove = 0;
 		yMove = 0;
 		
-		if(handler.getKeyManager().left)
+		if(handler.getKeyManager().left) {
 			xMove = -speed;
-		if(handler.getKeyManager().right)
+			
+		}
+		
+		if(handler.getKeyManager().right) {
 			xMove = speed;
-		if(handler.getKeyManager().up)
+		}
+		if(handler.getKeyManager().up) {
 			yMove = -speed;
-		if(handler.getKeyManager().down)
+		}
+		if(handler.getKeyManager().down) {
 			yMove = speed;
+		}
 	}
 
 	public void render(Graphics g) {
-		g.drawRect((int)x, (int) y, 60, 45);
+		g.setColor(Color.BLUE);
+		g.fillRect((int)x, (int) y, 60, 45);
 		//g.drawImage(getCurrentAnimationFrame(), (int) (x), (int) (y), width, height,  null);
 		//g.setColor(Color.red);
 		//g.fillRect((int) (x + bounds.x), (int) (y + bounds.y), bounds.width, bounds.height);

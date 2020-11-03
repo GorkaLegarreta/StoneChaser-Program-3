@@ -28,37 +28,11 @@ public abstract class Creature extends Entity{ //tipo específico de criatura
 	}
 	
 	public void moveX() {
-		if(xMove > 0) { //nos movemos a la dcha
-			if(x < handler.getWidth() - DEFAULT_CREATURE_WIDTH) { 
-				x += xMove;								
-			}else {
-				x = handler.getWidth() - DEFAULT_CREATURE_HEIGHT;
-			}
-			
-		}else if(xMove < 0){ //nos movemos a la izq
-			if(x > 0) {
-				x += xMove;
-			}else {
-				x = 0;
-			}	
-		}
+		x += xMove;	
 	}
 	
 	public void moveY() {
-		if(yMove < 0) { //nos movemos hacia arriba
-			if(y > 135) { 
-				y += yMove;								
-			}else {
-				y = 135;
-			}
-			
-		}else if(yMove > 0){ //nos movemos hacia abajo
-			if(y < 210) { 
-				y += yMove;								
-			}else {
-				y = 210;
-			}
-		}
+		y += yMove;	
 	}
 
 	//getter & setters

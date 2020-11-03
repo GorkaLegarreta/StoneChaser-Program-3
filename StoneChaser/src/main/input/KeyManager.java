@@ -5,11 +5,12 @@ import java.awt.event.*;
 public class KeyManager implements KeyListener{
 
 	private boolean[] keys;
-	public boolean up, down, left, right, space;
+	public boolean up = false, down , left, right, space = false;
 	
 	
 	public KeyManager() {
 		keys = new boolean[256];
+		
 	}
 	
 	public void tick() {
@@ -17,7 +18,7 @@ public class KeyManager implements KeyListener{
 		down = keys[KeyEvent.VK_S];
 		right = keys[KeyEvent.VK_D];
 		left = keys[KeyEvent.VK_A];
-		//space = keys[KeyEvent.VK_A];
+		space = keys[KeyEvent.VK_SPACE];
 	}
 	
 	public void keyPressed(KeyEvent e) {
