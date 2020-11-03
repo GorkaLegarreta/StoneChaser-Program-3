@@ -15,6 +15,5 @@ public class ImageLoader {
 			System.exit(1);
 		}
 		return null;
-	}
-	
+	}	
 }

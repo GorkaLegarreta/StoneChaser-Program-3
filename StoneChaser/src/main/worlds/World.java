@@ -24,7 +24,7 @@ public class World {
 		this.handler = handler;
 		
 		entityManager = new EntityManager(handler, new Player(handler, 150, 170), new BasicEnemy(handler,20,20,50,50));
-		woodItem = new Item("wood", 20, 20, 50);
+		woodItem = new Item("wood", 20, 20, 1);
 	}
 	
 	public void tick() {
