@@ -66,12 +66,7 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 		}
 		if(handler.getKeyManager().down) {
 			yMove = speed;
-		}
-		
-		
-        
-		
-		
+		}		
 		if(handler.getKeyManager().space) {
 			
 	        
@@ -101,8 +96,8 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 		            if(e.equals(this))
 		                continue; //pasa al siguiente valor del for loop ya que no nos queremos herir a nosotros
 		            if(e.getCollisionBounds(0,0).intersects(kickRect)) {
-		                e.hurt(kickDamage);
-		                long before = System.nanoTime();//we only hurt one entity at a time
+		                e.hurt(kickDamage);//we only hurt one entity at a time
+		                long before = System.nanoTime();
 		                long now = System.nanoTime();
 		                long restedEnough = now-before;
 		                if (restedEnough<1000000000) {
