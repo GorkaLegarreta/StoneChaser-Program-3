@@ -16,6 +16,7 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 	//Animations
 	
 	private Animation animRight, animLeft;
+	private static long lastAttack = System.currentTimeMillis();
 	private String lastAnim;
 	private long lastAttackTimer, attackCooldown = 500, attackTimer = attackCooldown;
 	private int kickDamage = 3;
@@ -52,6 +53,8 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 		xMove = 0;
 		yMove = 0;
 		
+		
+		
 		if(handler.getKeyManager().left) {
 			xMove = -speed;			
 		}		
@@ -63,16 +66,12 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 		}
 		if(handler.getKeyManager().down) {
 			yMove = speed;
-		}
-		
-		
-        
-		
-		
+		}		
 		if(handler.getKeyManager().space) {
-			
-	        
-	       
+			long attackNow = System.currentTimeMillis();
+			long attackEnabler = attackNow - lastAttack;
+	        if (attackEnabler > 250) {
+	        	lastAttack = attackNow;
 				Rectangle collisionBounds = getCollisionBounds(0, 0); //variable del offset
 				Rectangle kickRect = new Rectangle();
 				kickRect.width = 20;
@@ -98,19 +97,15 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 		            if(e.equals(this))
 		                continue; //pasa al siguiente valor del for loop ya que no nos queremos herir a nosotros
 		            if(e.getCollisionBounds(0,0).intersects(kickRect)) {
-		                e.hurt(kickDamage);
-		                long before = System.nanoTime();//we only hurt one entity at a time
-		                long now = System.nanoTime();
-		                long restedEnough = now-before;
-		                if (restedEnough<1000000000) {
-		                	now = System.nanoTime();
-		                	restedEnough = now-before;
-		                }
+		                e.hurt(kickDamage);//we only hurt one entity at a time
 		                return;
 		            }
 				}
-			}
+			} else {
+				
+			}		
 		}
+	}
 	
 
 	public void render(Graphics g) {
