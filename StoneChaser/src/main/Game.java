@@ -12,8 +12,7 @@ import main.states.State;
 
 public class Game implements Runnable{
 	
-	private Window window;
-	
+	private Window window;	
 	private int width, height;
 	public String title;
 	

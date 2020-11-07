@@ -9,41 +9,52 @@ public class Handler {
 
 	private Game game;
 	private World world;
+	private Menu menu;
 	
+		
 	public Handler(Game game) {
 		this.game = game;
-		
-		
 	}
-	
+	public Handler(Menu menu) {
+		this.menu = menu;
+	}
+
 	public int getWidth() {
-		return game.getWidth();
+		return this.getWidth();
 	}
 	
 	public int getHeight() {
-		return game.getHeight();
+		return this.getHeight();
 	}
 	
 	public KeyManager getKeyManager() {
-		return game.getKeyManager();
+		return this.getKeyManager();
 	}
-
+	
+	public MouseManager getMouseManager() {
+		return this.getMouseManager();
+	}
+	
 	public GameCamera getGameCamera() {
-		return game.getGameCamera();
+		return this.getGameCamera();
 	}
 	
 	public Game getGame() {
 		return game;
 	}
 	
-	public MouseManager getMouseManager() {
-		return game.getMouseManager();
-	}
-
 	public void setGame(Game game) {
 		this.game = game;
 	}
-
+	
+	public Menu getMenu() {
+		return menu;
+	}
+	
+	public void setMenu(Menu menu) {
+		this.menu = menu;
+	}
+		
 	public World getWorld() {
 		return world;
 	}
