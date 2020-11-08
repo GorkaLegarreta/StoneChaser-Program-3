@@ -9,34 +9,30 @@ public class Handler {
 
 	private Game game;
 	private World world;
-	private Menu menu;
-	
 		
 	public Handler(Game game) {
 		this.game = game;
 	}
-	public Handler(Menu menu) {
-		this.menu = menu;
-	}
+	
 
 	public int getWidth() {
-		return this.getWidth();
+		return game.getWidth();
 	}
 	
 	public int getHeight() {
-		return this.getHeight();
+		return game.getHeight();
 	}
 	
 	public KeyManager getKeyManager() {
-		return this.getKeyManager();
+		return game.getKeyManager();
 	}
 	
 	public MouseManager getMouseManager() {
-		return this.getMouseManager();
+		return game.getMouseManager();
 	}
 	
 	public GameCamera getGameCamera() {
-		return this.getGameCamera();
+		return game.getGameCamera();
 	}
 	
 	public Game getGame() {
@@ -47,14 +43,6 @@ public class Handler {
 		this.game = game;
 	}
 	
-	public Menu getMenu() {
-		return menu;
-	}
-	
-	public void setMenu(Menu menu) {
-		this.menu = menu;
-	}
-		
 	public World getWorld() {
 		return world;
 	}

@@ -20,6 +20,7 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 	private String lastAnim;
 	private long lastAttackTimer, attackCooldown = 500, attackTimer = attackCooldown;
 	private int kickDamage = 3;
+	private int lastDirection = 0;
 	
 	public Player(Handler handler, float x, float y) {
 		super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
@@ -59,16 +60,20 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 		
 		
 		if(handler.getKeyManager().left) {
-			xMove = -speed;			
+			xMove = -speed;
+			lastDirection = 0;
 		}		
 		if(handler.getKeyManager().right) {
 			xMove = speed;
+			lastDirection = 1;		
 		}
 		if(handler.getKeyManager().up) {
 			yMove = -speed;
+			lastDirection = 2;
 		}
 		if(handler.getKeyManager().down) {
 			yMove = speed;
+			lastDirection = 3;
 		}		
 		if(handler.getKeyManager().space) {
 			long attackNow = System.currentTimeMillis();
@@ -80,21 +85,21 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 				kickRect.width = 20;
 				kickRect.height = 20;
 				
-				if(xMove<=0 ) {
-					kickRect.x = collisionBounds.x + kickRect.width; //Pegada a la izq
+				if(xMove<0 || lastDirection == 0 ) {
+					kickRect.x = collisionBounds.x - kickRect.width; 								//Pegada a la izq
 					kickRect.y = collisionBounds.y + collisionBounds.height/2 - kickRect.height/2;
 				}
-				if(xMove>=0) {
-					kickRect.x = collisionBounds.x + collisionBounds.width; //Pegada a la dch
+				if(xMove>0 || lastDirection == 1) {
+					kickRect.x = collisionBounds.x + collisionBounds.width; 						//Pegada a la dcha
 					kickRect.y = collisionBounds.y + collisionBounds.height/2 - kickRect.height/2;
 				}
-				if(yMove<=0) {
+				if(yMove<0 || lastDirection == 2) {
 					kickRect.x = collisionBounds.x + collisionBounds.width/2 - kickRect.width/2; //Pegada hacia arriba
 					kickRect.y = collisionBounds.y - kickRect.height;
 				}
-				if(yMove>=0) {
+				if(yMove>0 || lastDirection == 3) {
 					kickRect.x = collisionBounds.x + collisionBounds.width/2 -kickRect.width/2; //Pegada hacia abajo 
-					kickRect.y = collisionBounds.y;
+					kickRect.y = collisionBounds.y + collisionBounds.height;
 				}
 				for(main.entities.Entity e : handler.getWorld().getEntityManager().getEntities()) {
 		            if(e.equals(this))

@@ -2,7 +2,9 @@ package main;
 
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import main.gfx.Assets;
 import main.gfx.GameCamera;
 import main.input.KeyManager;
@@ -43,17 +45,27 @@ public class Game implements Runnable{
 	
 	private Handler handler;
 	
+	//Logger
+	private final static Logger LOGGER = Logger.getLogger(Game.class.getName());
 	
-	public Game(String title, int width, int height) {
+	
+	public Game(String title, int width, int height, FileHandler fh) {
 		this.width = width;
 		this.height = height;
 		this.title = title;
 		keyManager = new KeyManager();
 		mouseManager = new MouseManager();
+		LOGGER.addHandler(fh);
+		
+		LOGGER.log(Level.FINE, "Clase principal del juego inicializada");
+		LOGGER.info("Clase principal del juego inicializada");
+		
 	}
 	
 	private void init() {
 		window = new Window(title, width, height);
+		LOGGER.log(Level.FINE, "Ventana de Stone Chaser inicializada");
+		LOGGER.info("Ventana de Stone Chaser inicializada");
 		window.getFrame().addKeyListener(keyManager);
 		Assets.init();
 		

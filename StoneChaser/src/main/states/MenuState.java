@@ -12,14 +12,12 @@ public class MenuState extends State {
 	}
 
 	@Override
-	public void tick() {
-		
+	public void tick() {	
 		
 	}
 
 	@Override
-	public void render(Graphics g) {
-		
+	public void render(Graphics g) {		
 		
 	}
 	

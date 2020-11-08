@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2020-11-07T17:17:58.359051300Z</date>
+  <millis>1604769478359</millis>
+  <nanos>51300</nanos>
+  <sequence>0</sequence>
+  <logger>main.Launcher</logger>
+  <level>SEVERE</level>
+  <class>main.Launcher</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Level.FINE:500 Inicio</message>
+</record>
+<record>
+  <date>2020-11-07T17:17:58.505173500Z</date>
+  <millis>1604769478505</millis>
+  <nanos>173500</nanos>
+  <sequence>1</sequence>
+  <logger>main.Game</logger>
+  <level>INFO</level>
+  <class>main.Game</class>
+  <method>&lt;init&gt;</method>
+  <thread>1</thread>
+  <message>Clase principal del juego inicializada</message>
+</record>
+<record>
+  <date>2020-11-07T17:17:58.773474900Z</date>
+  <millis>1604769478773</millis>
+  <nanos>474900</nanos>
+  <sequence>2</sequence>
+  <logger>main.Game</logger>
+  <level>INFO</level>
+  <class>main.Game</class>
+  <method>init</method>
+  <thread>13</thread>
+  <message>Ventana de Stone Chaser inicializada</message>
+</record>
+</log>
