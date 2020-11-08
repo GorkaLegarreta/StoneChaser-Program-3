@@ -18,7 +18,6 @@ public class Window {
 		this.title = title;
 		this.width = width;
 		this.height = height;
-		
 		createWindow();
 	}
 	

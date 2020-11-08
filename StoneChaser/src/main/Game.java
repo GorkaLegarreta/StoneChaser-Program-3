@@ -2,6 +2,9 @@ package main;
 
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,6 +13,7 @@ import main.gfx.GameCamera;
 import main.input.KeyManager;
 import main.input.MouseManager;
 import main.states.GameState;
+import main.states.MenuState;
 import main.states.State;
 
 public class Game implements Runnable{
@@ -32,6 +36,7 @@ public class Game implements Runnable{
 	private Graphics g;
 	
 	//States
+	public State menuState;
 	public State gameState;
 	
 	//Input
@@ -47,34 +52,52 @@ public class Game implements Runnable{
 	
 	//Logger
 	private final static Logger LOGGER = Logger.getLogger(Game.class.getName());
+	private static FileHandler fh;
 	
-	
-	public Game(String title, int width, int height, FileHandler fh) {
+	public Game(String title, int width, int height) {
 		this.width = width;
 		this.height = height;
 		this.title = title;
 		keyManager = new KeyManager();
 		mouseManager = new MouseManager();
-		LOGGER.addHandler(fh);
-		
+		try {
+			fh = new FileHandler("Logger.txt",false);
+			LOGGER.addHandler(fh);
+			LOGGER.log(Level.FINE, "Level.FINE:"+Level.FINE.intValue()+" Inicio"); 	//este se tiene que escribir en fichero
+			LOGGER.info("Level.INFO:"+Level.INFO.intValue()+" Inicio");	//Este se enseña por consola
+			
+		} catch (SecurityException e) {
+			LOGGER.log(Level.SEVERE, Game.getStackTrace(e));
+			LOGGER.info(Game.getStackTrace(e));
+		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, Game.getStackTrace(e));
+			LOGGER.info(Game.getStackTrace(e));
+		}	
 		LOGGER.log(Level.FINE, "Clase principal del juego inicializada");
 		LOGGER.info("Clase principal del juego inicializada");
 		
 	}
 	
 	private void init() {
+		
+		
+		
 		window = new Window(title, width, height);
 		LOGGER.log(Level.FINE, "Ventana de Stone Chaser inicializada");
 		LOGGER.info("Ventana de Stone Chaser inicializada");
 		window.getFrame().addKeyListener(keyManager);
+		window.getFrame().addMouseListener(mouseManager);
+		window.getFrame().addMouseMotionListener(mouseManager);
+		window.getCanvas().addMouseListener(mouseManager);
+		window.getCanvas().addMouseMotionListener(mouseManager);
 		Assets.init();
 		
 		handler = new Handler(this); //coge el objeto de esta clase
 		gameCamera = new GameCamera(handler, 0, 0);
-		
+		menuState = new MenuState(handler);
 		gameState = new GameState(handler); //nos referimos a la clase game, a esta misma clase
-
-		State.setState(gameState);
+		
+		State.setState(menuState);
 	}
 	
 	private void tick() {
@@ -172,8 +195,9 @@ public class Game implements Runnable{
 	
 	public synchronized void stop() {
 		
-		if(!running)
+		if(!running) {
 			return;
+		}
 		running = false;
 		try {
 			thread.join();
@@ -181,4 +205,11 @@ public class Game implements Runnable{
 			e.printStackTrace();
 		}
 	}
+	
+	public static String getStackTrace(Exception e) {
+        StringWriter sWriter = new StringWriter();
+        PrintWriter pWriter = new PrintWriter(sWriter);
+        e.printStackTrace(pWriter);
+        return sWriter.toString();
+    }
 }

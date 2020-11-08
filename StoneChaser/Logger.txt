@@ -2,21 +2,21 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2020-11-07T17:17:58.359051300Z</date>
-  <millis>1604769478359</millis>
-  <nanos>51300</nanos>
+  <date>2020-11-08T19:25:46.655795400Z</date>
+  <millis>1604863546655</millis>
+  <nanos>795400</nanos>
   <sequence>0</sequence>
-  <logger>main.Launcher</logger>
-  <level>SEVERE</level>
-  <class>main.Launcher</class>
-  <method>main</method>
+  <logger>main.Game</logger>
+  <level>INFO</level>
+  <class>main.Game</class>
+  <method>&lt;init&gt;</method>
   <thread>1</thread>
-  <message>Level.FINE:500 Inicio</message>
+  <message>Level.INFO:800 Inicio</message>
 </record>
 <record>
-  <date>2020-11-07T17:17:58.505173500Z</date>
-  <millis>1604769478505</millis>
-  <nanos>173500</nanos>
+  <date>2020-11-08T19:25:46.741565400Z</date>
+  <millis>1604863546741</millis>
+  <nanos>565400</nanos>
   <sequence>1</sequence>
   <logger>main.Game</logger>
   <level>INFO</level>
@@ -26,9 +26,9 @@
   <message>Clase principal del juego inicializada</message>
 </record>
 <record>
-  <date>2020-11-07T17:17:58.773474900Z</date>
-  <millis>1604769478773</millis>
-  <nanos>474900</nanos>
+  <date>2020-11-08T19:25:47.089633800Z</date>
+  <millis>1604863547089</millis>
+  <nanos>633800</nanos>
   <sequence>2</sequence>
   <logger>main.Game</logger>
   <level>INFO</level>

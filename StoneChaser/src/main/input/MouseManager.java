@@ -22,7 +22,6 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 	
 	public void mouseClicked(MouseEvent e) {
 		
-		
 	}
 
 	
@@ -43,6 +42,7 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 			leftPressed = true;
 		else if(e.getButton() == MouseEvent.BUTTON3) //right mouse button, BUTTON2 = scroll wheel button
 			rightPressed = true;
+		
 	}
 
 	
