@@ -8,15 +8,12 @@ import main.Handler;
 public class BasicEnemy extends Creature{
 	
 	private static int alienSpeed = 2;
-	private static int alienLives = 10;
+	
 	
 	public BasicEnemy(Handler handler, float x, float y, int width, int height) {
 		super(handler, x, y, width, height);
 		
-		bounds.x = 0;
-		bounds.y = 0;
-		bounds.width = 50;
-		bounds.height = 50;
+		
 	}
 
 	@Override
@@ -25,7 +22,6 @@ public class BasicEnemy extends Creature{
 		enemyMovement();
 		
 	}
-	
 	
 	public void enemyMovement() {
 		if(x > 600) alienSpeed = - alienSpeed;
