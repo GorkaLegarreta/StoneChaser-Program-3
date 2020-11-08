@@ -3,13 +3,9 @@ package main.entities.creatures;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-
-import javax.swing.text.html.parser.Entity;
 
 import main.Handler;
 import main.gfx.Animation;
-import main.gfx.Assets;
 
 public class Player extends Creature{ //no longer abstract, so we need a tick and render method
 	
@@ -20,6 +16,9 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 	private String lastAnim;
 	private long lastAttackTimer, attackCooldown = 500, attackTimer = attackCooldown;
 	private int kickDamage = 3;
+	int lastDirection = 0;	
+	
+	Rectangle kickRect;
 	
 	public Player(Handler handler, float x, float y) {
 		super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
@@ -56,43 +55,50 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 		
 		
 		if(handler.getKeyManager().left) {
-			xMove = -speed;			
-		}		
-		if(handler.getKeyManager().right) {
-			xMove = speed;
-		}
-		if(handler.getKeyManager().up) {
-			yMove = -speed;
-		}
-		if(handler.getKeyManager().down) {
-			yMove = speed;
-		}		
+            xMove = -speed;
+            lastDirection = 0;
+        }
+        if(handler.getKeyManager().right) {
+            xMove = speed;
+            lastDirection = 1;
+        }
+        if(handler.getKeyManager().up) {
+            yMove = -speed;
+            lastDirection = 2;
+        }
+        if(handler.getKeyManager().down) {
+            yMove = speed;
+            lastDirection = 3;
+        }
+        
 		if(handler.getKeyManager().space) {
 			long attackNow = System.currentTimeMillis();
 			long attackEnabler = attackNow - lastAttack;
-	        if (attackEnabler > 250) {
+	        if (attackEnabler > 150) {
 	        	lastAttack = attackNow;
 				Rectangle collisionBounds = getCollisionBounds(0, 0); //variable del offset
-				Rectangle kickRect = new Rectangle();
+				kickRect = new Rectangle();
 				kickRect.width = 20;
 				kickRect.height = 20;
 				
-				if(xMove<=0 ) {
-					kickRect.x = collisionBounds.x + kickRect.width; //Pegada a la izq
-					kickRect.y = collisionBounds.y + collisionBounds.height/2 - kickRect.height/2;
-				}
-				if(xMove>=0) {
-					kickRect.x = collisionBounds.x + collisionBounds.width; //Pegada a la dch
-					kickRect.y = collisionBounds.y + collisionBounds.height/2 - kickRect.height/2;
-				}
-				if(yMove<=0) {
-					kickRect.x = collisionBounds.x + collisionBounds.width/2 - kickRect.width/2; //Pegada hacia arriba
-					kickRect.y = collisionBounds.y - kickRect.height;
-				}
-				if(yMove>=0) {
-					kickRect.x = collisionBounds.x + collisionBounds.width/2 -kickRect.width/2; //Pegada hacia abajo 
-					kickRect.y = collisionBounds.y;
-				}
+				
+				if(xMove<0 || lastDirection == 0 ) {
+				                    kickRect.x = collisionBounds.x - kickRect.width;                                 //Pegada a la izq
+				                    kickRect.y = collisionBounds.y + collisionBounds.height/2 - kickRect.height/2;
+				                }
+				                if(xMove>0 || lastDirection == 1) {
+				                    kickRect.x = collisionBounds.x + collisionBounds.width;                         //Pegada a la dcha
+				                    kickRect.y = collisionBounds.y + collisionBounds.height/2 - kickRect.height/2;
+				                }
+				                if(yMove<0 || lastDirection == 2) {
+				                    kickRect.x = collisionBounds.x + collisionBounds.width/2 - kickRect.width/2; //Pegada hacia arriba
+				                    kickRect.y = collisionBounds.y - kickRect.height;
+				                }
+				                if(yMove>0 || lastDirection == 3) {
+				                    kickRect.x = collisionBounds.x + collisionBounds.width/2 -kickRect.width/2; //Pegada hacia abajo 
+				                    kickRect.y = collisionBounds.y + collisionBounds.height;
+				                }
+				
 				for(main.entities.Entity e : handler.getWorld().getEntityManager().getEntities()) {
 		            if(e.equals(this))
 		                continue; //pasa al siguiente valor del for loop ya que no nos queremos herir a nosotros
@@ -111,6 +117,12 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 	public void render(Graphics g) {
 		g.setColor(Color.BLUE);
 		g.fillRect((int)x, (int) y, 50, 50);
+		
+		if(kickRect != null) { 
+			g.setColor(Color.BLUE);
+			g.fillRect((int)kickRect.x, (int) kickRect.y, kickRect.width, kickRect.height);
+		}
+		
 		//g.drawImage(getCurrentAnimationFrame(), (int) (x), (int) (y), width, height,  null);
 		//g.setColor(Color.red);
 		//g.fillRect((int) (x + bounds.x), (int) (y + bounds.y), bounds.width, bounds.height);

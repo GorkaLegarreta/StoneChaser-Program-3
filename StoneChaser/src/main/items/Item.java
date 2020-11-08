@@ -4,63 +4,62 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import main.Handler;
+import main.inventory.Inventory;
+
 public class Item {
 
 	protected String name;
-	protected int x, y, itemQuantity;
+	protected int x, y, itemQuantity, id;
 	protected boolean active;
 	
-	protected Item[] items = new Item[30];
+	protected Handler handler;
+	protected Inventory inv;
+	protected Color c;
 	
 	protected static final int DEFAULT_ITEM_WIDTH = 20, DEFAULT_ITEM_HEIGHT = 20;
 	
 	protected Rectangle itemBounds;
 	//protected Rectangle playerBounds = 
 			
-	public Item(String name, int x, int y, int itemQuantity, boolean active) {
+	public Item(String name, Color c, int x, int y, int itemQuantity, boolean active, int id, Handler handler, Inventory inv) {
 		this.name = name;
 		this.x = x;
 		this.y = y;
 		this.itemQuantity = itemQuantity;
 		this.active = active;
+		this.id = id;
+		this.handler = handler;
+		this.inv = inv;
+		this.c = c;
 		
 		itemBounds = new Rectangle(x, y, DEFAULT_ITEM_WIDTH, DEFAULT_ITEM_HEIGHT);
 	}
-
+	
 	public void tick() {
 		
-		//if(handler)
-		init();
-	}
-	
-	public void init() {
 		
-		Item wood = new Item("wood", 20, 20, 1, true);
-		
+		if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(itemBounds) && active) {
+			inv.addToInventory(this);
+			setInactive();
+			System.out.println(name + " has been picked up (hold E to open inventory)");
+			
+		}
 		
 	}
 	
 	public void render(Graphics g) {
 		
 		
-		g.setColor(Color.YELLOW);
+		g.setColor(c);
 		g.fillRect(x, y, DEFAULT_ITEM_WIDTH, DEFAULT_ITEM_HEIGHT);
 		g.drawString("" + itemQuantity, x + 10, y + 35);
-	}
-
-	public Item createItem(String name, int x, int y, int itemQuantity, boolean active) {
-		Item i = new Item(name, x, y, itemQuantity, active);
-		
-		itemBounds.x = x;
-		itemBounds.y = y;
-		
-		return i;
 	}
 	
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -69,16 +68,23 @@ public class Item {
 		return x;
 	}
 
-	public void setX(int x) {
+	public void setPosition(int x, int y) {
 		this.x = x;
+		this.y = y;
+		itemBounds.x = x;
+		itemBounds.y = y;
 	}
 
 	public int getY() {
 		return y;
 	}
 
-	public void setY(int y) {
-		this.y = y;
+	public Rectangle getItemBounds() {
+		return itemBounds;
+	}
+
+	public void setItemBounds(Rectangle itemBounds) {
+		this.itemBounds = itemBounds;
 	}
 
 	public int getItemQuantity() {
@@ -97,4 +103,16 @@ public class Item {
 		active = true;
 	}
 	
+	public void setInactive() {
+		active = false;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 }
