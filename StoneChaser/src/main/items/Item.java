@@ -3,7 +3,9 @@ package main.items;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.logging.Level;
 
+import main.Game;
 import main.Handler;
 import main.inventory.Inventory;
 
@@ -42,7 +44,8 @@ public class Item {
 		if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(itemBounds) && active) {
 			inv.addToInventory(this);
 			setInactive();
-			System.out.println(name + " has been picked up (hold E to open inventory)");
+			Game.LOGGER.log(Level.FINE, name + " has been picked up (hold E to open inventory)");
+			Game.LOGGER.info(name + " has been picked up (hold E to open inventory)");
 			
 		}
 		

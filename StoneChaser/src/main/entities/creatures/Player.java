@@ -3,7 +3,9 @@ package main.entities.creatures;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.logging.Level;
 
+import main.Game;
 import main.Handler;
 import main.gfx.Animation;
 
@@ -45,7 +47,8 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 	}
 	
 	public void die() {
-		System.out.println("you lose");
+		Game.LOGGER.log(Level.FINE,"Has sido eliminado, has perdido");
+		Game.LOGGER.info("Has sido eliminado, has perdido");
 	}
 
 	private void getInput() {
@@ -117,10 +120,10 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 		g.setColor(Color.BLUE);
 		g.fillRect((int)x, (int) y, 50, 50);
 		
-		if(kickRect != null) { 
-			g.setColor(Color.BLUE);
-			g.fillRect((int)kickRect.x, (int) kickRect.y, kickRect.width, kickRect.height);
-		}
+//		if(kickRect != null) { 
+//			g.setColor(Color.BLUE);
+//			g.fillRect((int)kickRect.x, (int) kickRect.y, kickRect.width, kickRect.height);
+//		}
 		
 		//g.drawImage(getCurrentAnimationFrame(), (int) (x), (int) (y), width, height,  null);
 		//g.setColor(Color.red);

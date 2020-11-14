@@ -2,39 +2,63 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2020-11-08T19:25:46.655795400Z</date>
-  <millis>1604863546655</millis>
-  <nanos>795400</nanos>
+  <date>2020-11-14T23:16:27.195666400Z</date>
+  <millis>1605395787195</millis>
+  <nanos>666400</nanos>
   <sequence>0</sequence>
   <logger>main.Game</logger>
   <level>INFO</level>
   <class>main.Game</class>
-  <method>&lt;init&gt;</method>
+  <method>&lt;clinit&gt;</method>
   <thread>1</thread>
   <message>Level.INFO:800 Inicio</message>
 </record>
 <record>
-  <date>2020-11-08T19:25:46.741565400Z</date>
-  <millis>1604863546741</millis>
-  <nanos>565400</nanos>
+  <date>2020-11-14T23:16:27.276450200Z</date>
+  <millis>1605395787276</millis>
+  <nanos>450200</nanos>
   <sequence>1</sequence>
   <logger>main.Game</logger>
   <level>INFO</level>
   <class>main.Game</class>
-  <method>&lt;init&gt;</method>
+  <method>&lt;clinit&gt;</method>
   <thread>1</thread>
-  <message>Clase principal del juego inicializada</message>
+  <message>Clase principal del juego, Game inicializada</message>
 </record>
 <record>
-  <date>2020-11-08T19:25:47.089633800Z</date>
-  <millis>1604863547089</millis>
-  <nanos>633800</nanos>
-  <sequence>2</sequence>
+  <date>2020-11-14T23:16:27.638336500Z</date>
+  <millis>1605395787638</millis>
+  <nanos>336500</nanos>
+  <sequence>3</sequence>
   <logger>main.Game</logger>
   <level>INFO</level>
   <class>main.Game</class>
   <method>init</method>
   <thread>13</thread>
   <message>Ventana de Stone Chaser inicializada</message>
+</record>
+<record>
+  <date>2020-11-14T23:16:29.310092500Z</date>
+  <millis>1605395789310</millis>
+  <nanos>92500</nanos>
+  <sequence>4</sequence>
+  <logger>main.Game</logger>
+  <level>INFO</level>
+  <class>main.states.MenuState</class>
+  <method>tick</method>
+  <thread>13</thread>
+  <message>Se ha pulsado Start y GameState cargada e iniciada</message>
+</record>
+<record>
+  <date>2020-11-14T23:16:39.612650200Z</date>
+  <millis>1605395799612</millis>
+  <nanos>650200</nanos>
+  <sequence>5</sequence>
+  <logger>main.Game</logger>
+  <level>INFO</level>
+  <class>main.entities.creatures.BasicEnemy</class>
+  <method>die</method>
+  <thread>13</thread>
+  <message>Lo has eliminado, has ganado</message>
 </record>
 </log>

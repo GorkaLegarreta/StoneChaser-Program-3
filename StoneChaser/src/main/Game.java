@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.logging.FileHandler;
+import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.gfx.Assets;
@@ -51,20 +52,15 @@ public class Game implements Runnable{
 	private Handler handler;
 	
 	//Logger
-	private final static Logger LOGGER = Logger.getLogger(Game.class.getName());
-	private static FileHandler fh;
-	
-	public Game(String title, int width, int height) {
-		this.width = width;
-		this.height = height;
-		this.title = title;
-		keyManager = new KeyManager();
-		mouseManager = new MouseManager();
+	public final static Logger LOGGER = Logger.getLogger(Game.class.getName());
+	public static FileHandler fh;
+	// Static se ejecuta al cargar la clase, al principio del todo, una sola vez.
+	static {
 		try {
 			fh = new FileHandler("Logger.txt",false);
 			LOGGER.addHandler(fh);
-			LOGGER.log(Level.FINE, "Level.FINE:"+Level.FINE.intValue()+" Inicio"); 	//este se tiene que escribir en fichero
-			LOGGER.info("Level.INFO:"+Level.INFO.intValue()+" Inicio");	//Este se enseña por consola
+			LOGGER.log(Level.FINE, "Level.FINE:"+Level.FINE.intValue()+" Inicio"); 	//este se tiene que escribir en fichero.
+			LOGGER.info("Level.INFO:"+Level.INFO.intValue()+" Inicio");				//Este se enseña por consola.
 			
 		} catch (SecurityException e) {
 			LOGGER.log(Level.SEVERE, Game.getStackTrace(e));
@@ -73,8 +69,17 @@ public class Game implements Runnable{
 			LOGGER.log(Level.SEVERE, Game.getStackTrace(e));
 			LOGGER.info(Game.getStackTrace(e));
 		}	
-		LOGGER.log(Level.FINE, "Clase principal del juego inicializada");
-		LOGGER.info("Clase principal del juego inicializada");
+		LOGGER.log(Level.FINE, "Clase principal del juego, Game inicializada");
+		LOGGER.info("Clase principal del juego, Game inicializada");
+	}
+	
+	public Game(String title, int width, int height) {
+		this.width = width;
+		this.height = height;
+		this.title = title;
+		keyManager = new KeyManager();
+		mouseManager = new MouseManager();
+		
 		
 	}
 	
@@ -82,7 +87,7 @@ public class Game implements Runnable{
 		
 		
 		
-		window = new Window(title, width, height);
+		window = new Window(title, width, height,fh);
 		LOGGER.log(Level.FINE, "Ventana de Stone Chaser inicializada");
 		LOGGER.info("Ventana de Stone Chaser inicializada");
 		window.getFrame().addKeyListener(keyManager);
@@ -205,7 +210,12 @@ public class Game implements Runnable{
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Esta funcion es la que permite que el printStackTrace pasar a un String
+	 * 
+	 * @param Excepcion del que queremos pasar el stackTrace a String
+	 * @return El stackTrace de la excepcion en forma de String
+	 */
 	public static String getStackTrace(Exception e) {
         StringWriter sWriter = new StringWriter();
         PrintWriter pWriter = new PrintWriter(sWriter);
