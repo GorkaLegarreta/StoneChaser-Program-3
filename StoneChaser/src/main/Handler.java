@@ -9,13 +9,12 @@ public class Handler {
 
 	private Game game;
 	private World world;
-	
+		
 	public Handler(Game game) {
 		this.game = game;
-		
-		
 	}
 	
+
 	public int getWidth() {
 		return game.getWidth();
 	}
@@ -27,7 +26,11 @@ public class Handler {
 	public KeyManager getKeyManager() {
 		return game.getKeyManager();
 	}
-
+	
+	public MouseManager getMouseManager() {
+		return game.getMouseManager();
+	}
+	
 	public GameCamera getGameCamera() {
 		return game.getGameCamera();
 	}
@@ -36,14 +39,10 @@ public class Handler {
 		return game;
 	}
 	
-	public MouseManager getMouseManager() {
-		return game.getMouseManager();
-	}
-
 	public void setGame(Game game) {
 		this.game = game;
 	}
-
+	
 	public World getWorld() {
 		return world;
 	}

@@ -26,15 +26,17 @@ public class Inventory {
 		this.handler = handler;
 	}
 
-	public void tick() {
-		
+	public void tick() {		
+		/*
+		 * Se consulta el inventario (podria realentizarse con un hilo)
+		 */
 		if(handler.getKeyManager().e) {
-			
-			System.out.println("INVENTARIO");
+			System.out.println("INVENTARIO");			
 			for(Item i : inventory) {
 				System.out.println(i.getItemQuantity() + " " + i.getName());
-			}	
+			}				
 		}
+<<<<<<< HEAD
 		
 		if(handler.getKeyManager().f) {
 			
@@ -68,6 +70,8 @@ public class Inventory {
 				}	
 			}
 		}
+=======
+>>>>>>> refs/remotes/origin/master
 	}
 	
 	public void render(Graphics g) {

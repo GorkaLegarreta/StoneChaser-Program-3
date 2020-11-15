@@ -2,7 +2,9 @@ package main.entities.creatures;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.logging.Level;
 
+import main.Game;
 import main.Handler;
 
 public class BasicEnemy extends Creature{
@@ -39,8 +41,8 @@ public class BasicEnemy extends Creature{
 
 	@Override
 	public void die() {
-		System.out.println("You win");
-		
+		Game.LOGGER.log(Level.FINE,"Lo has eliminado, has ganado");
+		Game.LOGGER.info("Lo has eliminado, has ganado");
 	}
 	
 }
