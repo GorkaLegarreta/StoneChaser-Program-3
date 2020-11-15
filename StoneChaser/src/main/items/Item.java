@@ -38,14 +38,11 @@ public class Item {
 	
 	public void tick() {
 		
-		
 		if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(itemBounds) && active) {
-			inv.addToInventory(this);
 			setInactive();
-			System.out.println(name + " has been picked up (hold E to open inventory)");
-			
+			inv.addToInventory(this);
+			System.out.println(name + " has been picked up (hold E to open inventory, press F to drop)");			
 		}
-		
 	}
 	
 	public void render(Graphics g) {

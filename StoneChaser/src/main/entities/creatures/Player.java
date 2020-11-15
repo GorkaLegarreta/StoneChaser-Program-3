@@ -111,6 +111,7 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 				
 			}		
 		}
+			
 	}
 	
 
