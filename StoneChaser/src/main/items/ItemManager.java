@@ -20,14 +20,15 @@ public class ItemManager {
 	Color cMadera = Color.ORANGE;
 	Color cHierro = Color.GREEN;
 	Color cCuero = Color.magenta;
-	Color cCuerda = Color.WHITE;	//cualquier color ya que para esta prueba no los vamos a usar
+	Color cEspadaHierro = Color.BLUE;
+	Color cCuerda = Color.WHITE;		//cualquier color ya que para esta prueba no los vamos a usar
 	Color cPiedraFuego = Color.WHITE;	//cualquier color ya que para esta prueba no los vamos a usar
 	Color cPiedraAgua = Color.WHITE;	//cualquier color ya que para esta prueba no los vamos a usar
 	Color cPiedraPlanta = Color.WHITE;	//cualquier color ya que para esta prueba no los vamos a usar
 	
 	
-	protected Item i, madera, roca, hoja, hierro, piedraFuego, piedraAgua, piedraPlanta;
-	protected Item[] items = new Item[7];
+	public static Item i, madera, roca, hoja, hierro, piedraFuego, piedraAgua, piedraPlanta, cuero, cuerda, espadaHierro;
+	protected Item[] items = new Item[8];
 	
 	protected Inventory inventory;
 	
@@ -41,14 +42,23 @@ public class ItemManager {
 	
 	public void initItems() {
 		
-		items[0] = new Item("madera", cMadera, 0, 0, 1, true, 0, handler, inventory);
-		items[1] = new Item("hierro", cHierro, 50, 20, 1, true, 1, handler, inventory);
-		items[2] = new Item("cuero", cCuero, 300, 200, 1, true, 2, handler, inventory);
-		items[3] = new Item("cuerda", cCuerda, 0, 0, 1, false, 3, handler, inventory);
-		items[4] = new Item("piedraFuego", cPiedraFuego, 0, 0, 1, false, 4, handler, inventory);
-		items[5] = new Item("piedraAgua", cPiedraAgua, 0, 0, 1, false, 5, handler, inventory);
-		items[6] = new Item("piedraPlanta", cPiedraPlanta, 0, 0, 1, false, 6, handler, inventory);
+		madera = new Item("madera", cMadera, 0, 0, 1, true, 0, handler, inventory);
+		hierro = new Item("hierro", cHierro, 50, 20, 1, true, 1, handler, inventory);
+		cuero = new Item("cuero", cCuero, 300, 200, 1, true, 2, handler, inventory);
+		cuerda = new Item("cuerda", cCuerda, 0, 0, 1, false, 3, handler, inventory);
+		piedraFuego = new Item("piedraFuego", cPiedraFuego, 0, 0, 1, false, 4, handler, inventory);
+		piedraAgua = new Item("piedraAgua", cPiedraAgua, 0, 0, 1, false, 5, handler, inventory);
+		piedraPlanta = new Item("piedraPlanta", cPiedraPlanta, 0, 0, 1, false, 6, handler, inventory);
+		espadaHierro = new Item("espadaHierro", cEspadaHierro, 0, 0, 1, false, 6, handler, inventory);
 		
+		items[0] = madera;
+		items[1] = hierro;
+		items[2] = cuero;
+		items[3] = cuerda;
+		items[4] = piedraFuego;
+		items[5] = piedraAgua;
+		items[6] = piedraPlanta;
+		items[7] = espadaHierro;
 		
 	}
 	

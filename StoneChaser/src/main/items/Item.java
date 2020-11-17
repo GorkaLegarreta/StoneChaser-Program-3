@@ -42,14 +42,9 @@ public class Item {
 		
 		if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(itemBounds) && active) {
 			setInactive();
-<<<<<<< HEAD
 			inv.addToInventory(this);
 			System.out.println(name + " has been picked up (hold E to open inventory, press F to drop)");			
-=======
-			Game.LOGGER.log(Level.FINE, name + " has been picked up (hold E to open inventory)");
-			Game.LOGGER.info(name + " has been picked up (hold E to open inventory)");
 			
->>>>>>> refs/remotes/origin/master
 		}
 	}
 	

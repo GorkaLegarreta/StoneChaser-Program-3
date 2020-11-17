@@ -36,7 +36,6 @@ public class Inventory {
 				System.out.println(i.getItemQuantity() + " " + i.getName());
 			}				
 		}
-<<<<<<< HEAD
 		
 		if(handler.getKeyManager().f) {
 			
@@ -70,8 +69,7 @@ public class Inventory {
 				}	
 			}
 		}
-=======
->>>>>>> refs/remotes/origin/master
+
 	}
 	
 	public void render(Graphics g) {
