@@ -6,9 +6,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.logging.FileHandler;
-import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 import main.gfx.Assets;
 import main.gfx.GameCamera;
 import main.input.KeyManager;
@@ -54,23 +55,35 @@ public class Game implements Runnable{
 	//Logger
 	public final static Logger LOGGER = Logger.getLogger(Game.class.getName());
 	public static FileHandler fh;
-	// Static se ejecuta al cargar la clase, al principio del todo, una sola vez.
+	// Static SE EJECUTA AL CARGAR LA CLASE; AL PRINCIPIO; UNA SOLA VEZ
 	static {
 		try {
 			fh = new FileHandler("Logger.txt",false);
+			/*
+			 *  ESTABLECE LEVEL DEL LOGGER ESCRIBIRA LOGS SUPERIORES A ESTE NIVEL
+			 *  CAMBIANDO ESTE NIVEL SE FILTRARAN LOS LOGGERS QUE SE ESCRIBEN EN 
+			 *  EL FICHERO; LOS QUE APARECEN EN CONSOLA (LEVEL.INFO) TAMBIEN APARECERAN
+			 *  EN EL FICHERO LOGGER.TXT SI EL NIVEL SE LO PERMITE
+			 */
+			LOGGER.setLevel(Level.FINEST);			
 			LOGGER.addHandler(fh);
-			LOGGER.log(Level.FINE, "Level.FINE:"+Level.FINE.intValue()+" Inicio"); 	//este se tiene que escribir en fichero.
-			LOGGER.info("Level.INFO:"+Level.INFO.intValue()+" Inicio");				//Este se enseña por consola.
+			SimpleFormatter formatter = new SimpleFormatter();
+			fh.setFormatter(formatter);
+			// LOG QUE APARECE TANTO EN LOGGER.TXT COMO EN CONSOLA POR EL (LEVEL.INFO)
+			LOGGER.log(Level.INFO,"Logger y clases del StoneChaser inicializadas"); 
 			
 		} catch (SecurityException e) {
-			LOGGER.log(Level.SEVERE, Game.getStackTrace(e));
-			LOGGER.info(Game.getStackTrace(e));
+			
+			LOGGER.log(Level.SEVERE,Game.getStackTrace(e));
 		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, Game.getStackTrace(e));
-			LOGGER.info(Game.getStackTrace(e));
+			
+			LOGGER.log(Level.SEVERE,Game.getStackTrace(e));
 		}	
-		LOGGER.log(Level.FINE, "Clase principal del juego, Game inicializada");
-		LOGGER.info("Clase principal del juego, Game inicializada");
+		/*
+		 *  DEMOSTRACION DE QUE SE IMPRIMEN LOGS DEL MISMO NIVEL AL ESTABLECIDO 
+		 *  POR DEFECTO EN FINEST = 300 NIVEL MUY BAJO QUE SE SUPERA FACILMENTE 
+		 */
+		LOGGER.log(LOGGER.getLevel()," LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, "+LOGGER.getLevel().toString()+": "+LOGGER.getLevel().intValue());
 	}
 	
 	public Game(String title, int width, int height) {
@@ -78,38 +91,34 @@ public class Game implements Runnable{
 		this.height = height;
 		this.title = title;
 		keyManager = new KeyManager();
-		mouseManager = new MouseManager();
-		
-		
+		mouseManager = new MouseManager();		
+		//LOGGER
+		LOGGER.log(Level.FINEST,"Objeto Game creada en el constructor");		
 	}
 	
-	private void init() {
-		
-		
-		
+	private void init() {		
 		window = new Window(title, width, height,fh);
-		LOGGER.log(Level.FINE, "Ventana de Stone Chaser inicializada");
-		LOGGER.info("Ventana de Stone Chaser inicializada");
 		window.getFrame().addKeyListener(keyManager);
 		window.getFrame().addMouseListener(mouseManager);
 		window.getFrame().addMouseMotionListener(mouseManager);
 		window.getCanvas().addMouseListener(mouseManager);
 		window.getCanvas().addMouseMotionListener(mouseManager);
-		Assets.init();
-		
+		Assets.init();		
 		handler = new Handler(this); //coge el objeto de esta clase
 		gameCamera = new GameCamera(handler, 0, 0);
 		menuState = new MenuState(handler);
-		gameState = new GameState(handler); //nos referimos a la clase game, a esta misma clase
-		
+		gameState = new GameState(handler); //nos referimos a la clase game, a esta misma clase		
 		State.setState(menuState);
 	}
 	
 	private void tick() {
 		keyManager.tick();
-		if(State.getState()!=null)
+					
+		if(State.getState()!=null && State.getState().equals(menuState)) {
+			menuState.tick();
+		} else {
 			State.getState().tick();
-		
+		}
 	}
 	
 	private void render() {
@@ -118,13 +127,12 @@ public class Game implements Runnable{
 		if(bs  == null) {
 			window.getCanvas().createBufferStrategy(3);
 			return;
-		}
-		
+		}		
 		g = bs.getDrawGraphics();
 		//Limpiamos la pantalla
 		g.clearRect(0, 0, width, height);
-		//A partir de aqui podemos dibujar
 		
+		//A partir de aqui podemos dibujar		
 		if(State.getState()!=null) State.getState().render(g);
 		
 		//Aqui dejamos de dibujar y actualizamos

@@ -27,9 +27,6 @@ public class Inventory {
 	}
 
 	public void tick() {		
-		/*
-		 * Se consulta el inventario (podria realentizarse con un hilo)
-		 */
 		if(handler.getKeyManager().e) {
 			System.out.println("INVENTARIO");			
 			for(Item i : inventory) {

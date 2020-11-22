@@ -5,15 +5,12 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.swing.JFrame;
 
 public class Window {
 
 	private JFrame frame;
-	private Canvas canvas;
-	private Logger LOGGER = Logger.getLogger(Window.class.getName()); 
+	private Canvas canvas; 
 	private String title;
 	private int width, height;
 	
@@ -22,8 +19,8 @@ public class Window {
 		this.width = width;
 		this.height = height;
 		createWindow();
-		LOGGER.addHandler(fh);
-		
+		//Logger
+		Game.LOGGER.log(Level.FINEST, "Objeto Window creada desde su constructor");
 	}
 	
 	private void createWindow(){
@@ -41,10 +38,7 @@ public class Window {
 		canvas.setFocusable(false);
 		
 		frame.add(canvas);
-		frame.pack();
-		//Logger
-		LOGGER.log(Level.FINE, "Ventana de Stone Chaser inicializada");
-		LOGGER.info("Ventana de Stone Chaser inicializada");
+		frame.pack();				
 	}
 	
 	public Canvas getCanvas(){

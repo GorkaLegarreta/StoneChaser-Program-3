@@ -85,20 +85,28 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 				kickRect.height = 20;
 
 				if(xMove<0 || lastDirection == 0 ) {
-					kickRect.x = collisionBounds.x - kickRect.width; 								//Pegada a la izq
+					kickRect.x = collisionBounds.x - kickRect.width; 								
 					kickRect.y = collisionBounds.y + collisionBounds.height/2 - kickRect.height/2;
+					// LOGGER
+					Game.LOGGER.log(Level.FINEST,"Le pega con kickRect izquierda");
 				}
 				if(xMove>0 || lastDirection == 1) {
-					kickRect.x = collisionBounds.x + collisionBounds.width; 						//Pegada a la dcha
+					kickRect.x = collisionBounds.x + collisionBounds.width; 						
 					kickRect.y = collisionBounds.y + collisionBounds.height/2 - kickRect.height/2;
+					// LOGGER
+					Game.LOGGER.log(Level.FINEST,"Le pega con kickRect derecha");
 				}
 				if(yMove<0 || lastDirection == 2) {
-					kickRect.x = collisionBounds.x + collisionBounds.width/2 - kickRect.width/2; //Pegada hacia arriba
+					kickRect.x = collisionBounds.x + collisionBounds.width/2 - kickRect.width/2; 
 					kickRect.y = collisionBounds.y - kickRect.height;
+					// LOGGER
+					Game.LOGGER.log(Level.FINEST,"Le pega con kickRect arriba");
 				}
 				if(yMove>0 || lastDirection == 3) {
-					kickRect.x = collisionBounds.x + collisionBounds.width/2 -kickRect.width/2; //Pegada hacia abajo 
+					kickRect.x = collisionBounds.x + collisionBounds.width/2 -kickRect.width/2;  
 					kickRect.y = collisionBounds.y + collisionBounds.height;
+					// LOGGER
+					Game.LOGGER.log(Level.FINEST,"Le pega con kickRect abajo");
 				}
 
 				for(main.entities.Entity e : handler.getWorld().getEntityManager().getEntities()) {
@@ -120,15 +128,15 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 	public void render(Graphics g) {
 		g.setColor(Color.BLUE);
 		g.fillRect((int)x, (int) y, 50, 50);
+		// ESTO HACE QUE SE VEA KICKRECT
+		if(kickRect != null && handler.getKeyManager().space) { 
+			g.setColor(Color.BLUE);
+			g.fillRect((int)kickRect.x, (int) kickRect.y, kickRect.width, kickRect.height);
+		}
 		
-//		if(kickRect != null) { 
-//			g.setColor(Color.BLUE);
-//			g.fillRect((int)kickRect.x, (int) kickRect.y, kickRect.width, kickRect.height);
-//		}
-		
-		//g.drawImage(getCurrentAnimationFrame(), (int) (x), (int) (y), width, height,  null);
-		//g.setColor(Color.red);
-		//g.fillRect((int) (x + bounds.x), (int) (y + bounds.y), bounds.width, bounds.height);
+//		g.drawImage(getCurrentAnimationFrame(), (int) (x), (int) (y), width, height,  null);
+//		g.setColor(Color.red);
+//		g.fillRect((int) (x + bounds.x), (int) (y + bounds.y), bounds.width, bounds.height);
 	}
 	
 	/*private BufferedImage getCurrentAnimationFrame() {

@@ -13,8 +13,7 @@ public class BasicEnemy extends Creature{
 	
 	
 	public BasicEnemy(Handler handler, float x, float y, int width, int height) {
-		super(handler, x, y, width, height);
-		
+		super(handler, x, y, width, height);	
 		
 	}
 
@@ -41,7 +40,7 @@ public class BasicEnemy extends Creature{
 
 	@Override
 	public void die() {
-		Game.LOGGER.log(Level.FINE,"Lo has eliminado, has ganado");
+		Game.LOGGER.log(Level.FINE,"El jugador ha vencido al cubo rojo");
 		Game.LOGGER.info("Lo has eliminado, has ganado");
 	}
 	
