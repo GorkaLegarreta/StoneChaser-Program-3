@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import main.Game;
 import main.Handler;
 import main.gfx.Animation;
+import main.gfx.Assets;
 
 public class Player extends Creature{ //no longer abstract, so we need a tick and render method
 	
@@ -23,7 +24,7 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 	Rectangle kickRect;
 	
 	public Player(Handler handler, float x, float y) {
-		super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
+		super(handler, x, y, 62, 140);
 	
 		//definir bounds...
 	}
@@ -81,8 +82,8 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 	        	lastAttack = attackNow;
 				Rectangle collisionBounds = getCollisionBounds(0, 0); //variable del offset
 				kickRect = new Rectangle();
-				kickRect.width = 20;
-				kickRect.height = 20;
+				kickRect.width = 50;
+				kickRect.height = 30;
 
 				if(xMove<0 || lastDirection == 0 ) {
 					kickRect.x = collisionBounds.x - kickRect.width; 								
@@ -126,8 +127,11 @@ public class Player extends Creature{ //no longer abstract, so we need a tick an
 	
 
 	public void render(Graphics g) {
-		g.setColor(Color.BLUE);
-		g.fillRect((int)x, (int) y, 50, 50);
+//		g.setColor(Color.BLUE);
+//		g.fillRect((int)x, (int) y, 50, 50);
+
+		g.drawImage(Assets.player, (int)x, (int)y, 62, 140, null);
+		
 		// ESTO HACE QUE SE VEA KICKRECT
 		if(kickRect != null && handler.getKeyManager().space) { 
 			g.setColor(Color.BLUE);

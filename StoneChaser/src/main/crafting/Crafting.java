@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.Scanner;
 
 import main.Handler;
+import main.gfx.Assets;
 import main.items.Item;
 import main.items.ItemManager;
 
@@ -19,7 +20,7 @@ public class Crafting {
 	
 	private int item, posicion;
 	
-	private int c = 0;
+	private boolean c = false;
 
 	public Crafting(Handler handler) {
 		this.handler = handler;
@@ -43,20 +44,22 @@ public class Crafting {
 	}
 	
 	public void render(Graphics g) {
-		
+		if(c == true) {
+			//g.drawImage(Assets.inventory, 50, 50, null);
+		}
 	}
 	
 	public void tick() {
 		
-		if(handler.getKeyManager().r && c < 1) {
-			c++;
-			
-			System.out.println("que item quieres poner? ");
-			item = scIn.nextInt();
-			System.out.println("En que hueco del item lo quieres poner? ");
-			posicion = scIn.nextInt();
+		if(handler.getKeyManager().r) {
+			c = true;
 			
 			
+			
+			
+		}
+		
+		if(c == true) {
 			
 			
 			

@@ -4,14 +4,13 @@ import java.awt.image.BufferedImage;
 
 public class Assets {
 	
-	public static BufferedImage prueba;
+	public static BufferedImage player;
 	
 	public static void init() {
 		
-		//SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/AllSprites.png"));
-//		SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/cieloPTG.png")); 
-//		prueba = sheet.crop(0, 0, 55, 55);
-		
+		SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/jugador.png")); 
+
+		player = sheet.crop(5, 6, 31, 70);
 	}
 	
 }
