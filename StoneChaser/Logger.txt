@@ -1,26 +1,30 @@
-nov. 22, 2020 4:46:56 P. M. main.Game <clinit>
-INFO: Logger y clases del StoneChaser inicializadas
-nov. 22, 2020 4:46:56 P. M. main.Game <clinit>
-FINE:  LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, FINE: 500
-nov. 22, 2020 4:46:59 P. M. main.states.MenuState tick
-INFO: Se ha iniciado como Mundo1
-nov. 22, 2020 4:46:59 P. M. main.states.MenuState tick
-CONFIG: GameState Cargada e inicializada en Configuracion Mundo1
-nov. 22, 2020 4:47:00 P. M. main.states.MenuState creatingUserDB
-FINE: Se ha establecido una conexión a la base de datos 
-jdbc:mysql://localhost:3306/STONECHASER?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-nov. 22, 2020 4:47:00 P. M. main.states.MenuState creatingUserDB
-SEVERE: null
-java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '1' for key 'usuario.PRIMARY'
-	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:117)
+nov 27, 2020 4:18:32 PM main.Game <clinit>
+INFORMACIÓN: Logger y clases del StoneChaser inicializadas
+nov 27, 2020 4:18:32 PM main.Game <clinit>
+MÁS DETALLADO:  LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, FINEST: 300
+nov 27, 2020 4:18:32 PM main.Game <init>
+MÁS DETALLADO: Objeto Game creada en el constructor
+nov 27, 2020 4:18:33 PM main.Window <init>
+MÁS DETALLADO: Objeto Window creada desde su constructor
+nov 27, 2020 4:18:33 PM main.states.MenuState tick
+INFORMACIÓN: Se ha iniciado como Mundo1
+nov 27, 2020 4:18:33 PM main.states.MenuState tick
+CONFIGURAR: GameState Cargada e inicializada en Configuracion Mundo1
+nov 27, 2020 4:18:34 PM main.states.MenuState creatingUserDB
+GRAVE: null
+java.sql.SQLSyntaxErrorException: Unknown database 'stonechaser'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:120)
 	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:97)
 	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
-	at com.mysql.cj.jdbc.StatementImpl.executeUpdateInternal(StatementImpl.java:1335)
-	at com.mysql.cj.jdbc.StatementImpl.executeLargeUpdate(StatementImpl.java:2108)
-	at com.mysql.cj.jdbc.StatementImpl.executeUpdate(StatementImpl.java:1245)
-	at main.states.MenuState.creatingUserDB(MenuState.java:112)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:836)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:456)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:246)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:198)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at main.states.MenuState.creatingUserDB(MenuState.java:105)
 	at main.states.MenuState.tick(MenuState.java:48)
-	at main.Game.tick(Game.java:118)
-	at main.Game.run(Game.java:161)
-	at java.base/java.lang.Thread.run(Thread.java:830)
+	at main.Game.tick(Game.java:139)
+	at main.Game.run(Game.java:186)
+	at java.lang.Thread.run(Unknown Source)
 

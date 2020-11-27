@@ -1,6 +1,11 @@
 package main;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RadialGradientPaint;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,6 +22,7 @@ import main.input.MouseManager;
 import main.states.GameState;
 import main.states.MenuState;
 import main.states.State;
+import main.utilities.Spotlight;
 
 public class Game implements Runnable{
 	
@@ -36,6 +42,13 @@ public class Game implements Runnable{
 	
 	private BufferStrategy bs;
 	private Graphics g;
+
+	//spotlight
+
+	private int sPx, sPy;
+	private int velX = 5, velY = 5;
+	private Spotlight spotlight;
+	private boolean enableSpotlight = false;
 	
 	//States
 	public State menuState;
@@ -55,6 +68,7 @@ public class Game implements Runnable{
 	//Logger
 	public final static Logger LOGGER = Logger.getLogger(Game.class.getName());
 	public static FileHandler fh;
+	
 	// Static SE EJECUTA AL CARGAR LA CLASE; AL PRINCIPIO; UNA SOLA VEZ
 	static {
 		try {
@@ -112,8 +126,15 @@ public class Game implements Runnable{
 	}
 	
 	private void tick() {
+		
+//		if(sPx<= 0 || sPx >= 700) velX = -velX;		//efecto de luz para spotlight
+//		if(sPy<= 0 || sPy>= 400) velY = -velY;
+//		
+//		sPx += -velX;
+//		sPy += -velY;
+		
 		keyManager.tick();
-					
+		
 		if(State.getState()!=null && State.getState().equals(menuState)) {
 			menuState.tick();
 		} else {
@@ -134,6 +155,10 @@ public class Game implements Runnable{
 		
 		//A partir de aqui podemos dibujar		
 		if(State.getState()!=null) State.getState().render(g);
+		
+		if(enableSpotlight) spotlight = new Spotlight(getWidth()/2, getHeight()/2, 0.0f, 1f, 600, new Color(0, 0, 0, 0), g);
+			
+		
 		
 		//Aqui dejamos de dibujar y actualizamos
 		bs.show();
@@ -194,7 +219,15 @@ public class Game implements Runnable{
 	public int getHeight() {
 		return height;
 	}
-			
+
+	public void spotlightEnabler() {
+		enableSpotlight = true;
+	}
+
+	public void spotlightDisabler() {
+		enableSpotlight = false;
+	}
+
 	public synchronized  void start() {
 		
 		if(running)
