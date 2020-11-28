@@ -56,7 +56,7 @@ public class Game implements Runnable{
 	public final static Logger LOGGER = Logger.getLogger(Game.class.getName());
 	public static FileHandler fh;
 	// Static SE EJECUTA AL CARGAR LA CLASE; AL PRINCIPIO; UNA SOLA VEZ
-	static {
+	static {		
 		try {
 			fh = new FileHandler("Logger.txt",false);
 			/*
@@ -82,8 +82,10 @@ public class Game implements Runnable{
 		/*
 		 *  DEMOSTRACION DE QUE SE IMPRIMEN LOGS DEL MISMO NIVEL AL ESTABLECIDO 
 		 *  POR DEFECTO EN FINEST = 300 NIVEL MUY BAJO QUE SE SUPERA FACILMENTE 
-		 */
+		 */		
 		LOGGER.log(LOGGER.getLevel()," LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, "+LOGGER.getLevel().toString()+": "+LOGGER.getLevel().intValue());
+		// CREAR LA CONEXION A LA BD
+		GameDB.getInstance();
 	}
 	
 	public Game(String title, int width, int height) {

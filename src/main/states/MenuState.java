@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 
 import main.Game;
+import main.GameDB;
 import main.Handler;
 import main.input.MouseManager;
 
@@ -18,10 +19,10 @@ public class MenuState extends State  {
 	private MouseManager mouseManager;
 	private Rectangle lbl1, lbl2, lbl3, lbl4;	
 	private Rectangle user1, user2, user3, user4;
-	
-	Connection con = null;
-	Statement stmt = null;
-	
+		
+	public enum NumeroMundo{
+		MUNDO1, MUNDO2, MUNDO3, MUNDO4;		
+	}
 	
 	public MenuState(Handler handler) {
 		super(handler);
@@ -42,100 +43,54 @@ public class MenuState extends State  {
 		if(handler.getMouseManager().isLeftPressed() && lbl1.contains(mouseManager.getMouseX(), mouseManager.getMouseY()) ) {
 			//LOGGER
 			Game.LOGGER.log(Level.INFO,"Se ha iniciado como Mundo1");	
-			Game.LOGGER.log(Level.CONFIG,"GameState Cargada e inicializada en Configuracion Mundo1");
+			Game.LOGGER.log(Level.CONFIG,"GameState Cargada e inicializada en Configuracion Mundo1");			
+			//CREAR SI ESTE USUARIO NO ESTA CREADO
+			if (GameDB.checkGamePlayer(1)) {
+				GameDB.createGamePlayer(1, "myNameIsPepe");
+			}
 			// SE CARGA GAME STATE PARA PASAR AL JUEGO 
 			State.setState(handler.getGame().gameState);
-			creatingUserDB(1, "pepe");
-					
 		}else if(handler.getMouseManager().isLeftPressed() && lbl2.contains(mouseManager.getMouseX(), mouseManager.getMouseY()) ) {
 			//LOGGER
 			Game.LOGGER.log(Level.INFO,"Se ha iniciado como Mundo2");	
 			Game.LOGGER.log(Level.CONFIG,"GameState Cargada e inicializada en Configuracion Mundo2");
+			//CREAR SI ESTE USUARIO NO ESTA CREADO
+			if (GameDB.checkGamePlayer(2)) {
+				GameDB.createGamePlayer(2, "Pepe");
+			}		
 			// SE CARGA GAME STATE PARA PASAR AL JUEGO 
-			State.setState(handler.getGame().gameState);	
-			creatingUserDB(2, "jimenez");
-			
+			State.setState(handler.getGame().gameState);			
 		}else if(handler.getMouseManager().isLeftPressed() && lbl3.contains(mouseManager.getMouseX(), mouseManager.getMouseY()) ) {
 			//LOGGER
 			Game.LOGGER.log(Level.INFO,"Se ha iniciado como Mundo3");	
 			Game.LOGGER.log(Level.CONFIG,"GameState Cargada e inicializada en Configuracion Mundo3");
+			//CREAR SI ESTE USUARIO NO ESTA CREADO
+			if (GameDB.checkGamePlayer(3)) {
+				GameDB.createGamePlayer(3, "myName");
+			}
 			// SE CARGA GAME STATE PARA PASAR AL JUEGO 
-			State.setState(handler.getGame().gameState);
-			creatingUserDB(3, "gorka");
-			
+			State.setState(handler.getGame().gameState);			
 		}else if(handler.getMouseManager().isLeftPressed() && lbl4.contains(mouseManager.getMouseX(), mouseManager.getMouseY()) ) {
 			//LOGGER
 			Game.LOGGER.log(Level.INFO,"Se ha iniciado como Mundo4");	
 			Game.LOGGER.log(Level.CONFIG,"GameState Cargada e inicializada en Configuracion Mundo4");
+			//CREAR SI ESTE USUARIO NO ESTA CREADO
+			if (GameDB.checkGamePlayer(4)) {
+				GameDB.createGamePlayer(4, "this");
+			}
 			// SE CARGA GAME STATE PARA PASAR AL JUEGO 
-			State.setState(handler.getGame().gameState);
-			creatingUserDB(4, "inigo");
-			
+			State.setState(handler.getGame().gameState);			
 		}
 		/////////////////////////////////////////////////////////////////////////////////////////
-		/// BOTONES A LA DERECHA SIN IMPLEMENTAR
+		/// 				BOTONES A LA DERECHA SIN IMPLEMENTAR							   //
 		/////////////////////////////////////////////////////////////////////////////////////////
-		if(handler.getMouseManager().isLeftPressed() && user1.contains(mouseManager.getMouseX(), mouseManager.getMouseY()) ) {
-			
-			
-						
-		}else if(handler.getMouseManager().isLeftPressed() && user2.contains(mouseManager.getMouseX(), mouseManager.getMouseY()) ) {
-			
-			
-						
-		}else if(handler.getMouseManager().isLeftPressed() && user3.contains(mouseManager.getMouseX(), mouseManager.getMouseY()) ) {
-						
-			
-			
-		}else if(handler.getMouseManager().isLeftPressed() && user4.contains(mouseManager.getMouseX(), mouseManager.getMouseY()) ) {
-			
-			
-			
-		}
-		
+		if(handler.getMouseManager().isLeftPressed() && user1.contains(mouseManager.getMouseX(), mouseManager.getMouseY()) ) {						
+		}else if(handler.getMouseManager().isLeftPressed() && user2.contains(mouseManager.getMouseX(), mouseManager.getMouseY()) ) {						
+		}else if(handler.getMouseManager().isLeftPressed() && user3.contains(mouseManager.getMouseX(), mouseManager.getMouseY()) ) {			
+		}else if(handler.getMouseManager().isLeftPressed() && user4.contains(mouseManager.getMouseX(), mouseManager.getMouseY()) ) {			
+		}		
 	}
-	public void creatingUserDB(int id, String name) {
-		try {
-            
-        	String url = "jdbc:mysql://localhost:3306/STONECHASER?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-            String usuario = "root";
-            String contraseña = "deusto";
-            
-             Class.forName("com.mysql.cj.jdbc.Driver").newInstance(); 
-             con = DriverManager.getConnection(url,usuario,contraseña); 
-             if ( con != null ) 
-            	  Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha establecido una conexión a la base de datos " +  
-                                       "\n" + url);
-                  System.out.println("Se ha establecido una conexión a la base de datos " +  
-                                       "\n" + url ); 				  
-                  stmt = con.createStatement(); 
-                  stmt.executeUpdate("INSERT INTO USUARIO VALUES("+id+",'"+name+"');");
-                  //stmt.executeUpdate("SELECT NOMBRE FROM USUARIO WHERE ID = "+id+");");
-                  Game.LOGGER.log(Game.LOGGER.getLevel(),"Los valores han sido agregados a la base de datos ");
-                  System.out.println("Los valores han sido agregados a la base de datos ");
-                 
-                   
-        } catch (InstantiationException ex) {
-           Game.LOGGER.log(Level.SEVERE, null, ex);
-       } catch (IllegalAccessException ex) {
-    	   Game.LOGGER.log(Level.SEVERE, null, ex);
-       } catch (ClassNotFoundException ex) {
-    	   Game.LOGGER.log(Level.SEVERE, null, ex);
-       } catch (SQLException ex) {
-    	   Game.LOGGER.log(Level.SEVERE, null, ex);
-       }
-        
-        finally {
-            if (con != null) {
-                try {
-                    con.close();
-                    stmt.close();
-                } catch ( Exception ex ) { 
-                         System.out.println( ex.getMessage());
-                }
-            }
-        }
-	}
+	
 	
 	@Override
 	public void render(Graphics g) {
