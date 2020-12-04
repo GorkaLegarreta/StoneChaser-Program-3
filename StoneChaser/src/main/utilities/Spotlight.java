@@ -12,17 +12,18 @@ public class Spotlight {
 	private int sPx, sPy;
 	private Graphics g;
 	private Graphics2D g2d;
-	private float start, end;
+	private float start, end, alpha;
 	private int radius;
 	private float[] dist;
 	private Color color;
 	
-	public Spotlight(int sPx, int sPy, float start, float end, int radius, Color color, Graphics g) {
+	public Spotlight(int sPx, int sPy, float start, float end, int radius, float alpha, Color color, Graphics g) {
 		this.sPx = sPx;
 		this.sPy = sPy;
 		this.start = start;
 		this.end = end;
 		this.radius = radius;
+		this.alpha = alpha;
 		this.color = color;
 		this.g2d = (Graphics2D) g;
 		
@@ -42,11 +43,9 @@ public class Spotlight {
 		
 		g2d.setPaint(p);
 		
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.95f));	//modificar el valor a la dcha de SRC_OVER para cambiar la opacidad.
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));	//modificar el valor a la dcha de SRC_OVER para cambiar la opacidad.
 		
 		g2d.fillRect(0, 0, 700, 400);
-	
-		g2d.dispose();
 		
 //			float[] dist = {start, 0.5f, 0,7f};
 //			Color[] colors = {new Color(0, 0, 0, 0), Color.BLACK};
@@ -60,5 +59,7 @@ public class Spotlight {
 //			g2d.dispose();	
 			
 	}
+	
+	
 	
 }

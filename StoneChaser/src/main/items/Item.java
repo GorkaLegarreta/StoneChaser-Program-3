@@ -21,12 +21,13 @@ public class Item {
 	protected Handler handler;
 	protected Inventory inv;
 	protected Color c;
+	protected BufferedImage img;
 	
-	protected static final int DEFAULT_ITEM_WIDTH = 20, DEFAULT_ITEM_HEIGHT = 20;
+	//protected static final int DEFAULT_ITEM_WIDTH = 20, DEFAULT_ITEM_HEIGHT = 20;
 	
 	protected Rectangle itemBounds;
 	
-	public Item(String name, BufferedImage img, int x, int y, int width, int height, int itemQuantity, boolean active, int id, Handler handler, Inventory inv) {
+	public Item(String name, BufferedImage img, int x, int y, int width, int height, int itemQuantity, int id, boolean active, Handler handler, Inventory inv) {
 		this.name = name;
 		this.x = x;
 		this.y = y;
@@ -37,6 +38,7 @@ public class Item {
 		this.id = id;
 		this.handler = handler;
 		this.inv = inv;
+		this.img = img;
 		
 		itemBounds = new Rectangle(x, y, width, height);
 	}
@@ -54,12 +56,12 @@ public class Item {
 	public void render(Graphics g) {
 		
 		
-		g.drawImage(Assets.trunk, x, y, width, height, null);
-		g.fillRect(x, y, width, height);
-		g.drawString("" + itemQuantity, x + 10, y + 35);
+		g.drawImage(img, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+		g.setColor(Color.WHITE);
+		g.drawString("" + itemQuantity, (int) (x + width - handler.getGameCamera().getxOffset()), (int) (y + height + 5 - handler.getGameCamera().getyOffset()));
 	
 	}
-	
+		
 	public String getName() {
 		return name;
 	}

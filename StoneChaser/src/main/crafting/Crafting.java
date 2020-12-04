@@ -18,7 +18,7 @@ public class Crafting {
 	
 	private Scanner scIn = new Scanner(System.in);
 	
-	private int item, posicion, craftingTableWidth = 200, craftingTableHeight = 186;
+	private int item, posicion, craftingTableWidth = 200, craftingTableHeight = 186, invSlotsWidth = 219, invSlotsHeight = 75;
 	
 	private boolean c = false, callCraft = false;
 
@@ -48,8 +48,8 @@ public class Crafting {
 	
 	public void render(Graphics g) {
 		if(c == true) {
-			g.drawImage(Assets.inventory, (handler.getWidth()/2) - (craftingTableWidth), (handler.getHeight()/2) - (craftingTableHeight), craftingTableWidth*2, craftingTableHeight*2, null);
-			
+			g.drawImage(Assets.inventory, (handler.getWidth()/2) - (143), (handler.getHeight()/2) - (185), craftingTableWidth + 80, craftingTableHeight + 80, null);
+			g.drawImage(Assets.inventorySlots, (int) ((handler.getWidth()/2) - (invSlotsWidth) + 85), (int)((handler.getHeight()/2) + 85), (int) (invSlotsWidth*1.2), (int) (invSlotsHeight*1.2), null);
 			
 		}
 	}
@@ -67,7 +67,7 @@ public class Crafting {
 				update = 0;
 				handler.spotlightEnabler();
 				callCraft = true;
-				
+				handler.getWorld().getEntityManager().getPlayer().setPlayerInactive();
 			}			
 			
 		}else if(handler.getKeyManager().r && c == true) {
@@ -81,11 +81,10 @@ public class Crafting {
 				update = 0;
 				handler.spotlightDisabler();
 				callCraft = false;
+				handler.getWorld().getEntityManager().getPlayer().setPlayerActive();
 			}
 			
 		}
-		
-		System.out.println(update);
 		
 		if(callCraft) {
 			craft();

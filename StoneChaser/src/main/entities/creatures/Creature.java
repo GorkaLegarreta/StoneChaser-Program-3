@@ -19,21 +19,6 @@ public abstract class Creature extends Entity{ //tipo específico de criatura
 		xMove = 0;
 		yMove = 0;
 	}
-	
-	public void move() {
-		if(!checkEntityCollisions(xMove, 0f))
-			moveX();
-		if(!checkEntityCollisions(0f, yMove)) //el offset indica al rectángulo de colisiones a donde nos dirigimos
-			moveY();		
-	}
-	
-	public void moveX() {
-		x += xMove;	
-	}
-	
-	public void moveY() {
-		y += yMove;	
-	}
 
 	//getter & setters
 	

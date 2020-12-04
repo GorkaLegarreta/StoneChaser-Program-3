@@ -22,7 +22,7 @@ public class EntityManager {
 			if(a.getY() < b.getY()){ //comprueba los "pies" o la parte de abajo de cada entidad para saber cual debe renderizarse antes
 				return -1; //renderizamos b antes que a 
 			}else{
-				return 1; //renderizamos a antes que b
+				return 1; //renderizamos a antes que b, aunque estén en la misma altura
 			}
 		}
 	};
@@ -79,15 +79,6 @@ public class EntityManager {
 
 	public void setEntities(ArrayList<Entity> entities) {
 		this.entities = entities;
-	}
-	
-	public float getPlayerX() {
-		for(int i = 0; i < entities.size(); i++) { 
-			Entity e = entities.get(i);
-				return e.getX();
-		}
-		
-		return 0;
 	}
 	
 }

@@ -14,6 +14,16 @@ public class GameCamera {
 		this.yOffset = yOffset;
 	}
 	
+	public void centerOnEntity(Entity e) {
+		xOffset = e.getX() - handler.getWidth() / 2 - e.getWidth() / 2; //camera centered on the x coordinate of screen.
+		yOffset = e.getY() - handler.getHeight() / 2 - e.getHeight() / 2; //centered on the y.
+		checkBlankSpace();
+	}
+	
+	public void checkBlankSpace() {
+		
+	}
+	
 	public void move(float xAmt, float yAmt) {
 		xOffset += xAmt;
 		yOffset += yAmt;

@@ -11,30 +11,41 @@ public class BasicEnemy extends Creature{
 	
 	private static int alienSpeed = 2;
 	
+	private int xMove = alienSpeed;
 	
 	public BasicEnemy(Handler handler, float x, float y, int width, int height) {
 		super(handler, x, y, width, height);	
 		
+		bounds.x = 0;
+		bounds.y = 0;
+		bounds.width = 50;
+		bounds.height = 50;
 	}
 
 	@Override
 	public void tick() {
 		
-		enemyMovement();
+		move();
 		
 	}
 	
+	public void move() {
+		if(!checkEntityCollisions(xMove, 0f))
+			enemyMovement();		
+	}
+	
 	public void enemyMovement() {
-		if(x > 600) alienSpeed = - alienSpeed;
-		if(x < 20) alienSpeed = Math.abs(alienSpeed);	
+		if(x > 600) xMove = - alienSpeed;
+		if(x < 20) xMove = Math.abs(alienSpeed);
 		
-		x += alienSpeed;
+		x += xMove;
+		
 	}
 
 	@Override
 	public void render(Graphics g) {
 		g.setColor(Color.RED);
-		g.fillRect((int)x,(int) y, 50, 50);
+		g.fillRect((int) (x - handler.getGameCamera().getxOffset()),(int) (y - handler.getGameCamera().getyOffset()), 50, 50);
 		
 	}
 

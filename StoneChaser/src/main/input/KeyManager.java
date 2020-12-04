@@ -28,17 +28,19 @@ public class KeyManager implements KeyListener{
 	
 	public void keyPressed(KeyEvent e) {
 		
-		ratio = 1000000000/4;
+		keys[e.getKeyCode()] = true;
 		
-		now = System.nanoTime();			
-		update += (now - before)/ratio;									
-		
-		if(update >= 1) {
-			before = System.nanoTime();
-			update--;				
-			if(keys[e.getKeyCode()] != true) keys[e.getKeyCode()] = true;
-			
-		}
+//		ratio = 1000000000/4;
+//		
+//		now = System.nanoTime();			
+//		update += (now - before)/ratio;									
+//		
+//		if(update >= 1) {
+//			before = System.nanoTime();
+//			update--;				
+//			if(keys[e.getKeyCode()] != true) keys[e.getKeyCode()] = true;
+//			
+//		}
 	}
 
 	

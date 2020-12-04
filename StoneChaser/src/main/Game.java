@@ -47,7 +47,7 @@ public class Game implements Runnable{
 
 	private int sPx, sPy;
 	private int velX = 5, velY = 5;
-	private Spotlight spotlight;
+	private Spotlight spotlight, craftingTableSpotlight, inventorySpotlight1, inventorySpotlight2, inventorySpotlight3;
 	private boolean enableSpotlight = false;
 	
 	//States
@@ -118,6 +118,7 @@ public class Game implements Runnable{
 		window.getCanvas().addMouseListener(mouseManager);
 		window.getCanvas().addMouseMotionListener(mouseManager);
 		Assets.init();		
+		
 		handler = new Handler(this); //coge el objeto de esta clase
 		gameCamera = new GameCamera(handler, 0, 0);
 		menuState = new MenuState(handler);
@@ -156,8 +157,13 @@ public class Game implements Runnable{
 		//A partir de aqui podemos dibujar		
 		if(State.getState()!=null) State.getState().render(g);
 		
-		if(enableSpotlight) spotlight = new Spotlight(getWidth()/2, getHeight()/2, 0.0f, 1f, 600, new Color(0, 0, 0, 0), g);
+		if(enableSpotlight) { 
 			
+			craftingTableSpotlight = new Spotlight(getWidth()/2, getHeight()/2, 0.5f, 0.6f, 350, 0.5f, new Color(0, 0, 0, 0), g);
+			//inventorySpotlight1 = new Spotlight(getWidth()/2 - 20, getHeight()/2 + 80, 0.5f, 0.6f, 100, 0.5f, new Color(0, 0, 0, 0), g);
+			//inventorySpotlight2 = new Spotlight(getWidth()/2, getHeight()/2 + 80, 0.5f, 0.6f, 100, 0.5f, new Color(0, 0, 0, 0), g);
+			//inventorySpotlight3 = new Spotlight(getWidth()/2 + 20, getHeight()/2 + 80, 0.5f, 0.6f, 100, 0.5f, new Color(0, 0, 0, 0), g);
+		}
 		
 		
 		//Aqui dejamos de dibujar y actualizamos

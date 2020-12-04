@@ -18,13 +18,13 @@ public class GameState extends State{
 		super(handler);
 		
 		world = new World(handler);
-		handler.setWorld(world);		
+		handler.setWorld(world);
 	}
 	
 	public void tick() { 
 		world.tick();
 		
-		//handler.getGameCamera().move(1, 0); //usar para cinemáticas?
+		//handler.getGameCamera().move(1, 0); //para establecer la posicion del jugador, pero tiene que ser en un init porque si no suma el valor y se va moviendo la cámara (cinemáticas?).
 	}
 	
 	public void render(Graphics g) {
