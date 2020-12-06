@@ -7,6 +7,7 @@ import main.Handler;
 import main.entities.EntityManager;
 import main.entities.creatures.BasicEnemy;
 import main.entities.creatures.Player;
+import main.gfx.Assets;
 import main.inventory.Inventory;
 import main.items.Item;
 import main.items.ItemManager;
@@ -42,15 +43,14 @@ public class World {
 	
 	public void render(Graphics g) {
 		
-		
+		//world graphics
+		g.drawImage(Assets.worldTest, (int) (0 - handler.getGameCamera().getxOffset()), (int) (0 - handler.getGameCamera().getyOffset()), 700, 400, null);
 		
 		//Entities
-		g.fillRect(0, 0, 700, 400);
-		g.setColor(Color.BLACK);
 		entityManager.render(g);
-		im.render(g);
 		
-		
+		//itemManager
+		im.render(g);		
 		
 	}
 	

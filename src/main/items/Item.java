@@ -3,39 +3,44 @@ package main.items;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 
 import main.Game;
 import main.Handler;
+import main.gfx.Assets;
 import main.inventory.Inventory;
 
 public class Item {
 
 	protected String name;
 	protected int x, y, itemQuantity, id;
+	protected int width, height;
 	protected boolean active;
 	
 	protected Handler handler;
 	protected Inventory inv;
 	protected Color c;
+	protected BufferedImage img;
 	
-	protected static final int DEFAULT_ITEM_WIDTH = 20, DEFAULT_ITEM_HEIGHT = 20;
+	//protected static final int DEFAULT_ITEM_WIDTH = 20, DEFAULT_ITEM_HEIGHT = 20;
 	
 	protected Rectangle itemBounds;
-	//protected Rectangle playerBounds = 
-			
-	public Item(String name, Color c, int x, int y, int itemQuantity, boolean active, int id, Handler handler, Inventory inv) {
+	
+	public Item(String name, BufferedImage img, int x, int y, int width, int height, int itemQuantity, int id, boolean active, Handler handler, Inventory inv) {
 		this.name = name;
 		this.x = x;
 		this.y = y;
+		this.width = width;
+		this.height = height;
 		this.itemQuantity = itemQuantity;
 		this.active = active;
 		this.id = id;
 		this.handler = handler;
 		this.inv = inv;
-		this.c = c;
+		this.img = img;
 		
-		itemBounds = new Rectangle(x, y, DEFAULT_ITEM_WIDTH, DEFAULT_ITEM_HEIGHT);
+		itemBounds = new Rectangle(x, y, width, height);
 	}
 	
 	public void tick() {
@@ -51,11 +56,12 @@ public class Item {
 	public void render(Graphics g) {
 		
 		
-		g.setColor(c);
-		g.fillRect(x, y, DEFAULT_ITEM_WIDTH, DEFAULT_ITEM_HEIGHT);
-		g.drawString("" + itemQuantity, x + 10, y + 35);
-	}
+		g.drawImage(img, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+		g.setColor(Color.WHITE);
+		g.drawString("" + itemQuantity, (int) (x + width - handler.getGameCamera().getxOffset()), (int) (y + height + 5 - handler.getGameCamera().getyOffset()));
 	
+	}
+		
 	public String getName() {
 		return name;
 	}

@@ -6,7 +6,8 @@ public class KeyManager implements KeyListener{
 
 	private boolean[] keys;
 	public boolean up = false, down , left, right, e, f, r, space = false;
-	
+	private float ratio, update;
+	private long now, before = System.nanoTime();
 	
 	public KeyManager() {
 		keys = new boolean[256];
@@ -28,12 +29,24 @@ public class KeyManager implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		
 		keys[e.getKeyCode()] = true;
+		
+//		ratio = 1000000000/4;
+//		
+//		now = System.nanoTime();			
+//		update += (now - before)/ratio;									
+//		
+//		if(update >= 1) {
+//			before = System.nanoTime();
+//			update--;				
+//			if(keys[e.getKeyCode()] != true) keys[e.getKeyCode()] = true;
+//			
+//		}
 	}
 
 	
 	public void keyReleased(KeyEvent e) {
 		
-		keys[e.getKeyCode()] = false;
+		keys[e.getKeyCode()] = false;		
 		
 	}
 
