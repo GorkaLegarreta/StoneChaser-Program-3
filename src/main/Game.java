@@ -74,18 +74,16 @@ public class Game implements Runnable{
 			 *  EL FICHERO; LOS QUE APARECEN EN CONSOLA (LEVEL.INFO) TAMBIEN APARECERAN
 			 *  EN EL FICHERO LOGGER.TXT SI EL NIVEL SE LO PERMITE
 			 */
-			LOGGER.setLevel(Level.FINEST);			
+			LOGGER.setLevel(Level.FINE);			
 			LOGGER.addHandler(fh);
 			SimpleFormatter formatter = new SimpleFormatter();
 			fh.setFormatter(formatter);
 			// LOG QUE APARECE TANTO EN LOGGER.TXT COMO EN CONSOLA POR EL (LEVEL.INFO)
 			LOGGER.log(Level.INFO,"Logger y clases del StoneChaser inicializadas"); 
 			
-		} catch (SecurityException e) {
-			
+		} catch (SecurityException e) {			
 			LOGGER.log(Level.SEVERE,Game.getStackTrace(e));
-		} catch (IOException e) {
-			
+		} catch (IOException e) {			
 			LOGGER.log(Level.SEVERE,Game.getStackTrace(e));
 		}	
 		/*

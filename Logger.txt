@@ -1,6 +1,14 @@
-dic. 06, 2020 4:08:49 P. M. main.Game <clinit>
+dic. 06, 2020 7:13:47 P. M. main.Game <clinit>
 INFO: Logger y clases del StoneChaser inicializadas
-dic. 06, 2020 4:08:49 P. M. main.Game <clinit>
-FINEST:  LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, FINEST: 300
-dic. 06, 2020 4:08:49 P. M. main.GameDB connectDB
-SEVERE: No se ha podido conectar a la base de datos. Error al conectar a la BD.
+dic. 06, 2020 7:13:47 P. M. main.Game <clinit>
+FINE:  LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, FINE: 500
+dic. 06, 2020 7:13:48 P. M. main.GameDB connectDB
+FINE: Se ha conectado correctamente a la base de datos.
+dic. 06, 2020 7:13:48 P. M. main.GameDB createTableUSUARIO
+FINE: Tabla cargada correctamente.
+dic. 06, 2020 7:13:51 P. M. main.states.MenuState tick
+INFO: Se ha iniciado como Mundo3
+dic. 06, 2020 7:13:51 P. M. main.states.MenuState tick
+CONFIG: GameState Cargada e inicializada en Configuracion Mundo3
+dic. 06, 2020 7:13:51 P. M. main.GameDB createGamePlayer
+FINE: Se ha creado correctamente el usuario nuevo.

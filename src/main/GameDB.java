@@ -10,7 +10,7 @@ import java.util.logging.Level;
 public class GameDB {
 	//VARIABLES DE CLASE
 	private static Statement stmt; //PARA CREAR LAS SENTENCIAS DE SQL
-	private static Connection conn = null; //PARA CREAR LA CONEXION DE LA BD
+	private static Connection conn; //PARA CREAR LA CONEXION DE LA BD
 	private static ResultSet rs; //COGER LA INFO DE LAS TABLAS
 	private static GameDB instance = null; //INSTANCIAR LA CLASE 
 	/////////////////////////////////////////////////////////////////
@@ -53,7 +53,7 @@ public class GameDB {
 	}
 	/////////////////////////////////////////////////////////////////////////////////
 	/*
-	 * 
+	 * 			METODOS PARA CREAR USUARIOS ---> INSERT INTO <>
 	 */
 	/////////////////////////////////////////////////////////////////////////////////
 	public static boolean checkGamePlayer(int world) {
@@ -76,8 +76,25 @@ public class GameDB {
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha creado correctamente el usuario nuevo.");
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}		
+	}
+	////////////////////////////////////////////////////////////////////////////////////
+	/*
+	 * 
+	 */
+	////////////////////////////////////////////////////////////////////////////////////
+	public static String getGamePlayer(int world) {
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(String.format("SELECT NOMBRE FROM USUARIO WHERE COD_MUNDO = %d;",world));
+			if (!(rs==null)) {
+				return rs.toString();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		
+		// EN ESTE CASO DEVOLVEMOS EN EFECTO UN STRING PERO ESTE NO APARECE EN LA TABLA USUARIOS
+		return "DEFALT WORLD NAME - "+world;
 	}
 	
 }
