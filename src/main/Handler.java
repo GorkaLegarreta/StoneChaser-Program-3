@@ -35,6 +35,14 @@ public class Handler {
 		return game.getGameCamera();
 	}
 	
+	public void spotlightEnabler() {
+		game.spotlightEnabler();
+	}
+	
+	public void spotlightDisabler() {
+		game.spotlightDisabler();
+	}
+	
 	public Game getGame() {
 		return game;
 	}

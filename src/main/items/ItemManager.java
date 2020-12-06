@@ -2,9 +2,12 @@ package main.items;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import main.Handler;
+import main.crafting.Crafting;
+import main.gfx.Assets;
 import main.inventory.Inventory;
 
 public class ItemManager {
@@ -17,8 +20,7 @@ public class ItemManager {
 	
 	protected Color color;
 	
-	Color cMadera = Color.ORANGE;
-	Color cHierro = Color.GREEN;
+	Color cPiedra = Color.GREEN;
 	Color cCuero = Color.magenta;
 	Color cEspadaHierro = Color.BLUE;
 	Color cCuerda = Color.WHITE;		//cualquier color ya que para esta prueba no los vamos a usar
@@ -27,32 +29,34 @@ public class ItemManager {
 	Color cPiedraPlanta = Color.WHITE;	//cualquier color ya que para esta prueba no los vamos a usar
 	
 	
-	public static Item i, madera, roca, hoja, hierro, piedraFuego, piedraAgua, piedraPlanta, cuero, cuerda, espadaHierro;
+	public static Item i, madera, piedra, hoja, hierro, piedraFuego, piedraAgua, piedraPlanta, cuero, cuerda, espadaHierro;
 	protected Item[] items = new Item[8];
 	
 	protected Inventory inventory;
+	protected Crafting crafting;
 	
 	public ItemManager(Handler handler) {
 		this.handler = handler;
 		
 		inventory = new Inventory(handler);
+		crafting = new Crafting(handler);
 		
 		initItems();
 	}	
 	
 	public void initItems() {
 		
-		madera = new Item("madera", cMadera, 0, 0, 1, true, 0, handler, inventory);
-		hierro = new Item("hierro", cHierro, 50, 20, 1, true, 1, handler, inventory);
-		cuero = new Item("cuero", cCuero, 300, 200, 1, true, 2, handler, inventory);
-		cuerda = new Item("cuerda", cCuerda, 0, 0, 1, false, 3, handler, inventory);
-		piedraFuego = new Item("piedraFuego", cPiedraFuego, 0, 0, 1, false, 4, handler, inventory);
-		piedraAgua = new Item("piedraAgua", cPiedraAgua, 0, 0, 1, false, 5, handler, inventory);
-		piedraPlanta = new Item("piedraPlanta", cPiedraPlanta, 0, 0, 1, false, 6, handler, inventory);
-		espadaHierro = new Item("espadaHierro", cEspadaHierro, 0, 0, 1, false, 6, handler, inventory);
+		madera = new Item("Wood", Assets.trunk, (int) (300 - handler.getGameCamera().getxOffset()), (int) (200 - handler.getGameCamera().getyOffset()), 18*2, 20*2, 1, 0, true, handler, inventory);
+		piedra = new Item("piedra", Assets.stone, (int) (50 - handler.getGameCamera().getxOffset()), (int) (20 - handler.getGameCamera().getyOffset()), 17*2, 10*2, 1, 1, true, handler, inventory);
+		cuero = new Item("cuero", Assets.trunk, (int) (300 - handler.getGameCamera().getxOffset()), (int) (200 - handler.getGameCamera().getyOffset()), 18, 20, 1, 2, false, handler, inventory);
+		cuerda = new Item("cuerda", Assets.trunk, 300, 200, 18, 20, 1, 2, false, handler, inventory);
+		piedraFuego = new Item("piedraFuego", Assets.trunk, 300, 200, 18, 20, 1, 2, false, handler, inventory);
+		piedraAgua = new Item("piedraAgua", Assets.trunk, 300, 200, 18, 20, 1, 2, false, handler, inventory);
+		piedraPlanta = new Item("piedraPlanta", Assets.trunk, 300, 200, 18, 20, 1, 2, false, handler, inventory);
+		espadaHierro = new Item("espadaHierro", Assets.trunk, 300, 200, 18, 20, 1, 2, false, handler, inventory);
 		
 		items[0] = madera;
-		items[1] = hierro;
+		items[1] = piedra;
 		items[2] = cuero;
 		items[3] = cuerda;
 		items[4] = piedraFuego;
@@ -65,6 +69,7 @@ public class ItemManager {
 	public void tick() {
 		
 		inventory.tick();
+		crafting.tick();
 		
 		for(Item i : items) {
 			if(i.isActive()) {
@@ -85,6 +90,8 @@ public class ItemManager {
 		
 		inventory.render(g);
 		for(Item i : toRender) i.render(g); 
+		crafting.render(g);
+		
 	}
 	
 }

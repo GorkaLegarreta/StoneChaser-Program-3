@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import main.input.MouseManager;
 import main.states.GameState;
 import main.states.MenuState;
 import main.states.State;
+import main.utilities.Spotlight;
 
 public class Game implements Runnable{
 	
@@ -40,6 +42,13 @@ public class Game implements Runnable{
 	//States
 	public State menuState;
 	public State gameState;
+	
+	//spotlight
+
+	private int sPx, sPy;
+	private int velX = 5, velY = 5;
+	private Spotlight spotlight, craftingTableSpotlight, inventorySpotlight1, inventorySpotlight2, inventorySpotlight3;
+	private boolean enableSpotlight = false;
 	
 	//Input
 	private KeyManager keyManager;
@@ -114,6 +123,13 @@ public class Game implements Runnable{
 	}
 	
 	private void tick() {
+		
+//		if(sPx<= 0 || sPx >= 700) velX = -velX;		//efecto de luz para spotlight
+//		if(sPy<= 0 || sPy>= 400) velY = -velY;
+//		
+//		sPx += -velX;
+//		sPy += -velY;
+		
 		keyManager.tick();
 					
 		if(State.getState()!=null && State.getState().equals(menuState)) {
@@ -136,6 +152,14 @@ public class Game implements Runnable{
 		
 		//A partir de aqui podemos dibujar		
 		if(State.getState()!=null) State.getState().render(g);
+		
+		if(enableSpotlight) { 
+			
+			craftingTableSpotlight = new Spotlight(getWidth()/2, getHeight()/2, 0.5f, 0.6f, 350, 0.5f, new Color(0, 0, 0, 0), g);
+			//inventorySpotlight1 = new Spotlight(getWidth()/2 - 20, getHeight()/2 + 80, 0.5f, 0.6f, 100, 0.5f, new Color(0, 0, 0, 0), g);
+			//inventorySpotlight2 = new Spotlight(getWidth()/2, getHeight()/2 + 80, 0.5f, 0.6f, 100, 0.5f, new Color(0, 0, 0, 0), g);
+			//inventorySpotlight3 = new Spotlight(getWidth()/2 + 20, getHeight()/2 + 80, 0.5f, 0.6f, 100, 0.5f, new Color(0, 0, 0, 0), g);
+		}
 		
 		//Aqui dejamos de dibujar y actualizamos
 		bs.show();
@@ -195,6 +219,14 @@ public class Game implements Runnable{
 	
 	public int getHeight() {
 		return height;
+	}
+	
+	public void spotlightEnabler() {
+		enableSpotlight = true;
+	}
+
+	public void spotlightDisabler() {
+		enableSpotlight = false;
 	}
 			
 	public synchronized  void start() {

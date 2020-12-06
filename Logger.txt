@@ -1,56 +1,84 @@
-nov. 28, 2020 6:42:08 P. M. main.Game <clinit>
+dic. 06, 2020 12:23:02 P. M. main.Game <clinit>
 INFO: Logger y clases del StoneChaser inicializadas
-nov. 28, 2020 6:42:08 P. M. main.Game <clinit>
+dic. 06, 2020 12:23:02 P. M. main.Game <clinit>
 FINEST:  LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, FINEST: 300
-nov. 28, 2020 6:42:09 P. M. main.GameDB connectDB
+dic. 06, 2020 12:23:02 P. M. main.GameDB connectDB
 FINEST: Se ha conectado correctamente a la base de datos.
-nov. 28, 2020 6:42:09 P. M. main.GameDB createTableUSUARIO
+dic. 06, 2020 12:23:02 P. M. main.GameDB createTableUSUARIO
 FINEST: Tabla cargada correctamente.
-nov. 28, 2020 6:42:09 P. M. main.Game <init>
+dic. 06, 2020 12:23:02 P. M. main.Game <init>
 FINEST: Objeto Game creada en el constructor
-nov. 28, 2020 6:42:09 P. M. main.Window <init>
+dic. 06, 2020 12:23:02 P. M. main.Window <init>
 FINEST: Objeto Window creada desde su constructor
-nov. 28, 2020 6:42:10 P. M. main.states.MenuState tick
+dic. 06, 2020 12:23:03 P. M. main.states.MenuState tick
 INFO: Se ha iniciado como Mundo1
-nov. 28, 2020 6:42:10 P. M. main.states.MenuState tick
+dic. 06, 2020 12:23:03 P. M. main.states.MenuState tick
 CONFIG: GameState Cargada e inicializada en Configuracion Mundo1
-nov. 28, 2020 6:42:11 P. M. main.entities.creatures.Player getInput
+dic. 06, 2020 12:23:03 P. M. main.states.MenuState creatingUserDB
+SEVERE: null
+java.lang.ClassNotFoundException: com.mysql.cj.jdbc.Driver
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:606)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:168)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:522)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:377)
+	at main.states.MenuState.creatingUserDB(MenuState.java:104)
+	at main.states.MenuState.tick(MenuState.java:48)
+	at main.Game.tick(Game.java:136)
+	at main.Game.run(Game.java:187)
+	at java.base/java.lang.Thread.run(Thread.java:832)
+
+dic. 06, 2020 12:23:09 P. M. main.entities.creatures.Player kick
 FINEST: Le pega con kickRect izquierda
-nov. 28, 2020 6:42:11 P. M. main.entities.creatures.Player getInput
+dic. 06, 2020 12:23:09 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect arriba
+dic. 06, 2020 12:23:10 P. M. main.entities.creatures.Player kick
 FINEST: Le pega con kickRect izquierda
-nov. 28, 2020 6:42:11 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect derecha
-nov. 28, 2020 6:42:14 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect derecha
-nov. 28, 2020 6:42:14 P. M. main.entities.creatures.Player getInput
+dic. 06, 2020 12:23:10 P. M. main.entities.creatures.Player kick
 FINEST: Le pega con kickRect arriba
-nov. 28, 2020 6:42:14 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect arriba
-nov. 28, 2020 6:42:15 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect derecha
-nov. 28, 2020 6:42:15 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect arriba
-nov. 28, 2020 6:42:15 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect derecha
-nov. 28, 2020 6:42:15 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect derecha
-nov. 28, 2020 6:42:15 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect arriba
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect derecha
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect arriba
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect derecha
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect arriba
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect arriba
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
+dic. 06, 2020 12:23:10 P. M. main.entities.creatures.Player kick
 FINEST: Le pega con kickRect izquierda
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
+dic. 06, 2020 12:23:10 P. M. main.entities.creatures.Player kick
 FINEST: Le pega con kickRect arriba
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
+dic. 06, 2020 12:23:10 P. M. main.entities.creatures.Player kick
 FINEST: Le pega con kickRect izquierda
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
+dic. 06, 2020 12:23:10 P. M. main.entities.creatures.Player kick
 FINEST: Le pega con kickRect arriba
+dic. 06, 2020 12:23:10 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect izquierda
+dic. 06, 2020 12:23:10 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect arriba
+dic. 06, 2020 12:23:12 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect derecha
+dic. 06, 2020 12:23:12 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect arriba
+dic. 06, 2020 12:23:12 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect derecha
+dic. 06, 2020 12:23:12 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect arriba
+dic. 06, 2020 12:23:12 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect derecha
+dic. 06, 2020 12:23:12 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect arriba
+dic. 06, 2020 12:23:13 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect derecha
+dic. 06, 2020 12:23:13 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect derecha
+dic. 06, 2020 12:23:13 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect derecha
+dic. 06, 2020 12:23:13 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect derecha
+dic. 06, 2020 12:23:13 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect derecha
+dic. 06, 2020 12:23:14 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect derecha
+dic. 06, 2020 12:23:14 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect derecha
+dic. 06, 2020 12:23:14 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect derecha
+dic. 06, 2020 12:23:15 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect derecha
+dic. 06, 2020 12:23:15 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect derecha
+dic. 06, 2020 12:23:15 P. M. main.entities.creatures.Player kick
+FINEST: Le pega con kickRect derecha

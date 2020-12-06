@@ -81,13 +81,4 @@ public class EntityManager {
 		this.entities = entities;
 	}
 	
-	public float getPlayerX() {
-		for(int i = 0; i < entities.size(); i++) { 
-			Entity e = entities.get(i);
-				return e.getX();
-		}
-		
-		return 0;
-	}
-	
 }

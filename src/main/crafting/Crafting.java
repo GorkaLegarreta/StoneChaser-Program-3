@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.Scanner;
 
 import main.Handler;
+import main.gfx.Assets;
 import main.items.Item;
 import main.items.ItemManager;
 
@@ -17,9 +18,12 @@ public class Crafting {
 	
 	private Scanner scIn = new Scanner(System.in);
 	
-	private int item, posicion;
+	private int item, posicion, craftingTableWidth = 200, craftingTableHeight = 186, invSlotsWidth = 219, invSlotsHeight = 75;
 	
-	private int c = 0;
+	private boolean c = false, callCraft = false;
+
+	private float ratio = 1500000000, update;
+	private long now, before = System.nanoTime();
 
 	public Crafting(Handler handler) {
 		this.handler = handler;
@@ -43,27 +47,51 @@ public class Crafting {
 	}
 	
 	public void render(Graphics g) {
-		
+		if(c == true) {
+			g.drawImage(Assets.inventory, (handler.getWidth()/2) - (143), (handler.getHeight()/2) - (185), craftingTableWidth + 80, craftingTableHeight + 80, null);
+			g.drawImage(Assets.inventorySlots, (int) ((handler.getWidth()/2) - (invSlotsWidth) + 85), (int)((handler.getHeight()/2) + 85), (int) (invSlotsWidth*1.2), (int) (invSlotsHeight*1.2), null);
+			
+		}
 	}
 	
 	public void tick() {
 		
-		if(handler.getKeyManager().r && c < 1) {
-			c++;
+		if(handler.getKeyManager().r && c == false) {		//update solo funciona cuando se activa el inventario, entonces no llegará a ser un valor tan alto que crashee el programa.
+															
+			now = System.nanoTime();			
+			update += (now - before)/ratio;									
 			
-			System.out.println("que item quieres poner? ");
-			item = scIn.nextInt();
-			System.out.println("En que hueco del item lo quieres poner? ");
-			posicion = scIn.nextInt();
+			if(update >= 1) {
+				before = System.nanoTime();				
+				c = true;
+				update = 0;
+				handler.spotlightEnabler();
+				callCraft = true;
+				handler.getWorld().getEntityManager().getPlayer().setPlayerInactive();
+			}			
 			
+		}else if(handler.getKeyManager().r && c == true) {
 			
+			now = System.nanoTime();			
+			update += (now - before)/ratio;									
 			
-			
-			
+			if(update >= 1) {
+				before = System.nanoTime();				
+				c = false;
+				update = 0;
+				handler.spotlightDisabler();
+				callCraft = false;
+				handler.getWorld().getEntityManager().getPlayer().setPlayerActive();
+			}
 			
 		}
 		
-		craft();
+		if(callCraft) {
+			craft();
+			
+		}
+		
+		
 		
 	}
 	
