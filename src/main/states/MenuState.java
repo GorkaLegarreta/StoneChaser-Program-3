@@ -19,9 +19,10 @@ public class MenuState extends State  {
 	private MouseManager mouseManager;
 	private Rectangle lbl1, lbl2, lbl3, lbl4;	
 	private Rectangle user1, user2, user3, user4;
+	private static WorldEnum world;
 		
-	public enum NumeroMundo{
-		MUNDO1, MUNDO2, MUNDO3, MUNDO4;		
+	public enum WorldEnum{
+		MUNDO1, MUNDO2, MUNDO3, MUNDO4;			
 	}
 	
 	public MenuState(Handler handler) {
@@ -50,6 +51,7 @@ public class MenuState extends State  {
 			}
 			// SE CARGA GAME STATE PARA PASAR AL JUEGO 
 			State.setState(handler.getGame().gameState);
+			world = WorldEnum.MUNDO1;
 		}else if(handler.getMouseManager().isLeftPressed() && lbl2.contains(mouseManager.getMouseX(), mouseManager.getMouseY()) ) {
 			//LOGGER
 			Game.LOGGER.log(Level.INFO,"Se ha iniciado como Mundo2");	
@@ -59,7 +61,8 @@ public class MenuState extends State  {
 				GameDB.createGamePlayer(2, "Pepe");
 			}		
 			// SE CARGA GAME STATE PARA PASAR AL JUEGO 
-			State.setState(handler.getGame().gameState);			
+			State.setState(handler.getGame().gameState);
+			world = WorldEnum.MUNDO2;
 		}else if(handler.getMouseManager().isLeftPressed() && lbl3.contains(mouseManager.getMouseX(), mouseManager.getMouseY()) ) {
 			//LOGGER
 			Game.LOGGER.log(Level.INFO,"Se ha iniciado como Mundo3");	
@@ -69,7 +72,8 @@ public class MenuState extends State  {
 				GameDB.createGamePlayer(3, "myName");
 			}
 			// SE CARGA GAME STATE PARA PASAR AL JUEGO 
-			State.setState(handler.getGame().gameState);			
+			State.setState(handler.getGame().gameState);	
+			world = WorldEnum.MUNDO3;
 		}else if(handler.getMouseManager().isLeftPressed() && lbl4.contains(mouseManager.getMouseX(), mouseManager.getMouseY()) ) {
 			//LOGGER
 			Game.LOGGER.log(Level.INFO,"Se ha iniciado como Mundo4");	
@@ -79,7 +83,8 @@ public class MenuState extends State  {
 				GameDB.createGamePlayer(4, "this");
 			}
 			// SE CARGA GAME STATE PARA PASAR AL JUEGO 
-			State.setState(handler.getGame().gameState);			
+			State.setState(handler.getGame().gameState);
+			world = WorldEnum.MUNDO4;
 		}
 		/////////////////////////////////////////////////////////////////////////////////////////
 		/// 				BOTONES A LA DERECHA SIN IMPLEMENTAR							   //

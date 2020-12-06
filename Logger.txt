@@ -1,56 +1,16 @@
-nov. 28, 2020 6:42:08 P. M. main.Game <clinit>
+dic. 06, 2020 4:03:25 P. M. main.Game <clinit>
 INFO: Logger y clases del StoneChaser inicializadas
-nov. 28, 2020 6:42:08 P. M. main.Game <clinit>
+dic. 06, 2020 4:03:25 P. M. main.Game <clinit>
 FINEST:  LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, FINEST: 300
-nov. 28, 2020 6:42:09 P. M. main.GameDB connectDB
+dic. 06, 2020 4:03:26 P. M. main.GameDB connectDB
 FINEST: Se ha conectado correctamente a la base de datos.
-nov. 28, 2020 6:42:09 P. M. main.GameDB createTableUSUARIO
+dic. 06, 2020 4:03:26 P. M. main.GameDB createTableUSUARIO
 FINEST: Tabla cargada correctamente.
-nov. 28, 2020 6:42:09 P. M. main.Game <init>
+dic. 06, 2020 4:03:26 P. M. main.Game <init>
 FINEST: Objeto Game creada en el constructor
-nov. 28, 2020 6:42:09 P. M. main.Window <init>
+dic. 06, 2020 4:03:26 P. M. main.Window <init>
 FINEST: Objeto Window creada desde su constructor
-nov. 28, 2020 6:42:10 P. M. main.states.MenuState tick
-INFO: Se ha iniciado como Mundo1
-nov. 28, 2020 6:42:10 P. M. main.states.MenuState tick
-CONFIG: GameState Cargada e inicializada en Configuracion Mundo1
-nov. 28, 2020 6:42:11 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect izquierda
-nov. 28, 2020 6:42:11 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect izquierda
-nov. 28, 2020 6:42:11 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect derecha
-nov. 28, 2020 6:42:14 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect derecha
-nov. 28, 2020 6:42:14 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect arriba
-nov. 28, 2020 6:42:14 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect arriba
-nov. 28, 2020 6:42:15 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect derecha
-nov. 28, 2020 6:42:15 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect arriba
-nov. 28, 2020 6:42:15 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect derecha
-nov. 28, 2020 6:42:15 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect derecha
-nov. 28, 2020 6:42:15 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect arriba
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect derecha
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect arriba
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect derecha
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect arriba
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect arriba
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect izquierda
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect arriba
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect izquierda
-nov. 28, 2020 6:42:16 P. M. main.entities.creatures.Player getInput
-FINEST: Le pega con kickRect arriba
+dic. 06, 2020 4:03:27 P. M. main.states.MenuState tick
+INFO: Se ha iniciado como Mundo2
+dic. 06, 2020 4:03:27 P. M. main.states.MenuState tick
+CONFIG: GameState Cargada e inicializada en Configuracion Mundo2

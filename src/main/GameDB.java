@@ -30,7 +30,7 @@ public class GameDB {
 			conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha conectado correctamente a la base de datos.");
 		} catch (SQLException | ClassNotFoundException e) {
-			Game.LOGGER.log(Level.SEVERE,"No se ha podido conectar a la base de datos. Error al conectar.");
+			Game.LOGGER.log(Level.SEVERE,"No se ha podido conectar a la base de datos. Error al conectar a la BD.");
 			
 		}
 	}
@@ -44,6 +44,13 @@ public class GameDB {
 		}
 		
 	}
+	public static void closeConnection() {
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			Game.LOGGER.log(Level.SEVERE,"Ha ocurrido un error al cerrar la BD. "+Game.getStackTrace(e));
+		}
+	}
 	/////////////////////////////////////////////////////////////////////////////////
 	/*
 	 * 
@@ -52,10 +59,9 @@ public class GameDB {
 	public static boolean checkGamePlayer(int world) {
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM USUARIO;");
-			int a = 0;
+			rs = stmt.executeQuery("SELECT * FROM USUARIO;");			
 			while(rs.next()) {
-				if (a == rs.getInt("COD_MUNDO"))
+				if (world == rs.getInt("COD_MUNDO"))
 					return false; // NO HAY QUE CREAR EL USUARIO
 			}
 		} catch (SQLException e) {
@@ -66,11 +72,12 @@ public class GameDB {
 	public static void createGamePlayer(int world, String name) {
 		try {
 			stmt = conn.createStatement();
-			stmt.executeUpdate("INSERT INTO USUARIO VALUES("+world+",'"+name+"');");
+			stmt.executeUpdate(String.format("INSERT INTO USUARIO VALUES(%d,'%s');",world,name));
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha creado correctamente el usuario nuevo.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 	}
+	
 }
