@@ -48,6 +48,9 @@ public class BasicEnemy extends Creature{
 		g.setColor(Color.RED);
 		g.fillRect((int) (x - handler.getGameCamera().getxOffset()),(int) (y - handler.getGameCamera().getyOffset()), 50, 50);
 		
+//		g.setColor(Color.BLUE);
+//		g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()), (int) (y + bounds.y - handler.getGameCamera().getyOffset()), 50, 50);
+//		
 	}
 
 	@Override

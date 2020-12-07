@@ -9,6 +9,6 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="res"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/Users/Gorka/Desktop/2ª GRADO/Programación III/Sqliteman-1.2.2/sqlite-jdbc-3.32.3.2 (1).jar"/>
+	<classpathentry kind="lib" path="res/sqliteJAR/sqlite-jdbc-3.20.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

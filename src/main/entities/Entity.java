@@ -112,4 +112,8 @@ public abstract class Entity {
 				(int) (y + bounds.y + yOffset), bounds.width, bounds.height);
 	}
 	
+	public void testRect() {
+		System.out.println((x + bounds.x) + ", " + (y + bounds.y));
+	}
+	
 }

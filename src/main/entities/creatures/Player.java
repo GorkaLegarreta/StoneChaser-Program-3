@@ -112,55 +112,60 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 			kickRect.width = 50;
 			kickRect.height = 30;
 
-			if(xMove<0 || lastDirection == 0 ) {
-				kickRect.x = (int) (x +bounds.x - kickRect.width - handler.getGameCamera().getxOffset()); 								
-				kickRect.y = (int) (y + bounds.y + bounds.height/2 - kickRect.height/2 - handler.getGameCamera().getyOffset());
+			if(xMove<0 || lastDirection == 0) {
+				kickRect.x = (int) (x + bounds.x - kickRect.width); 								
+				kickRect.y = (int) (y + bounds.y + bounds.height/2 - kickRect.height/2);
 				// LOGGER
 				Game.LOGGER.log(Level.FINEST,"Le pega con kickRect izquierda");
 			}
 			if(xMove>0 || lastDirection == 1) {
-				kickRect.x = (int) (x + bounds.x + bounds.width - handler.getGameCamera().getxOffset()); 						
-				kickRect.y = (int) (y + bounds.y + bounds.height/2 - kickRect.height/2 - handler.getGameCamera().getyOffset());
+				kickRect.x = (int) (x + bounds.x + bounds.width); 						
+				kickRect.y = (int) (y + bounds.y + bounds.height/2 - kickRect.height/2);
 				// LOGGER
 				Game.LOGGER.log(Level.FINEST,"Le pega con kickRect derecha");
 			}
 			if(yMove<0 || lastDirection == 2) {
-				kickRect.x = (int) (x + bounds.x + bounds.width/2 - kickRect.width/2 - handler.getGameCamera().getxOffset()); 
-				kickRect.y = (int) (y + bounds.y - kickRect.height - handler.getGameCamera().getyOffset());
+				kickRect.x = (int) (x + bounds.x + bounds.width/2 - kickRect.width/2); 
+				kickRect.y = (int) (y + bounds.y - kickRect.height);
 				// LOGGER
 				Game.LOGGER.log(Level.FINEST,"Le pega con kickRect arriba");
 			}
 			if(yMove>0 || lastDirection == 3) {
-				kickRect.x = (int) (x + bounds.x + bounds.width/2 -kickRect.width/2 - handler.getGameCamera().getxOffset());  
-				kickRect.y = (int) (y + bounds.y + bounds.height - handler.getGameCamera().getyOffset());
+				kickRect.x = (int) (x + bounds.x + bounds.width/2 -kickRect.width/2);  
+				kickRect.y = (int) (y + bounds.y + bounds.height);
 				// LOGGER
 				Game.LOGGER.log(Level.FINEST,"Le pega con kickRect abajo");
 			}
-
+			
+			//al crear el rectángulo, comprobamos también si éste coincide con cualquier otro de las entidades (si le ha dado una patada)
+			//y si es el caso, quitamos vida a la entidad que ha sido golpeada.
+			
 			for(main.entities.Entity e : handler.getWorld().getEntityManager().getEntities()) {
-	            if(e.equals(this))
-	                continue; //pasa al siguiente valor del for loop ya que no nos queremos herir a nosotros
-	            if(e.getCollisionBounds(0f, 0f).intersects(kickRect)) {				//mal, necesitamos saber hacia donde se dirige cada entidad y meter el offset correspondente
-	                e.hurt(kickDamage);//we only hurt one entity at a time
+				
+				if(e.equals(this)) {
+	            	continue; //pasa al siguiente valor del for loop ya que no nos queremos herir a nosotros
+	            	
+	            }if(e.getCollisionBounds(0f, 0f).intersects(kickRect)) {	//le pasamos un offset de 0 porque hasta el momento en cada entidad estamos aplicando el offset.
+	            	
+	            	e.hurt(kickDamage);										//sólo herimos a cada entidad una vez
 	                return;
 	            }
 			}
-		} else {
-			
-		}	
+		}
 	}	
 
 	public void render(Graphics g) {
-		g.setColor(Color.BLUE);
-		g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()), (int) (y + bounds.y - handler.getGameCamera().getyOffset()), 62, 140);
-		//g.fillRect(x, y, lastDirection, kickDamage);
+
+//		g.setColor(Color.BLUE);
+//		g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()), (int) (y + bounds.y - handler.getGameCamera().getyOffset()), 62, 140);
+	
 		
 		g.drawImage(Assets.player, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), 62, 140, null);
 		
 		// ESTO HACE QUE SE VEA KICKRECT
 		if(kickRect != null && handler.getKeyManager().space) { 
 			g.setColor(Color.BLUE);
-			g.fillRect((int)kickRect.x, (int) kickRect.y, kickRect.width, kickRect.height);
+			g.fillRect((int) (kickRect.x - handler.getGameCamera().getxOffset()), (int) (kickRect.y - handler.getGameCamera().getyOffset()), kickRect.width, kickRect.height);
 		}
 		
 //		g.drawImage(getCurrentAnimationFrame(), (int) (x), (int) (y), width, height,  null);

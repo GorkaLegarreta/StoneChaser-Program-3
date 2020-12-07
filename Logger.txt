@@ -1,14 +1,16 @@
-dic. 06, 2020 7:13:47 P. M. main.Game <clinit>
+dic. 07, 2020 5:28:13 P. M. main.Game <clinit>
 INFO: Logger y clases del StoneChaser inicializadas
-dic. 06, 2020 7:13:47 P. M. main.Game <clinit>
+dic. 07, 2020 5:28:13 P. M. main.Game <clinit>
 FINE:  LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, FINE: 500
-dic. 06, 2020 7:13:48 P. M. main.GameDB connectDB
+dic. 07, 2020 5:28:13 P. M. main.GameDB connectDB
 FINE: Se ha conectado correctamente a la base de datos.
-dic. 06, 2020 7:13:48 P. M. main.GameDB createTableUSUARIO
+dic. 07, 2020 5:28:13 P. M. main.GameDB createTableUSUARIO
 FINE: Tabla cargada correctamente.
-dic. 06, 2020 7:13:51 P. M. main.states.MenuState tick
-INFO: Se ha iniciado como Mundo3
-dic. 06, 2020 7:13:51 P. M. main.states.MenuState tick
-CONFIG: GameState Cargada e inicializada en Configuracion Mundo3
-dic. 06, 2020 7:13:51 P. M. main.GameDB createGamePlayer
-FINE: Se ha creado correctamente el usuario nuevo.
+dic. 07, 2020 5:28:14 P. M. main.states.MenuState tick
+INFO: Se ha iniciado como Mundo1
+dic. 07, 2020 5:28:14 P. M. main.states.MenuState tick
+CONFIG: GameState Cargada e inicializada en Configuracion Mundo1
+dic. 07, 2020 5:28:21 P. M. main.entities.creatures.BasicEnemy die
+FINE: El jugador ha vencido al cubo rojo
+dic. 07, 2020 5:28:21 P. M. main.entities.creatures.BasicEnemy die
+INFO: Lo has eliminado, has ganado
