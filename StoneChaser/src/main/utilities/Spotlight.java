@@ -58,8 +58,5 @@ public class Spotlight {
 //			g2d.fillRect(0, 0, 700, 400);
 //			g2d.dispose();	
 			
-	}
-	
-	
-	
+	}	
 }

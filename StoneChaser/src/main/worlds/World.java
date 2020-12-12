@@ -50,9 +50,7 @@ public class World {
 		entityManager.render(g);
 		
 		//itemManager
-		im.render(g);
-		
-		
+		im.render(g);		
 		
 	}
 	

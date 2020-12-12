@@ -1,11 +1,7 @@
 package main;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RadialGradientPaint;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -42,17 +38,17 @@ public class Game implements Runnable{
 	
 	private BufferStrategy bs;
 	private Graphics g;
-
+	
+	//States
+	public State menuState;
+	public State gameState;
+	
 	//spotlight
 
 	private int sPx, sPy;
 	private int velX = 5, velY = 5;
 	private Spotlight spotlight, craftingTableSpotlight, inventorySpotlight1, inventorySpotlight2, inventorySpotlight3;
 	private boolean enableSpotlight = false;
-	
-	//States
-	public State menuState;
-	public State gameState;
 	
 	//Input
 	private KeyManager keyManager;
@@ -68,9 +64,8 @@ public class Game implements Runnable{
 	//Logger
 	public final static Logger LOGGER = Logger.getLogger(Game.class.getName());
 	public static FileHandler fh;
-	
 	// Static SE EJECUTA AL CARGAR LA CLASE; AL PRINCIPIO; UNA SOLA VEZ
-	static {
+	static {		
 		try {
 			fh = new FileHandler("Logger.txt",false);
 			/*
@@ -79,25 +74,25 @@ public class Game implements Runnable{
 			 *  EL FICHERO; LOS QUE APARECEN EN CONSOLA (LEVEL.INFO) TAMBIEN APARECERAN
 			 *  EN EL FICHERO LOGGER.TXT SI EL NIVEL SE LO PERMITE
 			 */
-			LOGGER.setLevel(Level.FINEST);			
+			LOGGER.setLevel(Level.FINE);			
 			LOGGER.addHandler(fh);
 			SimpleFormatter formatter = new SimpleFormatter();
 			fh.setFormatter(formatter);
 			// LOG QUE APARECE TANTO EN LOGGER.TXT COMO EN CONSOLA POR EL (LEVEL.INFO)
 			LOGGER.log(Level.INFO,"Logger y clases del StoneChaser inicializadas"); 
 			
-		} catch (SecurityException e) {
-			
+		} catch (SecurityException e) {			
 			LOGGER.log(Level.SEVERE,Game.getStackTrace(e));
-		} catch (IOException e) {
-			
+		} catch (IOException e) {			
 			LOGGER.log(Level.SEVERE,Game.getStackTrace(e));
 		}	
 		/*
 		 *  DEMOSTRACION DE QUE SE IMPRIMEN LOGS DEL MISMO NIVEL AL ESTABLECIDO 
 		 *  POR DEFECTO EN FINEST = 300 NIVEL MUY BAJO QUE SE SUPERA FACILMENTE 
-		 */
+		 */		
 		LOGGER.log(LOGGER.getLevel()," LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, "+LOGGER.getLevel().toString()+": "+LOGGER.getLevel().intValue());
+		// CREAR LA CONEXION A LA BD
+		GameDB.getInstance();
 	}
 	
 	public Game(String title, int width, int height) {
@@ -118,7 +113,6 @@ public class Game implements Runnable{
 		window.getCanvas().addMouseListener(mouseManager);
 		window.getCanvas().addMouseMotionListener(mouseManager);
 		Assets.init();		
-		
 		handler = new Handler(this); //coge el objeto de esta clase
 		gameCamera = new GameCamera(handler, 0, 0);
 		menuState = new MenuState(handler);
@@ -135,7 +129,7 @@ public class Game implements Runnable{
 //		sPy += -velY;
 		
 		keyManager.tick();
-		
+					
 		if(State.getState()!=null && State.getState().equals(menuState)) {
 			menuState.tick();
 		} else {
@@ -164,7 +158,6 @@ public class Game implements Runnable{
 			//inventorySpotlight2 = new Spotlight(getWidth()/2, getHeight()/2 + 80, 0.5f, 0.6f, 100, 0.5f, new Color(0, 0, 0, 0), g);
 			//inventorySpotlight3 = new Spotlight(getWidth()/2 + 20, getHeight()/2 + 80, 0.5f, 0.6f, 100, 0.5f, new Color(0, 0, 0, 0), g);
 		}
-		
 		
 		//Aqui dejamos de dibujar y actualizamos
 		bs.show();
@@ -225,7 +218,7 @@ public class Game implements Runnable{
 	public int getHeight() {
 		return height;
 	}
-
+	
 	public void spotlightEnabler() {
 		enableSpotlight = true;
 	}
@@ -233,7 +226,7 @@ public class Game implements Runnable{
 	public void spotlightDisabler() {
 		enableSpotlight = false;
 	}
-
+			
 	public synchronized  void start() {
 		
 		if(running)
