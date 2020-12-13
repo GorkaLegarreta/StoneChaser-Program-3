@@ -95,7 +95,7 @@ public class GameDB {
 		} catch (SQLException e) {
 			
 		}
-		// EN ESTE CASO DEVOLVEMOS EN EFECTO UN STRING PERO ESTE NO APARECE EN LA TABLA USUARIOS
+		// EN ESTE CASO NO HAY USUARIO EN LA BD
 		return "EmptyDB - "+world;
 		
 	}
