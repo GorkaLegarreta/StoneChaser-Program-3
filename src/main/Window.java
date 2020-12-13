@@ -2,6 +2,7 @@
 package main;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -38,7 +39,8 @@ public class Window {
 		canvas.setFocusable(false);
 		
 		frame.add(canvas);
-		frame.pack();				
+		frame.pack();	
+		canvas.setBackground(Color.WHITE);
 	}
 	
 	public Canvas getCanvas(){

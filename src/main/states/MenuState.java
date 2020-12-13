@@ -1,6 +1,7 @@
 package main.states;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.sql.Connection;
@@ -19,10 +20,7 @@ public class MenuState extends State  {
 	private MouseManager mouseManager;
 	private Rectangle lbl1, lbl2, lbl3, lbl4;	
 	private Rectangle user1, user2, user3, user4;
-	private String string1 ="User1-Gorka";
-	private String string2 ="User2-Inigo";
-	private String string3 ="User3-Pepe";
-	private String string4 ="User4-World4";
+	
 
 	private static WorldEnum world;
 		
@@ -110,10 +108,17 @@ public class MenuState extends State  {
 		
 	}
 	
+	private String string1 =GameDB.getGamePlayer(1);
+	private String string2 =GameDB.getGamePlayer(2);
+	private String string3 =GameDB.getGamePlayer(3);
+	private String string4 =GameDB.getGamePlayer(4);
+	
 	@Override
 	public void render(Graphics g) {
-		Color c = new Color(255, 200, 120);
-		g.setColor(c);		
+
+		Color c = new Color(100, 255, 160);
+		g.setColor(c);
+		g.setFont(new Font("Arial", Font.TRUETYPE_FONT, 20));
 //		g.fillRoundRect(play.x,play.y,play.width,play.height, 35, 35);			
 //		g.drawRoundRect(play.x,play.y,play.width,play.height, 35, 35);	
 		g.fillRoundRect(lbl1.x,lbl1.y,lbl1.width,lbl1.height, 35, 35);
@@ -125,19 +130,20 @@ public class MenuState extends State  {
 		g.fillRoundRect(user3.x,user3.y,user3.width,user3.height, 35, 35);
 		g.fillRoundRect(user4.x,user4.y,user4.width,user4.height, 35, 35);
 		
-		g.setColor(Color.BLACK);		
-		g.drawString("MUNDO 1", 60, 65);
-		g.drawString("MUNDO 2", 60, 145);
-		g.drawString("MUNDO 3", 60, 225);
-		g.drawString("MUNDO 4", 60, 305);
-		g.drawString(String.format("Mouse moved at %d,%d", mouseManager.getMouseX(), mouseManager.getMouseY()), 250, 50);
-		g.drawString(String.format("Mouse clicked at %d,%d", mouseManager.getClickX(), mouseManager.getClickY()), 250, 135);
-		//AQUI SI UTILIZAMOS EL getGamePlayer
-		g.drawString(string1, 380, 60);
-		g.drawString(string2, 380, 145);
-		g.drawString(string3, 380, 225);
-		g.drawString(string4,380,305);
-		//g.drawString(GameDB.getGamePlayer(4), 380, 305);
+		g.setColor(Color.BLACK);
+		
+		
+		g.drawString("MUNDO 1", 75, 70 );
+		g.drawString("MUNDO 2", 75, 150);
+		g.drawString("MUNDO 3", 75, 230);
+		g.drawString("MUNDO 4", 75, 310);
+		g.drawString(String.format("Mouse moved at %d,%d", mouseManager.getMouseX(), mouseManager.getMouseY()), 410, 390);
+		g.drawString(String.format("Mouse clicked at %d,%d", mouseManager.getClickX(), mouseManager.getClickY()), 160, 390);
+		//			DERECHA DEL MENU		//
+		g.drawString(string1, 400, 70 );
+		g.drawString(string2, 400, 150);
+		g.drawString(string3, 400, 230);
+		g.drawString(string4, 400, 310);
 		
 	}
 	

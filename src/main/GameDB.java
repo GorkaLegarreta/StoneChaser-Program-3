@@ -88,13 +88,16 @@ public class GameDB {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(String.format("SELECT NOMBRE FROM USUARIO WHERE COD_MUNDO = %d;",world));
 			if (!(rs==null)) {
-				return rs.toString();
+				return rs.getString("NOMBRE");
 			}
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			
 		}
 		// EN ESTE CASO DEVOLVEMOS EN EFECTO UN STRING PERO ESTE NO APARECE EN LA TABLA USUARIOS
-		return "DEFALT WORLD NAME - "+world;
+		return "EmptyDB - "+world;
+		
 	}
 	
 }
