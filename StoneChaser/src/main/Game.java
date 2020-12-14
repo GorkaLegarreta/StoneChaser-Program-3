@@ -91,8 +91,7 @@ public class Game implements Runnable{
 		 *  POR DEFECTO EN FINEST = 300 NIVEL MUY BAJO QUE SE SUPERA FACILMENTE 
 		 */		
 		LOGGER.log(LOGGER.getLevel()," LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, "+LOGGER.getLevel().toString()+": "+LOGGER.getLevel().intValue());
-		// CREAR LA CONEXION A LA BD
-		GameDB.getInstance();
+		
 	}
 	
 	public Game(String title, int width, int height) {
@@ -112,9 +111,20 @@ public class Game implements Runnable{
 		window.getFrame().addMouseMotionListener(mouseManager);
 		window.getCanvas().addMouseListener(mouseManager);
 		window.getCanvas().addMouseMotionListener(mouseManager);
+		
+		//inicializamos los gráficos
 		Assets.init();		
-		handler = new Handler(this); //coge el objeto de esta clase
+		
+		//creamos la conexión de la base de datos
+		GameDB.getInstance();
+		
+		//le pasamos a handler esta clase (game)
+		handler = new Handler(this); 
+		
+		//camara del juego
 		gameCamera = new GameCamera(handler, 0, 0);
+		
+		//estados
 		menuState = new MenuState(handler);
 		gameState = new GameState(handler); //nos referimos a la clase game, a esta misma clase		
 		State.setState(menuState);
@@ -227,6 +237,10 @@ public class Game implements Runnable{
 		enableSpotlight = false;
 	}
 			
+	public Window getWindow() {
+		return window;
+	}
+
 	public synchronized  void start() {
 		
 		if(running)
@@ -257,7 +271,8 @@ public class Game implements Runnable{
 	 * @return El stackTrace de la excepcion en forma de String
 	 */
 	public static String getStackTrace(Exception e) {
-        StringWriter sWriter = new StringWriter();
+      
+		StringWriter sWriter = new StringWriter();
         PrintWriter pWriter = new PrintWriter(sWriter);
         e.printStackTrace(pWriter);
         return sWriter.toString();

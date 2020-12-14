@@ -11,6 +11,10 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 	private int mouseX, clickX;
 	private int mouseY, clickY;
 	
+	public boolean up = false, down , left, right, e, f, r, space = false;
+	private float ratio, update;
+	private long now, before = System.nanoTime();
+	
 	public void mouseDragged(MouseEvent e) {
 		
 	}
@@ -40,13 +44,28 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 
 	
 	public void mousePressed(MouseEvent e) {
+		
+//		ratio = 1000000000;
+//		
+//		now = System.nanoTime();			
+//		update += (now - before)/ratio;									
+//		
+//		if(update >= 1) {
+//			before = System.nanoTime();
+//			update--;				
+//			if(e.getButton() == MouseEvent.BUTTON1) {
+//				leftPressed = true;
+//				System.out.println("click 1 vez");
+//			}
+//			else if(e.getButton() == MouseEvent.BUTTON3) rightPressed = true;
+//		}
+		
 		if(e.getButton() == MouseEvent.BUTTON1)
 			leftPressed = true;
 		else if(e.getButton() == MouseEvent.BUTTON3) //right mouse button, BUTTON2 = scroll wheel button
 			rightPressed = true;
 		
 	}
-
 	
 	public void mouseReleased(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1)

@@ -2,9 +2,12 @@
 package main;
 
 import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
+
 import javax.swing.JFrame;
 
 public class Window {
@@ -38,7 +41,12 @@ public class Window {
 		canvas.setFocusable(false);
 		
 		frame.add(canvas);
-		frame.pack();				
+		frame.pack();	
+		canvas.setBackground(Color.WHITE);
+	}
+
+	public void add(Component comp) {
+		frame.add(comp);
 	}
 	
 	public Canvas getCanvas(){

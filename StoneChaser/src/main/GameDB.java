@@ -19,24 +19,28 @@ public class GameDB {
 	public static GameDB getInstance() {
 		if (instance == null) {
 			instance = new GameDB();
-			instance.connectDB();
+			instance.initSqlite();
 			instance.createTableUSUARIO();
 		}
 		return instance;
 	}
-	public void connectDB() {
+	
+	public void initSqlite() {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
-			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha conectado correctamente a la base de datos.");
-		} catch (SQLException | ClassNotFoundException e) {
-			Game.LOGGER.log(Level.SEVERE,"No se ha podido conectar a la base de datos. Error al conectar a la BD.");
+			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha inicializado sqlite correctamente.");
+		} catch (ClassNotFoundException e) {
+			Game.LOGGER.log(Level.SEVERE,"No se ha podido inicializar sqlite");
 			
 		}
 	}
 	public void createTableUSUARIO() {
-		try {
-			stmt = conn.createStatement();
+		try (
+				Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();
+				
+			){
+			
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS USUARIO ( COD_MUNDO INT(1) NOT NULL, NOMBRE VARCHAR(15), PRIMARY KEY (COD_MUNDO) );");			
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Tabla cargada correctamente.");
 		} catch (SQLException e) {
@@ -44,35 +48,37 @@ public class GameDB {
 		}
 		
 	}
-	public static void closeConnection() {
-		try {
-			conn.close();
-		} catch (SQLException e) {
-			Game.LOGGER.log(Level.SEVERE,"Ha ocurrido un error al cerrar la BD. "+Game.getStackTrace(e));
-		}
-	}
+	
 	/////////////////////////////////////////////////////////////////////////////////
 	/*
 	 * 			METODOS PARA CREAR USUARIOS ---> INSERT INTO <>
 	 */
 	/////////////////////////////////////////////////////////////////////////////////
 	public static boolean checkGamePlayer(int world) {
-		try {
-			stmt = conn.createStatement();
+		try (
+				Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();
+				
+			){
+			
 			rs = stmt.executeQuery("SELECT * FROM USUARIO;");			
 			while(rs.next()) {
 				if (world == rs.getInt("COD_MUNDO"))
-					return false; // NO HAY QUE CREAR EL USUARIO
+					return true; // NO HAY QUE CREAR EL USUARIO
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Excepción en el resultSet: " + e + " no da problema en la base de datos");
 		}
-		return true; // HAY QUE CREAR USUARIO NUEVO
+		return false; // HAY QUE CREAR USUARIO NUEVO
 	}
 	public static void createGamePlayer(int world, String name) {
-		try {
-			stmt = conn.createStatement();
-			stmt.executeUpdate(String.format("INSERT INTO USUARIO VALUES(%d,'%s');",world,name));
+		try (
+				Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();
+				
+			){
+			
+			stmt.executeUpdate(String.format("INSERT INTO USUARIO VALUES(%d,'%s');",world, name));
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha creado correctamente el usuario nuevo.");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -84,17 +90,55 @@ public class GameDB {
 	 */
 	////////////////////////////////////////////////////////////////////////////////////
 	public static String getGamePlayer(int world) {
-		try {
-			stmt = conn.createStatement();
+		try (
+				Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();
+				
+			){
+			
 			rs = stmt.executeQuery(String.format("SELECT NOMBRE FROM USUARIO WHERE COD_MUNDO = %d;",world));
-			if (!(rs==null)) {
-				return rs.toString();
+			if (rs != null) {
+				return rs.getString("NOMBRE");
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		// EN ESTE CASO DEVOLVEMOS EN EFECTO UN STRING PERO ESTE NO APARECE EN LA TABLA USUARIOS
-		return "DEFALT WORLD NAME - "+world;
+		// EN ESTE CASO NO HAY USUARIO EN LA BD
+		return "EMPTY WORLD: "+world;
+		
+	}
+	
+//	public static void printUsers() {
+//		try (	
+//				Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+//			){
+//			
+//			stmt = conn.createStatement();
+//			rs = stmt.executeQuery("SELECT NOMBRE FROM USUARIO;");
+//			
+//			while(rs.next() && rs != null) {
+//				System.out.println(rs.getString("NOMBRE"));
+//			}
+//			
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//	
+	public static void deleteUsers() {
+		try (	
+				Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+			){
+			
+			stmt = conn.createStatement();
+			stmt.executeUpdate("DROP TABLE USUARIO;");
+			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha borrado toda la información de los usuarios");
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }
