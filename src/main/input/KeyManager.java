@@ -31,8 +31,11 @@ public class KeyManager implements KeyListener{
 		/*
 		 * While game is unPaused()
 		 */
+		
 		if(!pause) { 
 			keys[e.getKeyCode()] = true;
+		} else {
+			keys[e.getKeyCode()] = false;
 		}
 		/*
 		 * buttonP to pause() or unPause() game
@@ -44,6 +47,7 @@ public class KeyManager implements KeyListener{
 				pause = true;
 			}
 		}
+		
 	}	
 	public void keyReleased(KeyEvent e) {
 		keys[e.getKeyCode()] = false;				
