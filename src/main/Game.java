@@ -22,7 +22,7 @@ import main.utilities.Spotlight;
 
 public class Game implements Runnable{
 	
-	private Window window;	
+	private static Window window;	
 	private int width, height;
 	public String title;
 	
@@ -64,7 +64,8 @@ public class Game implements Runnable{
 	//Logger
 	public final static Logger LOGGER = Logger.getLogger(Game.class.getName());
 	public static FileHandler fh;
-	// Static SE EJECUTA AL CARGAR LA CLASE; AL PRINCIPIO; UNA SOLA VEZ
+	
+	//static SE EJECUTA AL CARGAR LA CLASE; AL PRINCIPIO; UNA SOLA VEZ
 	static {		
 		try {
 			fh = new FileHandler("Logger.txt",false);
@@ -129,7 +130,7 @@ public class Game implements Runnable{
 //		sPy += -velY;
 		
 		keyManager.tick();
-					
+		
 		if(State.getState()!=null && State.getState().equals(menuState)) {
 			menuState.tick();
 		} else {
@@ -174,30 +175,41 @@ public class Game implements Runnable{
 		ratio = sec/fps;				//60 fps == la pantalla se actualiza cada 1/60 de segundo
 		
 		while(running) {	
-			
-			now = System.nanoTime();			//now es el tiempo que ha pasado hasta ahora
-			update += (now - before)/ratio;		//actualizamos update para saber si ya ha transcurrido más de 1/60 de segundo	
-			timer += now - before;				//sumamos el tiempo que ha pasado a nuestro "reloj"
-			before = now;						//actualizamos el tiempo que ha pasado, para usarlo en el siguiente loop del while y al compararlo con now para ver cuanto tiempo ha pasado.			
-			
-			if(update >= 1) {
-				render();				//cada 1/60 de segundo hacemos que se actualicen métodos y que se rendericen gráficos en pantalla
-				tick();
-				
-				update--;				
-				c++;
+			if (gameIsPaused()) {
+				TickRender();
+			} else {
+				TickRender();
 			}
-			
-			if(timer >= sec) { 			//si ha pasado más de un segundo, imprime por pantalla los fps
-				System.out.println("fps counter: " + c);
-				c = 0;
-				
-				timer = 0;
-			}
-			
 		}stop();
 	}
+	
+	public void TickRender(){
+		now = System.nanoTime();			//now es el tiempo que ha pasado hasta ahora
+		update += (now - before)/ratio;		//actualizamos update para saber si ya ha transcurrido más de 1/60 de segundo	
+		timer += now - before;				//sumamos el tiempo que ha pasado a nuestro "reloj"
+		before = now;						//actualizamos el tiempo que ha pasado, para usarlo en el siguiente loop del while y al compararlo con now para ver cuanto tiempo ha pasado.			
 		
+		if(update >= 1) {
+			render();				//cada 1/60 de segundo hacemos que se actualicen métodos y que se rendericen gráficos en pantalla
+			tick();
+			
+			update--;				
+			c++;
+		}
+		
+		if(timer >= sec) { 			//si ha pasado más de un segundo, imprime por pantalla los fps
+			System.out.println("fps counter: " + c);
+			c = 0;
+			
+			timer = 0;
+		}
+	}
+	public boolean gameIsPaused() {
+		return keyManager.pause;
+	}
+	public static Window getWindow() {
+		return window;
+	}
 	
 	public KeyManager getKeyManager(){
 		return keyManager;
@@ -262,4 +274,5 @@ public class Game implements Runnable{
         e.printStackTrace(pWriter);
         return sWriter.toString();
     }
+	
 }

@@ -18,6 +18,8 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 	public void mouseMoved(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
+		leftPressed=false;
+		rightPressed=false;
 	}
 
 	
@@ -59,7 +61,7 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 	//Getters
 	
 	public boolean isLeftPressed() {
-		return leftPressed;
+		return leftPressed; 
 	}
 	
 	public boolean isRightPressed() {

@@ -20,7 +20,7 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 	private int kickDamage = 3;
 	private int lastDirection = 0;
 	private boolean playerActive = true;
-	
+	private int relativeX, relativeY = 0;
 	Rectangle kickRect;
 	
 	public Player(Handler handler, float x, float y) {
@@ -76,9 +76,7 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 
 	private void getInput() {
 		xMove = 0;
-		yMove = 0;
-		
-		
+		yMove = 0;		
 		
 		if(handler.getKeyManager().left) {
 			xMove = -speed;
@@ -155,10 +153,8 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 	}	
 
 	public void render(Graphics g) {
-
 //		g.setColor(Color.BLUE);
 //		g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()), (int) (y + bounds.y - handler.getGameCamera().getyOffset()), 62, 140);
-	
 		
 		g.drawImage(Assets.player, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), 62, 140, null);
 		
@@ -201,8 +197,14 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 		playerActive = true;
 	}
 
-
 	public void setPlayerInactive() {
 		playerActive = false;
+	}
+	
+	public float getPlayerX() {
+		return this.x;
+	}
+	public float getPlayerY() {
+		return this.y;
 	}
 }
