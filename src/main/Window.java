@@ -4,6 +4,10 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import javax.swing.JFrame;
@@ -41,6 +45,8 @@ public class Window {
 		frame.add(canvas);
 		frame.pack();	
 		canvas.setBackground(Color.WHITE);
+		
+		
 	}
 
 	public void add(Component comp) {
@@ -55,4 +61,6 @@ public class Window {
 	public JFrame getFrame(){
 		return frame;
 	}
+	
+	
 }

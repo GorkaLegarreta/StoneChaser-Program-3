@@ -124,66 +124,6 @@ public class GameDB {
 		return "EMPTY WORLD"; // EN ESTE CASO NO HAY USUARIO EN LA BD; NOMBRE SE INICIA CON "EMPTY WORLD"		
 	}
 	/////////////////////////////////////////////////////////////////
-	// 					METODOS PARA GUARDAR POSICIONES 		   //
-	/////////////////////////////////////////////////////////////////
-	public static boolean existsUserPosition(int world) {
-		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
-				Statement stmt = conn.createStatement();				
-			){
-			
-			rs = stmt.executeQuery(String.format("SELECT * FROM POSICIONES WHERE COD_MUNDO = %d;",world));			
-			while(rs.next()) {
-				if (world == rs.getInt("COD_MUNDO"))
-					return true; 
-			}
-		} catch (SQLException e) {
-			System.out.println("Excepción en el resultSet: " + e + " no da problema en la base de datos");
-		}
-		return false; 
-	}
-	public static void updatePosition() {
-		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
-				Statement stmt = conn.createStatement();				
-			){
-			
-			PreparedStatement ps = conn.prepareStatement("UPDATE POSICIONES SET SESION = ?, PLAYER_X = ?, PLAYER_Y = ? WHERE COD_MUNDO = ?;");
-			ps.setInt(1, getNumberSessions(GameState.getUser()));
-			ps.setInt(2, GameState.getPlayerXPosition());
-			ps.setInt(3, GameState.getPlayerYPosition());
-			ps.setInt(4, GameState.getUser());
-			ps.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	public static void insertIntoPosiciones(int world, int x, int y) {
-		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
-				Statement stmt = conn.createStatement();				
-			){
-			int sesiones = getNumberSessions(world);
-			stmt.executeUpdate(String.format("INSERT INTO POSICIONES VALUES(%d,%d,%d,%d);",world, sesiones,x,y));
-			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha creado correctamente la nueva posicion del usuario.");
-		} catch (SQLException e) {
-			
-		}
-	}
-	public static int getNumberSessions(int world) {
-		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
-				Statement stmt = conn.createStatement();				
-			){
-			
-			rs = stmt.executeQuery(String.format("SELECT SESIONES FROM USUARIO WHERE COD_MUNDO = %d;",world));
-			while (rs.next()) {
-				return rs.getInt("SESIONES");
-			}
-			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha creado correctamente el usuario nuevo.");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return -1; 
-	}
-	/////////////////////////////////////////////////////////////////
 	//					METODOS PARA ACTUALIZAR USUARIOS		   //
 	/////////////////////////////////////////////////////////////////	
 	/**
@@ -258,6 +198,117 @@ public class GameDB {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	/////////////////////////////////////////////////////////////////
+	// 					METODOS PARA GUARDAR POSICIONES 		   //
+	/////////////////////////////////////////////////////////////////
+	/**
+	 * 
+	 * @param world
+	 * @return specifies true if necessary to insert or update position
+	 */
+	public static boolean existsUserPosition(int world) {
+		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();				
+			){
+			
+			rs = stmt.executeQuery(String.format("SELECT * FROM POSICIONES WHERE COD_MUNDO = %d;",world));			
+			while(rs.next()) {
+				if (world == rs.getInt("COD_MUNDO"))
+					return true; 
+			}
+		} catch (SQLException e) {
+			System.out.println("Excepción en el resultSet: " + e + " no da problema en la base de datos");
+		}
+		return false; 
+	}
+	/**
+	 * position already existed and its being updated
+	 */
+	public static void updatePosition() {
+		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();				
+			){
+			
+			PreparedStatement ps = conn.prepareStatement("UPDATE POSICIONES SET SESION = ?, PLAYER_X = ?, PLAYER_Y = ? WHERE COD_MUNDO = ?;");
+			ps.setInt(1, getNumberSessions(GameState.getUser()));
+			ps.setInt(2, GameState.getPlayerXPosition());
+			ps.setInt(3, GameState.getPlayerYPosition());
+			ps.setInt(4, GameState.getUser());
+			ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * position is being inserted into POSICIONES for the first time
+	 * @param world
+	 * @param x
+	 * @param y
+	 */
+	public static void insertIntoPosiciones(int world, int x, int y) {
+		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();				
+			){
+			int sesiones = getNumberSessions(world);
+			stmt.executeUpdate(String.format("INSERT INTO POSICIONES VALUES(%d,%d,%d,%d);",world, sesiones,x,y));
+			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha creado correctamente la nueva posicion del usuario.");
+		} catch (SQLException e) {
+			
+		}
+	}
+	/////////////////////////////////////////////////////////////////
+	// 					METODOS PARA LEER POSICIONES	 		   //
+	/////////////////////////////////////////////////////////////////
+	public int getGamePlayerXPosition(int world) {
+		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();				
+			){
+			rs = stmt.executeQuery(String.format("SELECT PLAYER_X FROM POSICIONES WHERE COD_MUNDO = %d",world));
+			return rs.getInt("PLAYER_X");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 150;
+	}
+	public int getGamePlayerYPosition(int world) {
+		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();				
+			){
+			rs = stmt.executeQuery(String.format("SELECT PLAYER_Y FROM POSICIONES WHERE COD_MUNDO = %d",world));
+			return rs.getInt("PLAYER_Y");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 170;
+	}
+	public static int getNumberSessions(int world) {
+		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();				
+			){
+			
+			rs = stmt.executeQuery(String.format("SELECT SESIONES FROM USUARIO WHERE COD_MUNDO = %d;",world));
+			while (rs.next()) {
+				return rs.getInt("SESIONES");
+			}
+			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha creado correctamente el usuario nuevo.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1; 
+	}
+	public static ResultSet getPositions() {
+		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();				
+			){
+			
+			rs = stmt.executeQuery("SELECT * FROM POSICIONES ;");
+			return rs;		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
 	}
 	
 }
