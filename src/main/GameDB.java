@@ -261,7 +261,7 @@ public class GameDB {
 	/////////////////////////////////////////////////////////////////
 	// 					METODOS PARA LEER POSICIONES	 		   //
 	/////////////////////////////////////////////////////////////////
-	public int getGamePlayerXPosition(int world) {
+	public static int getGamePlayerXPosition(int world) {
 		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
@@ -272,7 +272,7 @@ public class GameDB {
 		}
 		return 150;
 	}
-	public int getGamePlayerYPosition(int world) {
+	public static int getGamePlayerYPosition(int world) {
 		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
@@ -308,7 +308,7 @@ public class GameDB {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return rs;
+		return null;
 	}
 	
 }
