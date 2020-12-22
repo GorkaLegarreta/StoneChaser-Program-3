@@ -6,6 +6,7 @@ import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.SQLException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -82,18 +83,22 @@ public class Game implements Runnable{
 			// LOG QUE APARECE TANTO EN LOGGER.TXT COMO EN CONSOLA POR EL (LEVEL.INFO)
 			LOGGER.log(Level.INFO,"Logger y clases del StoneChaser inicializadas"); 
 			
+			// CREAR LA CONEXION A LA BD
+			GameDB.getInstance();
+			
 		} catch (SecurityException e) {			
 			LOGGER.log(Level.SEVERE,Game.getStackTrace(e));
 		} catch (IOException e) {			
 			LOGGER.log(Level.SEVERE,Game.getStackTrace(e));
+		} catch (GameDBException e) {
+			e.printStackTrace();		//nos indica que no se ha podido establecer la conexión y lo registra en el logger
 		}	
 		/*
 		 *  DEMOSTRACION DE QUE SE IMPRIMEN LOGS DEL MISMO NIVEL AL ESTABLECIDO 
 		 *  POR DEFECTO EN FINEST = 300 NIVEL MUY BAJO QUE SE SUPERA FACILMENTE 
 		 */		
 		LOGGER.log(LOGGER.getLevel()," LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, "+LOGGER.getLevel().toString()+": "+LOGGER.getLevel().intValue());
-		// CREAR LA CONEXION A LA BD
-		GameDB.getInstance();
+		
 	}
 	
 	public Game(String title, int width, int height) {
@@ -121,7 +126,7 @@ public class Game implements Runnable{
 		State.setState(menuState);
 	}
 	
-	private void tick() {
+	private void tick() throws GameDBException {
 		
 //		if(sPx<= 0 || sPx >= 700) velX = -velX;		//efecto de luz para spotlight
 //		if(sPy<= 0 || sPy>= 400) velY = -velY;
@@ -176,14 +181,14 @@ public class Game implements Runnable{
 		
 		while(running) {	
 			if (gameIsPaused()) {
-				TickRender();
+				try {TickRender();} catch (GameDBException e) {	e.printStackTrace();}
 			} else {
-				TickRender();
+				try {TickRender();} catch (GameDBException e) {	e.printStackTrace();}
 			}
 		}stop();
 	}
 	
-	public void TickRender(){
+	public void TickRender() throws GameDBException{
 		now = System.nanoTime();			//now es el tiempo que ha pasado hasta ahora
 		update += (now - before)/ratio;		//actualizamos update para saber si ya ha transcurrido más de 1/60 de segundo	
 		timer += now - before;				//sumamos el tiempo que ha pasado a nuestro "reloj"

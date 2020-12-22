@@ -39,7 +39,6 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 		
 		
 	}
-
 	
 	public void mousePressed(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1)
@@ -48,7 +47,6 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 			rightPressed = true;
 		
 	}
-
 	
 	public void mouseReleased(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1)

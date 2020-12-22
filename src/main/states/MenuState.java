@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import main.Game;
 import main.GameDB;
+import main.GameDBException;
 import main.Handler;
 import main.input.MouseManager;
 
@@ -52,7 +53,7 @@ public class MenuState extends State  {
 	}
 	
 	@Override
-	public void tick() {	
+	public void tick() throws GameDBException {	
 		for(int i = 1; i < 5; i++) strings[i-1] = GameDB.getGamePlayer(i);
 		/////////////////////////////////////////////////////////////////
 		//				LOS BOTONES A LA IZQUIERDA					   //
@@ -160,7 +161,7 @@ public class MenuState extends State  {
 	public void changeToGameState() {
 		State.setState(handler.getGame().gameState);
 	}
-	public void createNewUser(int world) {
+	public void createNewUser(int world) throws GameDBException {
 		optionPane = JOptionPane.showInputDialog("Introduce el nombre para el usuario");
 		if (optionPane == null) {
 			optionPane = GameDB.getGamePlayer(world);
@@ -169,7 +170,7 @@ public class MenuState extends State  {
 			strings[world-1] = optionPane;
 		}
 	}
-	public void confirmToDeleteUser(int world) {
+	public void confirmToDeleteUser(int world) throws GameDBException {
 		JOptionPane.showConfirmDialog(null, "¿Quieres eliminar al usuario?");
 		if (JOptionPane.showConfirmDialog(null, "¿Quieres eliminar al usuario?")==JOptionPane.YES_OPTION) {
 			GameDB.deleteUsers(world);
