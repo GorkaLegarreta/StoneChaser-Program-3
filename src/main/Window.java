@@ -6,8 +6,10 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.sql.ResultSet;
@@ -15,11 +17,14 @@ import java.sql.SQLException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import javax.swing.JFrame;
-
 import main.states.GameState;
 
 public class Window implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -958194006111817710L;
 	private JFrame frame;
 	private Canvas canvas; 
 	private String title;
@@ -32,6 +37,7 @@ public class Window implements Serializable{
 		createWindow();
 		//Logger
 		Game.LOGGER.log(Level.FINEST, "Objeto Window creada desde su constructor");
+		uploadPositionBinaryFile();
 	}
 	
 	private void createWindow(){
@@ -146,12 +152,28 @@ public class Window implements Serializable{
 		}
 		
 	}
-	private void savePositionBinaryFile(Position prueba) {
+	private static void savePositionBinaryFile(Position prueba) {
 		try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("datos.bin"))) {
             os.writeObject(prueba);
             Game.LOGGER.log(Level.FINEST, "Datos serializados correctamente");
         } catch (IOException e) {
         	Game.LOGGER.log(Level.SEVERE, "Error al serializar los datos");
         }		
+	}
+	private static void uploadPositionBinaryFile() {
+		try (ObjectInputStream is = new ObjectInputStream(new FileInputStream("datos.bin"))) {
+			for (int i=1; i<5; i++) {
+				if (GameDB.existsUserPosition(i)) {
+					Position p = (Position) is.readObject();
+					System.out.println(p);
+				}
+				
+			}
+        } catch (IOException e) {
+        	e.printStackTrace();
+            System.out.println("Error. No se pudo deserializar el objeto. " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error. No se pudo encontrar la clase asociada. " + e.getMessage());
+        }
 	}
 }
