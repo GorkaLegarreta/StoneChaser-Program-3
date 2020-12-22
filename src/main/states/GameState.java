@@ -45,8 +45,7 @@ public class GameState extends State{
 		world.tick();
 
 		if (saveButtonIsPressed()) {
-			pause();
-			currentlySaving = true;
+			currentlySaving = true;			
 			new Thread( () -> {
 			try {
 				Thread.currentThread().sleep(1000);	
@@ -79,8 +78,10 @@ public class GameState extends State{
 	/////////////////////////////////////////////////////////////////
 	//				METODOS PARA SIMPLIFICAR CODIGO				   //
 	/////////////////////////////////////////////////////////////////
+	
 	public boolean saveButtonIsPressed() {
 		if (mouseManager.isLeftPressed() && saveButton.contains(mouseManager.getMouseX(),mouseManager.getMouseY())  ) {
+			pause();
 			return true;
 		} else {
 			return false;
