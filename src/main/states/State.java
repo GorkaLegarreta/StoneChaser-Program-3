@@ -2,6 +2,7 @@ package main.states;
 
 import java.awt.Graphics;
 
+import main.GameDBException;
 import main.Handler;
 
 public abstract class State {
@@ -24,7 +25,7 @@ public abstract class State {
 		this.handler = handler;
 	}
 	
-	public abstract void tick();
+	public abstract void tick() throws GameDBException;
 	
 	public abstract void render(Graphics g);
 	

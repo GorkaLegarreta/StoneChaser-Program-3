@@ -19,7 +19,7 @@ public class GameDB {
 	/////////////////////////////////////////////////////////////////
 	//					CREAR CONEXION A LA BD					   //
 	/////////////////////////////////////////////////////////////////
-	public static GameDB getInstance() {
+	public static GameDB getInstance() throws GameDBException {
 		if (instance == null) {
 			instance = new GameDB();
 			instance.initSqlite();
@@ -33,14 +33,14 @@ public class GameDB {
 			Class.forName("org.sqlite.JDBC");
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha inicializado sqlite correctamente.");
 		} catch (ClassNotFoundException e) {
-			Game.LOGGER.log(Level.SEVERE,"No se ha podido inicializar sqlite");
+			e.printStackTrace();
 			
 		}
 	}
 	/////////////////////////////////////////////////////////////////
 	//				METODOS PARA CREAR TABLAS					   //
 	/////////////////////////////////////////////////////////////////
-	public void createTableUSUARIO() {
+	public void createTableUSUARIO() throws GameDBException {
 		try (	Connection conn= DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
@@ -49,11 +49,11 @@ public class GameDB {
 					+ "SESIONES INT(2), PRIMARY KEY (COD_MUNDO) );");			
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Tabla cargada correctamente.");
 		} catch (SQLException e) {
-			Game.LOGGER.log(Level.SEVERE,"Ha ocurrido un error al ejecutar una sentencia de la base de datos. "+Game.getStackTrace(e));
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
 		
 	}
-	public void createTablePOSICIONES() {
+	public void createTablePOSICIONES() throws GameDBException {
 		try (	Connection conn= DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
@@ -62,7 +62,7 @@ public class GameDB {
 					+ "PLAYER_Y INT(3) NOT NULL, PRIMARY KEY (COD_MUNDO,SESION), FOREIGN KEY (COD_MUNDO) REFERENCES USUARIO (COD_MUNDO) ON DELETE CASCADE);");			
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Tabla cargada correctamente.");
 		} catch (SQLException e) {
-			Game.LOGGER.log(Level.SEVERE,"Ha ocurrido un error al ejecutar una sentencia de la base de datos. "+Game.getStackTrace(e));
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
 	}
 	/////////////////////////////////////////////////////////////////
@@ -72,8 +72,9 @@ public class GameDB {
 	 * 
 	 * @param world (Primary key)
 	 * @return boolean if Game Player with primary key world exists 
+	 * @throws GameDBException 
 	 */
-	public static boolean existsGamePlayer(int world) {
+	public static boolean existsGamePlayer(int world) throws GameDBException {
 		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
@@ -84,7 +85,7 @@ public class GameDB {
 					return true; 
 			}
 		} catch (SQLException e) {
-			System.out.println("Excepción en el resultSet: " + e + " no da problema en la base de datos");
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
 		return false; 
 	}
@@ -92,8 +93,9 @@ public class GameDB {
 	 * Creates a new game player with the following information
 	 * @param world primary key of game player
 	 * @param name Name of game Player 
+	 * @throws GameDBException 
 	 */
-	public static void createGamePlayer(int world, String name) {
+	public static void createGamePlayer(int world, String name) throws GameDBException {
 		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
@@ -101,7 +103,7 @@ public class GameDB {
 			stmt.executeUpdate(String.format("INSERT INTO USUARIO VALUES(%d,'%s',0);",world, name));
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha creado correctamente el usuario nuevo.");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}		
 	}
 	/**
@@ -119,8 +121,7 @@ public class GameDB {
 				return rs.getString("NOMBRE");
 			}			
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			e.printStackTrace();		}
 		return "EMPTY WORLD"; // EN ESTE CASO NO HAY USUARIO EN LA BD; NOMBRE SE INICIA CON "EMPTY WORLD"		
 	}
 	/////////////////////////////////////////////////////////////////
@@ -159,7 +160,7 @@ public class GameDB {
 					ps.executeUpdate();
 				
 			} catch (SQLException e) {
-				e.printStackTrace();			
+				e.printStackTrace();	
 			} 
 		}).start();		
 	}	
@@ -168,8 +169,9 @@ public class GameDB {
 	/////////////////////////////////////////////////////////////////
 	/**
 	 * deletes table users
+	 * @throws GameDBException 
 	 */
-	public static void deleteUsers() {
+	public static void deleteUsers() throws GameDBException {
 		try (	
 				Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");				
 			){
@@ -179,14 +181,15 @@ public class GameDB {
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha borrado toda la información de los usuarios");
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
 	}
 	/**
 	 * deletes a specific user with the primary key world
 	 * @param world (primary key)
+	 * @throws GameDBException 
 	 */
-	public static void deleteUsers(int world) {
+	public static void deleteUsers(int world) throws GameDBException {
 		try (	
 				Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 			){
@@ -196,7 +199,7 @@ public class GameDB {
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha borrado toda la información del usuario "+world);
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
 	}
 	/////////////////////////////////////////////////////////////////
@@ -206,8 +209,9 @@ public class GameDB {
 	 * 
 	 * @param world
 	 * @return specifies true if necessary to insert or update position
+	 * @throws GameDBException 
 	 */
-	public static boolean existsUserPosition(int world) {
+	public static boolean existsUserPosition(int world) throws GameDBException {
 		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
@@ -218,14 +222,15 @@ public class GameDB {
 					return true; 
 			}
 		} catch (SQLException e) {
-			System.out.println("Excepción en el resultSet: " + e + " no da problema en la base de datos");
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
 		return false; 
 	}
 	/**
 	 * position already existed and its being updated
+	 * @throws GameDBException 
 	 */
-	public static void updatePosition() {
+	public static void updatePosition() throws GameDBException {
 		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
@@ -238,7 +243,7 @@ public class GameDB {
 			ps.executeUpdate();
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
 	}
 	/**
@@ -246,8 +251,9 @@ public class GameDB {
 	 * @param world
 	 * @param x
 	 * @param y
+	 * @throws GameDBException 
 	 */
-	public static void insertIntoPosiciones(int world, int x, int y) {
+	public static void insertIntoPosiciones(int world, int x, int y) throws GameDBException {
 		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
@@ -255,7 +261,7 @@ public class GameDB {
 			stmt.executeUpdate(String.format("INSERT INTO POSICIONES VALUES(%d,%d,%d,%d);",world, sesiones,x,y));
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha creado correctamente la nueva posicion del usuario.");
 		} catch (SQLException e) {
-			
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
 	}
 	/////////////////////////////////////////////////////////////////
@@ -268,7 +274,7 @@ public class GameDB {
 			rs = stmt.executeQuery(String.format("SELECT PLAYER_X FROM POSICIONES WHERE COD_MUNDO = %d",world));
 			return rs.getInt("PLAYER_X");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
 		return 150;
 	}
@@ -279,11 +285,11 @@ public class GameDB {
 			rs = stmt.executeQuery(String.format("SELECT PLAYER_Y FROM POSICIONES WHERE COD_MUNDO = %d",world));
 			return rs.getInt("PLAYER_Y");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
 		return 170;
 	}
-	public static int getNumberSessions(int world) {
+	public static int getNumberSessions(int world) throws GameDBException {
 		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
@@ -294,11 +300,11 @@ public class GameDB {
 			}
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha creado correctamente el usuario nuevo.");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
 		return -1; 
 	}
-	public static ResultSet getPositions() {
+	public static ResultSet getPositions() throws GameDBException {
 		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
@@ -306,9 +312,9 @@ public class GameDB {
 			rs = stmt.executeQuery("SELECT * FROM POSICIONES ;");
 			return rs;		
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
 		return null;
 	}
 	
-}
+}			

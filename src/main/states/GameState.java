@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import main.Game;
 import main.GameDB;
+import main.GameDBException;
 import main.Handler;
 import main.entities.creatures.Player;
 import main.worlds.World;
@@ -57,7 +58,7 @@ public class GameState extends State{
 				}				
 				unPause();
 				currentlySaving = false;
-			} catch (InterruptedException e) {
+			} catch (InterruptedException | GameDBException e) {
 				Thread.currentThread().interrupt();
 			}
 			}).start();

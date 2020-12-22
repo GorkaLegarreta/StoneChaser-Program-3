@@ -86,7 +86,7 @@ public class Window implements Serializable{
 			
 			@Override
 			public void windowClosing(WindowEvent e) {			
-				processTablePOSICIONES();
+				try {processTablePOSICIONES();} catch (GameDBException e1) {e1.printStackTrace();}
 			}
 			
 			@Override
@@ -116,7 +116,7 @@ public class Window implements Serializable{
 		return frame;
 	}
 	
-	public void processTablePOSICIONES() {
+	public void processTablePOSICIONES() throws GameDBException {
 		int cod_mundo;
 		int session;
 		int player_x;
@@ -163,9 +163,14 @@ public class Window implements Serializable{
 	private static void uploadPositionBinaryFile() {
 		try (ObjectInputStream is = new ObjectInputStream(new FileInputStream("datos.bin"))) {
 			for (int i=1; i<5; i++) {
-				if (GameDB.existsUserPosition(i)) {
-					Position p = (Position) is.readObject();
-					System.out.println(p);
+				try {
+					if (GameDB.existsUserPosition(i)) {
+						Position p = (Position) is.readObject();
+						System.out.println(p);
+					}
+				} catch (GameDBException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				
 			}
