@@ -17,47 +17,53 @@ public class KeyManager implements KeyListener{
 	}
 	
 	public void tick() {
-		// SE COMPRUEBA SI SE ESTAN PULSANDO LAS TECLAS
-		up = keys[KeyEvent.VK_W];
-		down = keys[KeyEvent.VK_S];
-		right = keys[KeyEvent.VK_D];
-		left = keys[KeyEvent.VK_A];
-		space = keys[KeyEvent.VK_SPACE];
-		e = keys[KeyEvent.VK_E];
-		f = keys[KeyEvent.VK_F];
-		r = keys[KeyEvent.VK_R];
+		// SE COMPRUEBA SI SE ESTAN PULSANDO LAS TECLAS SOLO SI NO ESTA EN PAUSE()
+		if(!pause) {
+			up = keys[KeyEvent.VK_W];
+			down = keys[KeyEvent.VK_S];
+			right = keys[KeyEvent.VK_D];
+			left = keys[KeyEvent.VK_A];
+			space = keys[KeyEvent.VK_SPACE];
+			e = keys[KeyEvent.VK_E];
+			f = keys[KeyEvent.VK_F];
+			r = keys[KeyEvent.VK_R];
+		} else {
+			up = false; down = false; left = false;  right = false; e = false; f = false; r = false; space = false;
+		}
+	}
+	/////////////////////////////////////////////////////////////////
+	//				METODOS DE KEY LISTENER						   //
+	/////////////////////////////////////////////////////////////////
+	public void keyReleased(KeyEvent e) {
+		keys[e.getKeyCode()] = false;				
+	}
+	public void keyTyped(KeyEvent e) {
+		
 	}
 	public void keyPressed(KeyEvent e) {
-		/*
-		 * While game is unPaused()
-		 */
-		
-		if(!pause) { 
-			keys[e.getKeyCode()] = true;
-		} else {
-			keys[e.getKeyCode()] = false;
-		}
-		/*
-		 * buttonP to pause() or unPause() game
-		 */
-		if (e.getKeyCode() == KeyEvent.VK_P && !GameState.currentlySaving) {
+		pauseUnPause(e);		
+		stoppedWhenPaused(e);	
+	}
+
+	/////////////////////////////////////////////////////////////////
+	//				METODOS PARA SIMPLIFICAR CODIGO				   //
+	/////////////////////////////////////////////////////////////////
+	private void pauseUnPause(KeyEvent ke) {
+		if (ke.getKeyCode() == KeyEvent.VK_P) {
 			if (pause) {
 				pause = false;
 			} else {
 				pause = true;
 			}
 		}
-		
 	}	
-	public void keyReleased(KeyEvent e) {
-		keys[e.getKeyCode()] = false;				
-	}
-	public void keyTyped(KeyEvent arg0) {
-		
-	}
-	
-
-	
+	private void stoppedWhenPaused(KeyEvent ke) {
+		if(pause) { 
+			keys[ke.getKeyCode()] = false;			
+		} else {
+			keys[ke.getKeyCode()] = true;			
+		}
+	}	
 //	ratio = 1000000000/4;
 //	
 //	now = System.nanoTime();			
