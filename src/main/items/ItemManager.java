@@ -48,7 +48,7 @@ public class ItemManager {
 		
 		madera = new Item("Wood", Assets.trunk, (int) (300 - handler.getGameCamera().getxOffset()), (int) (200 - handler.getGameCamera().getyOffset()), 18*2, 20*2, 1, 0, true, handler, inventory);
 		piedra = new Item("piedra", Assets.stone, (int) (50 - handler.getGameCamera().getxOffset()), (int) (20 - handler.getGameCamera().getyOffset()), 17*2, 10*2, 1, 1, true, handler, inventory);
-		cuero = new Item("cuero", Assets.trunk, (int) (300 - handler.getGameCamera().getxOffset()), (int) (200 - handler.getGameCamera().getyOffset()), 18, 20, 1, 2, false, handler, inventory);
+		cuero = new Item("cuero", Assets.trunk, (int) (400 - handler.getGameCamera().getxOffset()), (int) (300 - handler.getGameCamera().getyOffset()), 18*2, 20*2, 1, 2, true, handler, inventory);
 		cuerda = new Item("cuerda", Assets.trunk, 300, 200, 18, 20, 1, 2, false, handler, inventory);
 		piedraFuego = new Item("piedraFuego", Assets.trunk, 300, 200, 18, 20, 1, 2, false, handler, inventory);
 		piedraAgua = new Item("piedraAgua", Assets.trunk, 300, 200, 18, 20, 1, 2, false, handler, inventory);

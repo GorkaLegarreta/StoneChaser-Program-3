@@ -23,6 +23,9 @@ public class Item {
 	protected Color c;
 	protected BufferedImage img;
 	
+	//
+	public int xOffset, yOffset, isFixed = 1;
+	
 	//protected static final int DEFAULT_ITEM_WIDTH = 20, DEFAULT_ITEM_HEIGHT = 20;
 	
 	protected Rectangle itemBounds;
@@ -46,7 +49,6 @@ public class Item {
 	public void tick() {
 		
 		if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(itemBounds) && active) {
-			setInactive();
 			inv.addToInventory(this);
 			System.out.println(name + " has been picked up (hold E to open inventory, press F to drop)");			
 			
@@ -56,10 +58,19 @@ public class Item {
 	public void render(Graphics g) {
 		
 		
-		g.drawImage(img, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+		g.drawImage(img, itemX(), itemY(), width, height, null);
 		g.setColor(Color.WHITE);
-		g.drawString("" + itemQuantity, (int) (x + width - handler.getGameCamera().getxOffset()), (int) (y + height + 5 - handler.getGameCamera().getyOffset()));
+		g.drawString("" + itemQuantity, itemX(), itemY());
+	}
 	
+	public int itemX() {
+		xOffset = (int) handler.getGameCamera().getxOffset() * isFixed;
+		return x - xOffset;
+	}
+	
+	public int itemY() {
+		yOffset = (int) handler.getGameCamera().getyOffset() * isFixed;
+		return y - yOffset;
 	}
 		
 	public String getName() {
@@ -72,6 +83,14 @@ public class Item {
 
 	public int getX() {
 		return x;
+	}
+	
+	public void fixItemPosition(){
+		isFixed = 0;
+	}
+	
+	public void unFixItemPosition() {
+		isFixed = 1;
 	}
 
 	public void setPosition(int x, int y) {
@@ -119,6 +138,14 @@ public class Item {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 
 }

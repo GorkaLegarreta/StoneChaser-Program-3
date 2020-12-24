@@ -23,13 +23,17 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 	private int relativeX, relativeY = 0;
 	Rectangle kickRect;
 	
+	
+	//player dimensions
+	private static final int PLAYER_WIDTH = 31, PLAYER_HEIGHT = 70;
+	
 	public Player(Handler handler, float x, float y) {
-		super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
+		super(handler, x, y, PLAYER_WIDTH*2, PLAYER_HEIGHT*2);
 	
 		bounds.x = 0;
 		bounds.y = 0;
-		bounds.width = 62;
-		bounds.height = 140;
+		bounds.width = PLAYER_WIDTH*2;
+		bounds.height = PLAYER_HEIGHT*2;
 	}
 
 
@@ -153,8 +157,8 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 	}	
 
 	public void render(Graphics g) {
-//		g.setColor(Color.BLUE);
-//		g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()), (int) (y + bounds.y - handler.getGameCamera().getyOffset()), 62, 140);
+		g.setColor(Color.BLUE);
+		g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()), (int) (y + bounds.y - handler.getGameCamera().getyOffset()), 62, 140);
 		
 		g.drawImage(Assets.player, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), 62, 140, null);
 		

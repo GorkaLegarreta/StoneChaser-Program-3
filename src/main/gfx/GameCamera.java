@@ -15,8 +15,8 @@ public class GameCamera {
 	}
 	
 	public void centerOnEntity(Entity e) {
-		xOffset = e.getX() - handler.getWidth() / 2 - e.getWidth() / 2; //camera centered on the x coordinate of screen.
-		yOffset = e.getY() - handler.getHeight() / 2 - e.getHeight() / 2; //centered on the y.
+		xOffset = e.getX() - handler.getWidth() / 2 + e.getWidth()/2; //camera centered on the x coordinate of screen.
+		yOffset = e.getY() - handler.getHeight() / 2 + e.getHeight()/2; //centered on the y.
 		checkBlankSpace();
 	}
 	

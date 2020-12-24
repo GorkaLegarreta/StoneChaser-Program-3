@@ -74,9 +74,18 @@ public class Inventory {
 	}
 	
 	public void addToInventory(Item item) {
-		inventory.add(item);
-		lastGathered = item;
-		
+		if(inventory.size() < 2) {
+			inventory.add(item);
+			lastGathered = item;
+			//item.setPosition((int) (handler.getWidth()/2 + item.getWidth() - handler.getGameCamera().getxOffset()), (int) (handler.getHeight() - item.getHeight() - handler.getGameCamera().getyOffset()));
+			
+			if(inventory.size() == 1) item.setPosition(handler.getWidth()/2 - item.getWidth(), handler.getHeight() - item.getHeight());
+			else item.setPosition(handler.getWidth()/2 + item.getWidth(), handler.getHeight() - item.getHeight());
+			
+			
+			System.out.println(item.getWidth() + " " + item.getHeight());
+			item.fixItemPosition();
+		}else { System.out.println("The inventory is full");}
 	}
 
 	public Item getLastGathered() {
