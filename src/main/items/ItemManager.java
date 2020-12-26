@@ -30,7 +30,7 @@ public class ItemManager {
 	
 	
 	public static Item i, madera, piedra, hoja, hierro, piedraFuego, piedraAgua, piedraPlanta, cuero, cuerda, espadaHierro;
-	protected Item[] items = new Item[8];
+	protected ArrayList<Item> items = new ArrayList<>();
 	
 	protected Inventory inventory;
 	protected Crafting crafting;
@@ -46,23 +46,22 @@ public class ItemManager {
 	
 	public void initItems() {
 		
-		madera = new Item("Wood", Assets.trunk, (int) (300 - handler.getGameCamera().getxOffset()), (int) (200 - handler.getGameCamera().getyOffset()), 18*2, 20*2, 1, 0, true, handler, inventory);
-		piedra = new Item("piedra", Assets.stone, (int) (50 - handler.getGameCamera().getxOffset()), (int) (20 - handler.getGameCamera().getyOffset()), 17*2, 10*2, 1, 1, true, handler, inventory);
-		cuero = new Item("cuero", Assets.trunk, (int) (400 - handler.getGameCamera().getxOffset()), (int) (300 - handler.getGameCamera().getyOffset()), 18*2, 20*2, 1, 2, true, handler, inventory);
-		cuerda = new Item("cuerda", Assets.trunk, 300, 200, 18, 20, 1, 2, false, handler, inventory);
-		piedraFuego = new Item("piedraFuego", Assets.trunk, 300, 200, 18, 20, 1, 2, false, handler, inventory);
-		piedraAgua = new Item("piedraAgua", Assets.trunk, 300, 200, 18, 20, 1, 2, false, handler, inventory);
-		piedraPlanta = new Item("piedraPlanta", Assets.trunk, 300, 200, 18, 20, 1, 2, false, handler, inventory);
-		espadaHierro = new Item("espadaHierro", Assets.trunk, 300, 200, 18, 20, 1, 2, false, handler, inventory);
+		madera = new Item("Wood", Assets.trunk, 18*2, 20*2, 0, handler, inventory);
+		piedra = new Item("piedra", Assets.stone, 17*2, 10*2, 1, handler, inventory);
+//		cuero = new Item("cuero", Assets.trunk, 18*2, 20*2, 1, 2, false, handler, inventory);
+//		cuerda = new Item("cuerda", Assets.trunk, 18, 20, 1, 2, false, handler, inventory);
+//		piedraFuego = new Item("piedraFuego", Assets.trunk, 18, 20, 1, 2, false, handler, inventory);
+//		piedraAgua = new Item("piedraAgua", Assets.trunk, 18, 20, 1, 2, false, handler, inventory);
+//		piedraPlanta = new Item("piedraPlanta", Assets.trunk, 18, 20, 1, 2, false, handler, inventory);
+//		espadaHierro = new Item("espadaHierro", Assets.trunk, 18, 20, 1, 2, false, handler, inventory);
 		
-		items[0] = madera;
-		items[1] = piedra;
-		items[2] = cuero;
-		items[3] = cuerda;
-		items[4] = piedraFuego;
-		items[5] = piedraAgua;
-		items[6] = piedraPlanta;
-		items[7] = espadaHierro;
+		//offset ya implementado en createItem, poner posicion directamente. Si no restasemos el offset el item se pondría
+		//con una posición en respecto a lo que se ve en pantalla, no en respecto al mapa.
+		
+		items.add(madera.createItem(300, 200, 26));
+		items.add(madera.createItem(400, 250, 13));
+		items.add(madera.createItem(50, 120, 4));
+		items.add(piedra.createItem(100, 150, 2));
 		
 	}
 	

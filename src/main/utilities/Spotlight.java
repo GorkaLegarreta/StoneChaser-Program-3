@@ -31,6 +31,9 @@ public class Spotlight {
 		
 	}
 	
+	//TODO metodo que permita tener varias spotlight a la vez y que mantenga las propiedades de cada una (llamar al constructor
+	//y que devuelva un objeto spotlight).
+	
 	public void createSpotlight() {
 		
 		Point2D center = new Point2D.Float(sPx, sPy);		//cogemos la x y la y & hacemos un vector float 2d

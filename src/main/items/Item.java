@@ -30,20 +30,26 @@ public class Item {
 	
 	protected Rectangle itemBounds;
 	
-	public Item(String name, BufferedImage img, int x, int y, int width, int height, int itemQuantity, int id, boolean active, Handler handler, Inventory inv) {
+	public Item(String name, BufferedImage img, int width, int height, int id, Handler handler, Inventory inv) {
 		this.name = name;
-		this.x = x;
-		this.y = y;
+		this.img = img;
 		this.width = width;
 		this.height = height;
-		this.itemQuantity = itemQuantity;
-		this.active = active;
 		this.id = id;
 		this.handler = handler;
 		this.inv = inv;
-		this.img = img;
 		
 		itemBounds = new Rectangle(x, y, width, height);
+	}
+	
+	public Item createItem(int x, int y, int itemQuantity) {
+		
+		Item i = new Item(name, img, width, height, id, handler, inv);
+		
+		i.setPosition((int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()));
+		i.setItemQuantity(itemQuantity);
+		i.setActive();
+		return i;
 	}
 	
 	public void tick() {
@@ -112,12 +118,16 @@ public class Item {
 		this.itemBounds = itemBounds;
 	}
 
+	public void setItemQuantity(int itemQuantity) {
+		this.itemQuantity = itemQuantity;
+	}
+	
 	public int getItemQuantity() {
 		return itemQuantity;
 	}
 
-	public void setItemQuantity(int itemQuantity) {
-		this.itemQuantity = itemQuantity;
+	public void increaseItemQuantity(int increaseQuantity) {
+		this.itemQuantity += increaseQuantity;
 	}
 
 	public boolean isActive() {

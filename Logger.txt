@@ -1,16 +1,16 @@
-dic. 23, 2020 4:58:30 P. M. main.Game <clinit>
+dic. 26, 2020 2:58:06 P. M. main.Game <clinit>
 INFO: Logger y clases del StoneChaser inicializadas
-dic. 23, 2020 4:58:30 P. M. main.GameDB initSqlite
+dic. 26, 2020 2:58:07 P. M. main.GameDB initSqlite
 FINE: Se ha inicializado sqlite correctamente.
-dic. 23, 2020 4:58:31 P. M. main.GameDB createTableUSUARIO
+dic. 26, 2020 2:58:07 P. M. main.GameDB createTableUSUARIO
 FINE: Tabla cargada correctamente.
-dic. 23, 2020 4:58:31 P. M. main.GameDB createTablePOSICIONES
+dic. 26, 2020 2:58:07 P. M. main.GameDB createTablePOSICIONES
 FINE: Tabla cargada correctamente.
-dic. 23, 2020 4:58:31 P. M. main.Game <clinit>
+dic. 26, 2020 2:58:07 P. M. main.Game <clinit>
 FINE:  LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, FINE: 500
-dic. 23, 2020 4:58:32 P. M. main.states.MenuState worldIsloadedLogger
-INFO: Se ha iniciado como Mundo3
-dic. 23, 2020 4:58:32 P. M. main.states.MenuState worldIsloadedLogger
-CONFIG: GameState Cargada e inicializada en Configuracion Mundo3
-dic. 23, 2020 4:58:39 P. M. main.Window processTablePOSICIONES
+dic. 26, 2020 2:58:09 P. M. main.states.MenuState worldIsloadedLogger
+INFO: Se ha iniciado como Mundo1
+dic. 26, 2020 2:58:09 P. M. main.states.MenuState worldIsloadedLogger
+CONFIG: GameState Cargada e inicializada en Configuracion Mundo1
+dic. 26, 2020 3:01:24 P. M. main.Window processTablePOSICIONES
 FINE: Datos de las posiciones sobreescritos al cerrar la ventana
