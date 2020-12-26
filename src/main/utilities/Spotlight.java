@@ -9,7 +9,7 @@ import java.awt.geom.Point2D;
 
 public class Spotlight {
 
-	private int sPx, sPy;
+	private int sPx, sPy, sRx, sRy, width, height;
 	private Graphics g;
 	private Graphics2D g2d;
 	private float start, end, alpha;
@@ -17,9 +17,15 @@ public class Spotlight {
 	private float[] dist;
 	private Color color;
 	
-	public Spotlight(int sPx, int sPy, float start, float end, int radius, float alpha, Color color, Graphics g) {
+	
+	
+	public Spotlight(int sPx, int sPy, int sRx, int sRy, int width, int height, float start, float end, int radius, float alpha, Color color, Graphics g) {
 		this.sPx = sPx;
 		this.sPy = sPy;
+		this.sRx = sRx;
+		this.sRy = sRy;
+		this.width = width;
+		this.height = height;
 		this.start = start;
 		this.end = end;
 		this.radius = radius;
@@ -30,9 +36,6 @@ public class Spotlight {
 		createSpotlight();
 		
 	}
-	
-	//TODO metodo que permita tener varias spotlight a la vez y que mantenga las propiedades de cada una (llamar al constructor
-	//y que devuelva un objeto spotlight).
 	
 	public void createSpotlight() {
 		
@@ -48,7 +51,7 @@ public class Spotlight {
 		
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));	//modificar el valor a la dcha de SRC_OVER para cambiar la opacidad.
 		
-		g2d.fillRect(0, 0, 700, 400);
+		g2d.fillRect(sRx, sRy, width, height);
 		
 //			float[] dist = {start, 0.5f, 0,7f};
 //			Color[] colors = {new Color(0, 0, 0, 0), Color.BLACK};

@@ -159,8 +159,8 @@ public class Game implements Runnable{
 		
 		if(enableSpotlight) { 
 			
-			craftingTableSpotlight = new Spotlight(getWidth()/2, getHeight()/2, 0.5f, 0.6f, 350, 0.5f, new Color(0, 0, 0, 0), g);
-			//inventorySpotlight1 = new Spotlight(getWidth()/2 - 20, getHeight()/2 + 80, 0.5f, 0.6f, 100, 0.5f, new Color(0, 0, 0, 0), g);
+			craftingTableSpotlight = new Spotlight(getWidth()/2, getHeight()/2 - 50, 0, 0, 700, 300, 0.5f, 0.6f, 250, 0.5f, new Color(0, 0, 0, 0), g);
+			inventorySpotlight1 = new Spotlight(getWidth()/2, 320 , 0, 300, 700, 100, 0.5f, 0.6f, 180, 0.5f, new Color(0, 0, 0, 0), g);
 			//inventorySpotlight2 = new Spotlight(getWidth()/2, getHeight()/2 + 80, 0.5f, 0.6f, 100, 0.5f, new Color(0, 0, 0, 0), g);
 			//inventorySpotlight3 = new Spotlight(getWidth()/2 + 20, getHeight()/2 + 80, 0.5f, 0.6f, 100, 0.5f, new Color(0, 0, 0, 0), g);
 		}
