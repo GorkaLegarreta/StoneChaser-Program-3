@@ -49,7 +49,7 @@ public class Crafting {
 	public void render(Graphics g) {
 		if(c == true) {
 			g.drawImage(Assets.inventory, (handler.getWidth()/2) - (143), (handler.getHeight()/2) - (185), craftingTableWidth + 80, craftingTableHeight + 80, null);
-			g.drawImage(Assets.inventorySlots, (int) ((handler.getWidth()/2) - (invSlotsWidth) + 85), (int)((handler.getHeight()/2) + 85), (int) (invSlotsWidth*1.2), (int) (invSlotsHeight*1.2), null);
+			g.drawImage(Assets.inventarioDesplegado, (int) (handler.getWidth()/2 - 384/2), (int) (handler.getHeight() - 61), 384, 61, null);
 			
 		}
 	}
