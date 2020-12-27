@@ -309,12 +309,22 @@ public class GameDB {
 				Statement stmt = conn.createStatement();				
 			){
 			
-			rs = stmt.executeQuery("SELECT * FROM POSICIONES ;");
+			rs = stmt.executeQuery("SELECT * FROM POSICIONES;");
 			return rs;		
 		} catch (SQLException e) {
-			//throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
-		return null;
+	}
+	public static ResultSet getPositions(int world) throws GameDBException {
+		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();				
+			){
+			
+			rs = stmt.executeQuery(String.format("SELECT * FROM POSICIONES WHERE COD_MUNDO = %d;", world));
+			return rs;		
+		} catch (SQLException e) {
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
+		}
 	}
 	
 }			
