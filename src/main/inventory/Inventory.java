@@ -70,25 +70,24 @@ public class Inventory {
 	
 	public void render(Graphics g) {
 		
+		for (Item i : inventory) {
+			i.render(g);
+		}
+		
 	}
 	
 	public void addToInventory(Item item) {
 		if(inventory.size() <= 2) {
 			itemAdder(item);
-			lastGathered = item;
-			
-			if(inventory.size() == 1) item.setPosition(handler.getWidth()/2 - item.getWidth(), handler.getHeight() - item.getHeight());
-			else item.setPosition(handler.getWidth()/2 + item.getWidth(), handler.getHeight() - item.getHeight());
 						
 			//TODO otro setposition en el que se le pueda pasar una posicion directamente, y tengamos posiciones ya guardadas de
 			//distintos slots del inventario, entonces cuando se vaya a guardar que se compruebe la posicion en la que se deba guardar.
 			
-			item.fixItemPosition();
 		}else { System.out.println("The inventory is full");}
 	}
 	
 	public void itemAdder(Item i) {
-		//siempre va a funcionar con inventory
+		//siempre va a funcionar con inventory, por eso le pasamos sólo el item como parámetro.
 		
 		Item alreadyInInv = null;
 		int index = -1;
@@ -109,7 +108,18 @@ public class Inventory {
 			inventory.get(index).increaseItemQuantity(i.getItemQuantity());
 			i.setInactive();
 		}
-		else if(inventory.size() < 2) inventory.add(i);
+		else if(inventory.size() < 2) {
+			inventory.add(i);
+			
+			i.setInactive();
+			
+			if(inventory.size() == 1) i.setPosition(handler.getWidth()/2 - i.getWidth() - 12, handler.getHeight() - i.getHeight() - 10);
+			else i.setPosition(handler.getWidth()/2 + i.getWidth() - 20, handler.getHeight() - i.getHeight() - 10);
+			
+			lastGathered = i;
+			i.fixItemPosition();
+			
+		}else { System.out.println("The inventory is full"); }
 		
 	}
 

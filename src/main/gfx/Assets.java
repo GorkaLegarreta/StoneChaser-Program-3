@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 public class Assets {
 	
-	public static BufferedImage player, inventory, trunk, stone, inventorySlots, worldTest, inventarioPlegado, inventarioDesplegado;
+	public static BufferedImage player, sword, inventory, trunk, stone, inventorySlots, worldTest, inventarioPlegado, inventarioDesplegado;
 	
 	public static void init() {
 		
@@ -16,8 +16,10 @@ public class Assets {
 		SpriteSheet invplgdo = new SpriteSheet(ImageLoader.loadImage("/textures/inventarioPlegado.png"));
 		SpriteSheet invdesplgdo = new SpriteSheet(ImageLoader.loadImage("/textures/inventarioDesplegado.png"));
 		SpriteSheet wrldTst = new SpriteSheet(ImageLoader.loadImage("/textures/worldTest.png"));
+		SpriteSheet swrd = new SpriteSheet(ImageLoader.loadImage("/textures/sword.png"));
 		
 		player = plyr.crop(5, 6, 31, 70);
+		sword = swrd.crop(0, 0, 20, 20);
 		inventory = inv.crop(0, 0, 200, 186);
 		inventarioPlegado = invplgdo.crop(0, 0, 142, 61);
 		inventarioDesplegado = invdesplgdo.crop(0, 0, 384, 61);
