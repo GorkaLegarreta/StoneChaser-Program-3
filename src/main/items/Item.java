@@ -63,10 +63,10 @@ public class Item {
 	
 	public void render(Graphics g) {
 		
-		
-		g.drawImage(img, itemX(), itemY(), width, height, null);
-		g.setColor(Color.WHITE);
-		g.drawString("" + itemQuantity, itemX(), itemY());
+			g.drawImage(img, itemX(), itemY(), width, height, null);
+			g.setColor(Color.WHITE);
+			g.drawString("" + itemQuantity, itemX(), itemY());
+	
 	}
 	
 	public int itemX() {

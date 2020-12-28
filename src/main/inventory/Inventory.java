@@ -13,6 +13,7 @@ import main.items.Item;
 public class Inventory {
 
 	private long dropNow, enableDrop, lastDrop, noDropNow, noDropBefore, dropUnableMsg;
+	private boolean renderEnabler = false;
 	
 	protected BufferedImage inventoryImg;
 	
@@ -70,14 +71,19 @@ public class Inventory {
 	
 	public void render(Graphics g) {
 		
-		for (Item i : inventory) {
-			i.render(g);
+		if(inventory.size() >= 1) inventory.get(0).render(g);
+		if(inventory.size() >= 2) inventory.get(1).render(g);
+		
+		if(renderEnabler) {
+			for (int i = 2; i < inventory.size(); i++) {
+				inventory.get(i).render(g);
+			}
 		}
 		
 	}
 	
 	public void addToInventory(Item item) {
-		if(inventory.size() <= 2) {
+		if(inventory.size() <= 6) {
 			itemAdder(item);
 						
 			//TODO otro setposition en el que se le pueda pasar una posicion directamente, y tengamos posiciones ya guardadas de
@@ -107,14 +113,31 @@ public class Inventory {
 		if(alreadyInInv != null) {
 			inventory.get(index).increaseItemQuantity(i.getItemQuantity());
 			i.setInactive();
+			lastGathered = inventory.get(index);
 		}
-		else if(inventory.size() < 2) {
-			inventory.add(i);
+		else if(inventory.size() <= 1) {
+			inventory.add(i);		//al entrar en el if el tamaño del inventario será como mínimo 1 y como max 2 gracias al add(i);
 			
 			i.setInactive();
 			
-			if(inventory.size() == 1) i.setPosition(handler.getWidth()/2 - i.getWidth() - 12, handler.getHeight() - i.getHeight() - 10);
+			if(inventory.size() == 1) i.setPosition(handler.getWidth()/2 - i.getWidth() - 8, handler.getHeight() - i.getHeight() - 10);
 			else i.setPosition(handler.getWidth()/2 + i.getWidth() - 20, handler.getHeight() - i.getHeight() - 10);
+			
+			lastGathered = i;
+			i.fixItemPosition();
+			
+		}else if(inventory.size() >= 2 && inventory.size() <= 5) {
+			inventory.add(i);
+			
+			i.setInactive();			
+			
+			System.out.println(inventory.size());
+			
+			if(inventory.size() <= 3) i.setPosition(handler.getWidth()/2 - i.getWidth() - 70, handler.getHeight() - i.getHeight() - 10);
+			else if(inventory.size() <= 4) i.setPosition(handler.getWidth()/2 - i.getWidth() - 130, handler.getHeight() - i.getHeight() - 10);
+			else if(inventory.size() <= 5) i.setPosition(handler.getWidth()/2 - i.getWidth() + 112, handler.getHeight() - i.getHeight() - 10);
+			else i.setPosition(handler.getWidth()/2 - i.getWidth() + 172, handler.getHeight() - i.getHeight() - 10);
+			
 			
 			lastGathered = i;
 			i.fixItemPosition();
@@ -130,6 +153,14 @@ public class Inventory {
 
 	public void setLastGathered(Item lastGathered) {
 		this.lastGathered = lastGathered;
+	}
+	
+	public void displayFullInv() {
+		this.renderEnabler = true;
+	}
+	
+	public void displayShortInv() {
+		this.renderEnabler = false;
 	}
 	
 }

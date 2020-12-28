@@ -65,4 +65,12 @@ public class World {
 	public EntityManager getEntityManager() {
 		return entityManager;
 	}
+	
+	public ItemManager getItemManager() {
+		return im;
+	}
+	
+	public Inventory getInventory() {
+		return im.getInventory();
+	}
 }

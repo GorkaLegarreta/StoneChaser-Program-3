@@ -5,12 +5,15 @@ import java.util.Scanner;
 
 import main.Handler;
 import main.gfx.Assets;
+import main.inventory.Inventory;
 import main.items.Item;
 import main.items.ItemManager;
 
 public class Crafting {
 
 	protected Handler handler;
+	
+	private Inventory inv;
 	
 	private Item resultadoCrafteo;
 	
@@ -64,6 +67,7 @@ public class Crafting {
 			if(update >= 1) {
 				before = System.nanoTime();				
 				c = true;
+				handler.getWorld().getInventory().displayFullInv();
 				update = 0;
 				handler.spotlightEnabler();
 				callCraft = true;
@@ -78,6 +82,7 @@ public class Crafting {
 			if(update >= 1) {
 				before = System.nanoTime();				
 				c = false;
+				handler.getWorld().getInventory().displayShortInv();
 				update = 0;
 				handler.spotlightDisabler();
 				callCraft = false;
