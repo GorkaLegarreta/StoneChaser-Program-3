@@ -7,7 +7,7 @@ import main.states.GameState;
 public class KeyManager implements KeyListener{
 
 	private static boolean[] keys;
-	public boolean up, down, left,  right, e, f, r, space = false;
+	public boolean up, down, left,  right, e, f, r, one, two, space = false;
 	public static boolean pause = false;
 	
 	public KeyManager() {
@@ -25,8 +25,10 @@ public class KeyManager implements KeyListener{
 			e = keys[KeyEvent.VK_E];
 			f = keys[KeyEvent.VK_F];
 			r = keys[KeyEvent.VK_R];
+			one = keys[KeyEvent.VK_1];
+			two = keys[KeyEvent.VK_2];
 		} else {
-			up = false; down = false; left = false;  right = false; e = false; f = false; r = false; space = false;
+			for(boolean b : keys) b = false;
 		}
 	}
 	/////////////////////////////////////////////////////////////////

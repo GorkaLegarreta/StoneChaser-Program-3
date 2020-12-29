@@ -24,7 +24,7 @@ public class InventoryTest {
 		
 		inv.addToInventory(ItemManager.madera);
 		
-		if(inv.lastGathered.getName().equals("madera"))result = true;
+		if(inv.selectedItem.getName().equals("madera"))result = true;
 		else result = false;
 		
 		assertEquals(result, true);

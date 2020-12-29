@@ -37,7 +37,7 @@ public class ItemManager {
 		madera = new Item("madera", Assets.trunk, (int) (18*2), (int) (20*2), 0, handler, inventory);
 		piedra = new Item("piedra", Assets.stone, (int) (17*2), (int) (10*2), 1, handler, inventory);
 		cuero = new Item("cuero", Assets.cuero, (int) (25*1.75), (int) (23*1.75), 2, handler, inventory);
-		cuerda = new Item("cuerda", Assets.cuerda, (int) (23*2), (int) (32*2), 3, handler, inventory);
+		cuerda = new Item("cuerda", Assets.cuerda, (int) (23*2), (int) (23*2), 3, handler, inventory);
 		hierro = new Item("hierro", Assets.hierro, (int) (17*2), (int) (20*2), 4, handler, inventory);
 		palo = new Item("palo", Assets.palo, (int) (18*2), (int) (19*2), 5, handler, inventory);
 		casco = new Item("casco", Assets.casco, (int) (27*2), (int) (28*2), 6, handler, inventory);
@@ -94,6 +94,10 @@ public class ItemManager {
 	
 	public Inventory getInventory() {
 		return inventory;
+	}
+	
+	public Crafting getCrafting() {
+		return crafting;
 	}
 	
 }

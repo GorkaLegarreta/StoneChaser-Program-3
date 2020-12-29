@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import main.Handler;
+import main.crafting.Crafting;
 import main.entities.EntityManager;
 import main.entities.creatures.BasicEnemy;
 import main.entities.creatures.Player;
@@ -72,5 +73,9 @@ public class World {
 	
 	public Inventory getInventory() {
 		return im.getInventory();
+	}
+	
+	public Crafting getCrafting() {
+		return im.getCrafting();
 	}
 }

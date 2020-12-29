@@ -21,7 +21,8 @@ public class Crafting {
 	
 	private Scanner scIn = new Scanner(System.in);
 	
-	private int item, posicion, craftingTableWidth = 200, craftingTableHeight = 186, invSlotsWidth = 219, invSlotsHeight = 75;
+	//anchura y altura real de la mesa de crafteo: 200 y 186 respectivamente.
+	private int item, posicion, craftingTableWidth = 280, craftingTableHeight = 266, invSlotsWidth = 219, invSlotsHeight = 75, craftingTableX, craftingTableY, inventoryX, inventoryY;
 	
 	private boolean c = false, callCraft = false;
 
@@ -35,6 +36,10 @@ public class Crafting {
 	
 	public void init() {
 		crafteo = new Item[9];
+		craftingTableX = (handler.getWidth()/2) - (143); 
+		craftingTableY = (handler.getHeight()/2) - (185);
+		inventoryX = (int) (handler.getWidth()/2 - 384/2);
+		inventoryY = (int) (handler.getHeight() - 61);
 	}
 	
 	public void craft() {
@@ -51,15 +56,15 @@ public class Crafting {
 	
 	public void render(Graphics g) {
 		if(c == true) {
-			g.drawImage(Assets.inventory, (handler.getWidth()/2) - (143), (handler.getHeight()/2) - (185), craftingTableWidth + 80, craftingTableHeight + 80, null);
-			g.drawImage(Assets.inventarioDesplegado, (int) (handler.getWidth()/2 - 384/2), (int) (handler.getHeight() - 61), 384, 61, null);
+			g.drawImage(Assets.craftingTable, craftingTableX, craftingTableY, craftingTableWidth, craftingTableHeight, null);
+			g.drawImage(Assets.inventarioDesplegado, inventoryX, inventoryY, 384, 61, null);
 			
 		}
 	}
 	
 	public void tick() {
 		
-		if(handler.getKeyManager().r && c == false) {		//update solo funciona cuando se activa el inventario, entonces no llegará a ser un valor tan alto que crashee el programa.
+		if(handler.getKeyManager().e && c == false) {		//update solo funciona cuando se activa el inventario, entonces no llegará a ser un valor tan alto que crashee el programa.
 															
 			now = System.nanoTime();			
 			update += (now - before)/ratio;									
@@ -74,7 +79,7 @@ public class Crafting {
 				handler.getWorld().getEntityManager().getPlayer().setPlayerInactive();
 			}			
 			
-		}else if(handler.getKeyManager().r && c == true) {
+		}else if(handler.getKeyManager().e && c == true) {
 			
 			now = System.nanoTime();			
 			update += (now - before)/ratio;									
@@ -94,12 +99,23 @@ public class Crafting {
 		if(callCraft) {
 			craft();
 			
-		}
-		
-		
-		
+		}	
 	}
-	
-	
+
+	public int getCraftingTableX() {
+		return craftingTableX;
+	}
+
+	public int getCraftingTableY() {
+		return craftingTableY;
+	}
+
+	public int getInventoryX() {
+		return inventoryX;
+	}
+
+	public int getInventoryY() {
+		return inventoryY;
+	}
 	
 }

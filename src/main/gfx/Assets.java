@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 public class Assets {
 	
-	public static BufferedImage player, sword, cuerda, hierro, palo, casco, inventory, trunk, stone, cuero, inventorySlots, worldTest, inventarioPlegado, inventarioDesplegado;
+	public static BufferedImage player, sword, cuerda, hierro, palo, casco, craftingTable, trunk, stone, cuero, inventorySlots, worldTest, inventarioPlegado, inventarioDesplegado, itemPointers;
 	
 	public static void init() {
 		
@@ -22,15 +22,17 @@ public class Assets {
 		SpriteSheet hrro = new SpriteSheet(ImageLoader.loadImage("/textures/hierro.png"));
 		SpriteSheet plo = new SpriteSheet(ImageLoader.loadImage("/textures/palo.png"));
 		SpriteSheet csco = new SpriteSheet(ImageLoader.loadImage("/textures/casco.png"));
+		SpriteSheet pntrs = new SpriteSheet(ImageLoader.loadImage("/textures/itemPointers.png"));		
 		
+		itemPointers = pntrs.crop(0, 0, 66, 64);
 		casco = csco.crop(0, 0, 27, 28);
 		palo = plo.crop(0, 0, 18, 19);
 		hierro = hrro.crop(0, 0, 17, 20);
 		cuero = cro.crop(0, 0, 25, 23);
-		cuerda = rope.crop(0, 0, 23, 32);
+		cuerda = rope.crop(0, 0, 23, 23);
 		player = plyr.crop(5, 6, 31, 70);
 		sword = swrd.crop(0, 0, 20, 20);
-		inventory = inv.crop(0, 0, 200, 186);
+		craftingTable = inv.crop(0, 0, 200, 186);
 		inventarioPlegado = invplgdo.crop(0, 0, 142, 61);
 		inventarioDesplegado = invdesplgdo.crop(0, 0, 384, 61);
 		trunk = trnk.crop(0, 0, 18, 20);
