@@ -13,8 +13,6 @@ public class Crafting {
 
 	protected Handler handler;
 	
-	private Inventory inv;
-	
 	private Item resultadoCrafteo;
 	
 	private Item[] crafteo;
@@ -58,7 +56,6 @@ public class Crafting {
 		if(c == true) {
 			g.drawImage(Assets.craftingTable, craftingTableX, craftingTableY, craftingTableWidth, craftingTableHeight, null);
 			g.drawImage(Assets.inventarioDesplegado, inventoryX, inventoryY, 384, 61, null);
-			
 		}
 	}
 	
@@ -75,6 +72,8 @@ public class Crafting {
 				handler.getWorld().getInventory().displayFullInv();
 				update = 0;
 				handler.spotlightEnabler();
+				handler.getWorld().getInventory().stopDrawBasicInv();
+				handler.getWorld().getInventory().moveItemsEnabled();
 				callCraft = true;
 				handler.getWorld().getEntityManager().getPlayer().setPlayerInactive();
 			}			
@@ -90,6 +89,8 @@ public class Crafting {
 				handler.getWorld().getInventory().displayShortInv();
 				update = 0;
 				handler.spotlightDisabler();
+				handler.getWorld().getInventory().drawBasicInv();
+				handler.getWorld().getInventory().moveItemsDisabled();
 				callCraft = false;
 				handler.getWorld().getEntityManager().getPlayer().setPlayerActive();
 			}

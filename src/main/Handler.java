@@ -3,6 +3,7 @@ package main;
 import main.gfx.GameCamera;
 import main.input.KeyManager;
 import main.input.MouseManager;
+import main.input.ScreenMouseMovement;
 import main.worlds.World;
 
 public class Handler {
@@ -29,6 +30,10 @@ public class Handler {
 	
 	public MouseManager getMouseManager() {
 		return game.getMouseManager();
+	}
+	
+	public ScreenMouseMovement getMouseMovement() {
+		return game.getMouseMovement();
 	}
 	
 	public GameCamera getGameCamera() {

@@ -162,8 +162,6 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 		
 		g.drawImage(Assets.player, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), 62, 140, null);
 		
-		
-		g.drawImage(Assets.inventarioPlegado, (int) (handler.getWidth()/2 - 142/2), (int) (handler.getHeight() - 61), 142, 61, null);
 		// ESTO HACE QUE SE VEA KICKRECT
 		if(kickRect != null && handler.getKeyManager().space) { 
 			g.setColor(Color.BLUE);

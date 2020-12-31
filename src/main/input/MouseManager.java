@@ -6,13 +6,13 @@ import java.awt.event.MouseMotionListener;
 
 public class MouseManager implements MouseListener, MouseMotionListener{
 
-	private boolean leftPressed;
-	private boolean rightPressed;
-	private int mouseX, clickX;
-	private int mouseY, clickY;
+	private boolean leftPressed, rightPressed, mouseExit = false, hasDragged = false;
+	private int mouseX, clickX, dragX;
+	private int mouseY, clickY, dragY;
 	
 	public void mouseDragged(MouseEvent e) {
-		
+		dragX = e.getX();
+		dragY = e.getY();
 	}
 	
 	public void mouseMoved(MouseEvent e) {
@@ -30,13 +30,14 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 
 	
 	public void mouseEntered(MouseEvent e) {
-		
+		mouseExit = false;
 		
 	}
 
 	
 	public void mouseExited(MouseEvent e) {
-		
+		//si nuestro ratón sale de la pantalla se runnea éste código
+		mouseExit = true;
 		
 	}
 	
@@ -74,12 +75,40 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 		return mouseY;
 	}
 	
+	public void setMouseX(int x) {
+		this.mouseX = x;
+	}
+	
+	public void setMouseY(int y) {
+		this.mouseY = y;
+	}
+	
 	public int getClickX() {
 		return clickX;
 	}
 	
 	public int getClickY() {
 		return clickY;
+	}
+
+	public int getDragX() {
+		return dragX;
+	}
+
+	public int getDragY() {
+		return dragY;
+	}
+	
+	public void setDragX(int x) {
+		this.dragX = x;  
+	}
+
+	public void setDragY(int y) {
+		this.dragY = y;
+	}
+	
+	public boolean isMouseExit() {
+		return mouseExit;
 	}
 
 }

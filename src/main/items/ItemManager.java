@@ -40,7 +40,7 @@ public class ItemManager {
 		cuerda = new Item("cuerda", Assets.cuerda, (int) (23*2), (int) (23*2), 3, handler, inventory);
 		hierro = new Item("hierro", Assets.hierro, (int) (17*2), (int) (20*2), 4, handler, inventory);
 		palo = new Item("palo", Assets.palo, (int) (18*2), (int) (19*2), 5, handler, inventory);
-		casco = new Item("casco", Assets.casco, (int) (27*2), (int) (28*2), 6, handler, inventory);
+		casco = new Item("casco", Assets.casco, (int) (27*1.75), (int) (28*1.75), 6, handler, inventory);
 		//palo = new Item("pechera", Assets.pechera, (int) (18*2), (int) (19*2), 3, handler, inventory);
 		//palo = new Item("pantalones", Assets.pantalones, (int) (18*2), (int) (19*2), 3, handler, inventory);
 		//palo = new Item("botas", Assets.botas, (int) (18*2), (int) (19*2), 3, handler, inventory);

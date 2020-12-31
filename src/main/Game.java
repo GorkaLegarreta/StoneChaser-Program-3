@@ -16,6 +16,7 @@ import main.gfx.Assets;
 import main.gfx.GameCamera;
 import main.input.KeyManager;
 import main.input.MouseManager;
+import main.input.ScreenMouseMovement;
 import main.states.GameState;
 import main.states.MenuState;
 import main.states.State;
@@ -54,6 +55,8 @@ public class Game implements Runnable{
 	//Input
 	private KeyManager keyManager;
 	private MouseManager mouseManager;
+	private ScreenMouseMovement mouseMovement; //necesaria ya que te da la posicion del raton independientemente de si se está draggeando (click a la vez que se mueve)
+											   //o si se está moviendo sin click, en awt estos son eventos distintos y da problemas en el inventario.
 	
 	//Camera
 	private GameCamera gameCamera;
@@ -106,7 +109,7 @@ public class Game implements Runnable{
 		this.height = height;
 		this.title = title;
 		keyManager = new KeyManager();
-		mouseManager = new MouseManager();		
+		mouseManager = new MouseManager();
 		//LOGGER
 		LOGGER.log(Level.FINEST,"Objeto Game creada en el constructor");		
 	}
@@ -118,6 +121,8 @@ public class Game implements Runnable{
 		window.getFrame().addMouseMotionListener(mouseManager);
 		window.getCanvas().addMouseListener(mouseManager);
 		window.getCanvas().addMouseMotionListener(mouseManager);
+		mouseMovement = new ScreenMouseMovement(window.getCanvas());
+		
 		Assets.init();		
 		handler = new Handler(this); //coge el objeto de esta clase
 		gameCamera = new GameCamera(handler, 0, 0);
@@ -135,6 +140,7 @@ public class Game implements Runnable{
 //		sPy += -velY;
 		
 		keyManager.tick();
+		mouseMovement.tick();
 		
 		if(State.getState()!=null && State.getState().equals(menuState)) {
 			menuState.tick();
@@ -228,6 +234,10 @@ public class Game implements Runnable{
 	
 	public MouseManager getMouseManager(){
 		return mouseManager;
+	}
+	
+	public ScreenMouseMovement getMouseMovement() {
+		return mouseMovement;
 	}
 	
 	public GameCamera getGameCamera() {

@@ -4,12 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.logging.Level;
 
-import main.Game;
 import main.Handler;
-import main.gfx.Assets;
 import main.inventory.Inventory;
+import main.utilities.Position;
 
 public class Item {
 
@@ -55,9 +53,7 @@ public class Item {
 	public void tick() {
 		
 		if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(itemBounds) && active) {
-			inv.addToInventory(this);
-			System.out.println(name + " has been picked up (hold E to open inventory, press F to drop)");			
-			
+			inv.addToInventory(this);		
 		}
 	}
 	
@@ -104,6 +100,11 @@ public class Item {
 		this.y = y;
 		itemBounds.x = x;
 		itemBounds.y = y;
+	}
+	
+	public void setPosition(Position p) {
+		this.x = p.getX();
+		this.y = p.getY();
 	}
 
 	public int getY() {
