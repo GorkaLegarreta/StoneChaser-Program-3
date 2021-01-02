@@ -2,13 +2,68 @@ package main.states;
 
 import static org.junit.Assert.*;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
+import main.Game;
+import main.Handler;
 
 public class StateTest {
-
+	
+	
+	
+	@BeforeClass
+	public static void beforeClass() {
+		System.out.println("Before Class");	
+		Game game = new Game("StoneChaser", 700, 400);
+		Handler handler = new Handler(game);
+//		MenuState menuState = new MenuState(handler);
+//		GameState gameState = new GameState(handler);
+	}
+	@Before
+	public void before() {
+		System.out.println("Before");
+		Game game = new Game("StoneChaser", 700, 400);
+		Handler handler = new Handler(game);
+//		MenuState menuState = new MenuState(handler);
+//		GameState gameState = new GameState(handler);
+	}
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void gameStateTest() {
+		System.out.println("Test");
+		Game game = new Game("StoneChaser", 700, 400);
+		Handler handler = new Handler(game);
+		GameState gameState = new GameState(handler);
+		//assertEquals(gameState,handler.getGame().gameState);
 	}
 
+	@Test
+	public void menuStateTest() {		
+		System.out.println("Test");
+		Game game = new Game("StoneChaser", 700, 400);
+		Handler handler = new Handler(game);
+		MenuState menuState = new MenuState(handler);
+		//assertEquals(menuState,handler.getGame().menuState);
+	}
+	
+	@After
+	public void after() {
+		System.out.println("After");
+		Game game = new Game("StoneChaser", 700, 400);
+		Handler handler = new Handler(game);
+		MenuState menuState = new MenuState(handler);
+		GameState gameState = new GameState(handler);
+	}
+	
+	@AfterClass
+	public static void afterClass() {
+		System.out.println("AfterClass");
+		Game game = new Game("StoneChaser", 700, 400);
+		Handler handler = new Handler(game);
+		MenuState menuState = new MenuState(handler);
+		GameState gameState = new GameState(handler);
+	}
 }

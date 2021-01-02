@@ -6,13 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
 
 import main.states.GameState;
 
 public class GameDB {
-	//VARIABLES DE CLASE
-	private static Statement stmt; //PARA CREAR LAS SENTENCIAS DE SQL
+	//TODO ¿QUÉ LE OCURRE A LA VARIABLE CONN? NO DEJARLO ASI	
+	private static Statement stmt; //PARA CREAR LAS SENTENCIAS DE SQL	
 	private static Connection conn; //PARA CREAR LA CONEXION DE LA BD
 	private static ResultSet rs; //COGER LA INFO DE LAS TABLAS
 	private static GameDB instance = null; //INSTANCIAR LA CLASE 
@@ -23,8 +22,7 @@ public class GameDB {
 		if (instance == null) {
 			instance = new GameDB();
 			instance.initSqlite();
-			instance.createTableUSUARIO();
-			instance.createTablePOSICIONES();
+			instance.createTableUSERS();
 		}
 		return instance;
 	}	
@@ -40,30 +38,18 @@ public class GameDB {
 	/////////////////////////////////////////////////////////////////
 	//				METODOS PARA CREAR TABLAS					   //
 	/////////////////////////////////////////////////////////////////
-	public void createTableUSUARIO() throws GameDBException {
+	public void createTableUSERS() throws GameDBException {
 		try (	Connection conn= DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
-			// #COD_MUNDO	NOMBRE	SESIONES
-			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS USUARIO ( COD_MUNDO INT(1) NOT NULL, NOMBRE VARCHAR(15),"
-					+ "SESIONES INT(2), PRIMARY KEY (COD_MUNDO) );");			
+			// #USER_CODE	USERNAME	SESSIONS	PLAYER_X	PLAYER_Y
+			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS USERS ( USER_CODE INT(1) NOT NULL, USERNAME VARCHAR(15),"
+								+ "SESSIONS INT(2), PLAYER_X INT(3), PLAYER_Y INT(3), PRIMARY KEY (USER_CODE) );");			
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Tabla cargada correctamente.");
 		} catch (SQLException e) {
 			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
 		
-	}
-	public void createTablePOSICIONES() throws GameDBException {
-		try (	Connection conn= DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
-				Statement stmt = conn.createStatement();				
-			){
-			// #COD_MUNDO		SESION	 PLAYER_X 	PLAYER_Y 	
-			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS POSICIONES ( COD_MUNDO INT(1) NOT NULL, SESION INT(2) NOT NULL, PLAYER_X INT(3) NOT NULL,"
-					+ "PLAYER_Y INT(3) NOT NULL, PRIMARY KEY (COD_MUNDO,SESION), FOREIGN KEY (COD_MUNDO) REFERENCES USUARIO (COD_MUNDO) ON DELETE CASCADE);");			
-			Game.LOGGER.log(Game.LOGGER.getLevel(),"Tabla cargada correctamente.");
-		} catch (SQLException e) {
-			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
-		}
 	}
 	/////////////////////////////////////////////////////////////////
 	//				METODOS PARA CREAR USUARIOS					   //
@@ -79,9 +65,9 @@ public class GameDB {
 				Statement stmt = conn.createStatement();				
 			){
 			
-			rs = stmt.executeQuery("SELECT * FROM USUARIO;");			
+			rs = stmt.executeQuery("SELECT * FROM USERS;");			
 			while(rs.next()) {
-				if (world == rs.getInt("COD_MUNDO"))
+				if (world == rs.getInt("USER_CODE"))
 					return true; 
 			}
 		} catch (SQLException e) {
@@ -100,7 +86,7 @@ public class GameDB {
 				Statement stmt = conn.createStatement();				
 			){
 			
-			stmt.executeUpdate(String.format("INSERT INTO USUARIO VALUES(%d,'%s',0);",world, name));
+			stmt.executeUpdate(String.format("INSERT INTO USERS VALUES(%d,'%s',0,null,null);",world, name));
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha creado correctamente el usuario nuevo.");
 		} catch (SQLException e) {
 			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
@@ -111,14 +97,14 @@ public class GameDB {
 	 * @param world (primary key)
 	 * @return the Name of the player with primary key world
 	 */
-	public static String getGamePlayer(int world) {
+	public static String getGameUserName(int world) {
 		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();
 			){			
 			
-			rs = stmt.executeQuery(String.format("SELECT NOMBRE FROM USUARIO WHERE COD_MUNDO = %d;",world));
+			rs = stmt.executeQuery(String.format("SELECT USERNAME FROM USERS WHERE USER_CODE = %d;",world));
 			while (rs.next()) {
-				return rs.getString("NOMBRE");
+				return rs.getString("USERNAME");
 			}			
 		} catch (SQLException e) {
 			e.printStackTrace();		}
@@ -137,10 +123,10 @@ public class GameDB {
 						Statement stmt = conn.createStatement();						
 					){
 					
-					rs = stmt.executeQuery(String.format("SELECT SESIONES FROM USUARIO WHERE COD_MUNDO = %d", world));
+					rs = stmt.executeQuery(String.format("SELECT SESSIONS FROM USERS WHERE USER_CODE = %d", world));
 					int num;
 					if (rs != null) {					
-							num = rs.getInt("SESIONES");
+							num = rs.getInt("SESSIONS");
 							num++;
 							updateSessionNumber(num,world);
 					} 				
@@ -154,7 +140,7 @@ public class GameDB {
 			try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 					Statement stmt = conn.createStatement();					
 				){
-					PreparedStatement ps = conn.prepareStatement("UPDATE USUARIO SET SESIONES = ? WHERE COD_MUNDO = ?;");
+					PreparedStatement ps = conn.prepareStatement("UPDATE USERS SET SESSIONS = ? WHERE USER_CODE = ?;");
 					ps.setInt(1, sessions);
 					ps.setInt(2, world);
 					ps.executeUpdate();
@@ -177,7 +163,7 @@ public class GameDB {
 			){
 			
 			stmt = conn.createStatement();
-			stmt.executeUpdate("DROP TABLE USUARIO;");
+			stmt.executeUpdate("DROP TABLE USERS;");
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha borrado toda la información de los usuarios");
 			
 		} catch (SQLException e) {
@@ -195,7 +181,7 @@ public class GameDB {
 			){
 			
 			stmt = conn.createStatement();
-			stmt.executeUpdate(String.format("DELETE FROM USUARIO WHERE COD_MUNDO = %d;",world));
+			stmt.executeUpdate(String.format("DELETE FROM USERS WHERE USER_CODE = %d;",world));
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha borrado toda la información del usuario "+world);
 			
 		} catch (SQLException e) {
@@ -206,27 +192,6 @@ public class GameDB {
 	// 					METODOS PARA GUARDAR POSICIONES 		   //
 	/////////////////////////////////////////////////////////////////
 	/**
-	 * 
-	 * @param world
-	 * @return specifies true if necessary to insert or update position
-	 * @throws GameDBException 
-	 */
-	public static boolean existsUserPosition(int world) throws GameDBException {
-		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
-				Statement stmt = conn.createStatement();				
-			){
-			
-			rs = stmt.executeQuery(String.format("SELECT * FROM POSICIONES WHERE COD_MUNDO = %d;",world));			
-			while(rs.next()) {
-				if (world == rs.getInt("COD_MUNDO"))
-					return true; 
-			}
-		} catch (SQLException e) {
-			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
-		}
-		return false; 
-	}
-	/**
 	 * position already existed and its being updated
 	 * @throws GameDBException 
 	 */
@@ -235,31 +200,13 @@ public class GameDB {
 				Statement stmt = conn.createStatement();				
 			){
 			
-			PreparedStatement ps = conn.prepareStatement("UPDATE POSICIONES SET SESION = ?, PLAYER_X = ?, PLAYER_Y = ? WHERE COD_MUNDO = ?;");
+			PreparedStatement ps = conn.prepareStatement("UPDATE USERS SET SESSIONS = ?, PLAYER_X = ?, PLAYER_Y = ? WHERE USER_CODE = ?;");
 			ps.setInt(1, getNumberSessions(GameState.getUser()));
 			ps.setInt(2, GameState.getPlayerXPosition());
 			ps.setInt(3, GameState.getPlayerYPosition());
 			ps.setInt(4, GameState.getUser());
 			ps.executeUpdate();
 			
-		} catch (SQLException e) {
-			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
-		}
-	}
-	/**
-	 * position is being inserted into POSICIONES for the first time
-	 * @param world
-	 * @param x
-	 * @param y
-	 * @throws GameDBException 
-	 */
-	public static void insertIntoPosiciones(int world, int x, int y) throws GameDBException {
-		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
-				Statement stmt = conn.createStatement();				
-			){
-			int sesiones = getNumberSessions(world);
-			stmt.executeUpdate(String.format("INSERT INTO POSICIONES VALUES(%d,%d,%d,%d);",world, sesiones,x,y));
-			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha creado correctamente la nueva posicion del usuario.");
 		} catch (SQLException e) {
 			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
@@ -271,7 +218,7 @@ public class GameDB {
 		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
-			rs = stmt.executeQuery(String.format("SELECT PLAYER_X FROM POSICIONES WHERE COD_MUNDO = %d",world));
+			rs = stmt.executeQuery(String.format("SELECT PLAYER_X FROM USERS WHERE USER_CODE = %d",world));
 			return rs.getInt("PLAYER_X");
 		} catch (SQLException e) {
 			//throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
@@ -282,7 +229,7 @@ public class GameDB {
 		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
-			rs = stmt.executeQuery(String.format("SELECT PLAYER_Y FROM POSICIONES WHERE COD_MUNDO = %d",world));
+			rs = stmt.executeQuery(String.format("SELECT PLAYER_Y FROM USERS WHERE USERS = %d",world));
 			return rs.getInt("PLAYER_Y");
 		} catch (SQLException e) {
 			//throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
@@ -294,9 +241,9 @@ public class GameDB {
 				Statement stmt = conn.createStatement();				
 			){
 			
-			rs = stmt.executeQuery(String.format("SELECT SESIONES FROM USUARIO WHERE COD_MUNDO = %d;",world));
+			rs = stmt.executeQuery(String.format("SELECT SESSIONS FROM USERS WHERE USER_CODE = %d;",world));
 			while (rs.next()) {
-				return rs.getInt("SESIONES");
+				return rs.getInt("SESSIONS");
 			}
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha creado correctamente el usuario nuevo.");
 		} catch (SQLException e) {
@@ -304,27 +251,5 @@ public class GameDB {
 		}
 		return -1; 
 	}
-	public static ResultSet getPositions() throws GameDBException {
-		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
-				Statement stmt = conn.createStatement();				
-			){
-			
-			rs = stmt.executeQuery("SELECT * FROM POSICIONES;");
-			return rs;		
-		} catch (SQLException e) {
-			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
-		}
-	}
-	public static ResultSet getPositions(int world) throws GameDBException {
-		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
-				Statement stmt = conn.createStatement();				
-			){
-			
-			rs = stmt.executeQuery(String.format("SELECT * FROM POSICIONES WHERE COD_MUNDO = %d;", world));
-			return rs;		
-		} catch (SQLException e) {
-			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
-		}
-	}
 	
-}			
+}	
