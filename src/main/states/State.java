@@ -21,6 +21,7 @@ public abstract class State {
 	
 	protected static Handler handler;
 	
+	@SuppressWarnings("static-access")
 	public State(Handler handler) {
 		this.handler = handler;
 	}

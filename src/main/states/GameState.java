@@ -10,6 +10,7 @@ import main.Handler;
 import main.worlds.World;
 import main.input.KeyManager;
 import main.input.MouseManager;
+import main.inventory.Inventory;
 import main.states.MenuState.WorldEnum;
 
 public class GameState extends State{	
@@ -19,15 +20,16 @@ public class GameState extends State{
 	private MouseManager mouseManager;
 	private KeyManager keyManager;
 	public static boolean currentlySaving = false;
+	private static Inventory inv;
 	
 	public GameState(Handler handler) {
 		super(handler);
 		world = new World(handler);
-		handler.setWorld(world);
-		
+		handler.setWorld(world);		
 		saveButton = new Rectangle(0, 380, 80, 20);		
 		mouseManager = handler.getMouseManager();
 		keyManager = handler.getKeyManager();
+		inv = handler.getWorld().getInventory();
 	}
 	//////////////////////////////////////////////////////////////////
 	//					METODOS TICK & RENDER						//
@@ -43,6 +45,7 @@ public class GameState extends State{
 			try {
 				Thread.currentThread().sleep(1000);		
 				GameDB.updatePosition();
+				//TODO updateInventory
 				unPause();
 				currentlySaving = false;
 			} catch (InterruptedException | GameDBException e) {
@@ -78,13 +81,11 @@ public class GameState extends State{
 	@SuppressWarnings("static-access")
 	public void pause() {
 		keyManager.pause = true;
-	}
-	
+	}	
 	@SuppressWarnings("static-access")
 	public void unPause() {
 		keyManager.pause = false;
-	}
-	
+	}	
 	@SuppressWarnings("static-access")
 	public boolean gameIsPaused() {
 		return keyManager.pause;
@@ -93,10 +94,16 @@ public class GameState extends State{
 	public static int getPlayerXPosition() {
 		return handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0F).x;
 	}
-	
 	public static int getPlayerYPosition() {
 		return handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0F).y;
 	}
+	public static int getItemXPosition() {
+		return 0;
+	}
+	public static int getItemYPosition() {
+		return 0;
+	}
+	
 	
 	public static int getUser() {
 		if (MenuState.getWorldEnum().compareTo(WorldEnum.MUNDO1)==0) {

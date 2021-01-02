@@ -1,13 +1,9 @@
 package main.items;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-
 import main.Handler;
 import main.crafting.Crafting;
-import main.entities.EntityManager;
 import main.gfx.Assets;
 import main.inventory.Inventory;
 
@@ -17,7 +13,7 @@ public class ItemManager {
 	
 	protected Handler handler;	
 	
-	public static Item i, madera, piedra, hoja, hierro, palo, casco, piedraFuego, piedraAgua, piedraPlanta, cuero, cuerda, espadaHierro;
+	public static Item madera, piedra, hoja, hierro, palo, casco, piedraFuego, piedraAgua, piedraPlanta, cuero, cuerda, espadaHierro;
 	protected ArrayList<Item> items = new ArrayList<>();
 	
 	protected Inventory inventory;

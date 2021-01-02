@@ -1,20 +1,20 @@
 package main.inventory;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import main.Handler;
 import main.gfx.Assets;
 import main.items.Item;
+import main.states.GameState;
 import main.utilities.Position;
 
 public class Inventory extends Thread{
 
 	private long noDropNow, noDropBefore, enableDropMsg;
+	@SuppressWarnings("unused")
 	private boolean renderEnabler = false, selectItem1 = false, selectItem2 = false, 
 			paintPointerAt1 = false, paintPointerAt2 = false, enableDrag = false, drawBasicInv = true, enableSwap = true,
 			moveItemsEnabled = false, hasDraggedWasRun = false, draggingItem = false, indexOfCraft = false, craftingArray = false;
@@ -111,7 +111,7 @@ public class Inventory extends Thread{
 							
 					inventory[selectedSlot].unFixItemPosition();
 					inventory[selectedSlot].setActive();
-					inventory[selectedSlot].setPosition((handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).x + ThreadLocalRandom.current().nextInt(85, 120 + 1)), (handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).y + ThreadLocalRandom.current().nextInt(0, 120 + 1)));
+					inventory[selectedSlot].setPosition((GameState.getPlayerXPosition() + ThreadLocalRandom.current().nextInt(85, 120 + 1)), (GameState.getPlayerYPosition() + ThreadLocalRandom.current().nextInt(0, 120 + 1)));
 					inventory[selectedSlot] = null;
 						
 				}else {
@@ -176,7 +176,7 @@ public class Inventory extends Thread{
 	public void addToInventory(Item i) {
 		//siempre trabaja con el mismo array inventory, por eso sólo pasamos un item.
 		
-		int searchedItemIndex = searchItem(i);
+		int searchedItemIndex = searchItemIndex(i);
 		int emptySlot = checkInventorySpaces();
 		
 		if(searchedItemIndex >= 0) {
@@ -196,10 +196,18 @@ public class Inventory extends Thread{
 			
 	}
 	
+	public boolean invSlotsMoving(int i) {
+		return handler.getMouseManager().isLeftPressed() && invSlots[i].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY());
+	}
+	
+	public boolean craftSlotsMoving(int i) {
+		return handler.getMouseManager().isLeftPressed() && craftSlots[i].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY());
+	}
+	
 	public void moveItems() {
 		for(int i = 0; i < craftSlots.length; i++) {
 			
-			if(i < invSlots.length && handler.getMouseManager().isLeftPressed() && invSlots[i].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY())) {
+			if(i < invSlots.length && invSlotsMoving(i)) {
 				
 				if(draggingItem) {
 					itemToSwap = inventory[i];
@@ -214,7 +222,7 @@ public class Inventory extends Thread{
 					craftingArray = false;
 				}
 				
-			}else if(handler.getMouseManager().isLeftPressed() && craftSlots[i].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY())) {
+			}else if(craftSlotsMoving(i)) {
 				
 				if(draggingItem) {
 					itemToSwap = handler.getWorld().getCrafting().getCrafteo()[i];
@@ -241,32 +249,29 @@ public class Inventory extends Thread{
 				
 				if(handler.getMouseManager().isMouseExit()) {			//si el ratón ha salido de la pantalla...
 					if(!craftingArray){
-						enableDrag = false;
-						lastGrabbedItem.setPosition(invPositions[lastGrabbedItemIndex].setInvPosition(lastGrabbedItem));
-						draggingItem = false;
+						inventoryPositionsMouseExitWindow();
 						
 					}else{
-						enableDrag = false;
-						lastGrabbedItem.setPosition(craftPositions[lastGrabbedItemIndex].setCraftPosition(lastGrabbedItem));
-						draggingItem = false;
+						craftingPositionsMouseExitWindow();
 					}
 				}	
 				
 			}else { 
 				
 				if(wasRun.getAndSet(false)) {
-					
-					
-					if(!indexOfCraft && !craftingArray && invSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap) {
+//					!indexOfCraft && !craftingArray && invSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap	
+//					indexOfCraft && !craftingArray && ccraftSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap
+//					indexOfCraft && craftingArray && craftSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap
+//					!indexOfCraft && craftingArray && invSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap
+//					
+					if(!craftingArray && movingInvSlots()) {
 							
 						if(itemToSwap == null) {
 							inventory[lastGrabbedItemIndex] = null;	
 							inventory[itemToSwapIndex] = lastGrabbedItem;
 							lastGrabbedItem.setPosition(invPositions[itemToSwapIndex].getX() + 22 - lastGrabbedItem.getWidth()/2, invPositions[itemToSwapIndex].getY() + 21 - lastGrabbedItem.getHeight()/2);	
 							
-							draggingItem = false;
-							enableSwap = false;
-							enableDrag = false;
+							setToFalseEnablers();
 							
 						}else {
 							inventory[lastGrabbedItemIndex] = itemToSwap;
@@ -274,21 +279,17 @@ public class Inventory extends Thread{
 							inventory[itemToSwapIndex] = lastGrabbedItem;
 							lastGrabbedItem.setPosition(invPositions[itemToSwapIndex].getX() + 22 - lastGrabbedItem.getWidth()/2, invPositions[itemToSwapIndex].getY() + 21 - lastGrabbedItem.getHeight()/2);	
 							
-							draggingItem = false;
-							enableSwap = false;
-							enableDrag = false;
+							setToFalseEnablers();
 						}
 						
-					}else if(indexOfCraft && !craftingArray && craftSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap) {
+					}else if(!craftingArray && movingCraftSlots()) {
 						//cambios del inventario a la mesa de crafteo
 						if(itemToSwap == null) {
 							inventory[lastGrabbedItemIndex] = null;	
 							
 							handler.getWorld().getCrafting().getCrafteo()[itemToSwapIndex] = lastGrabbedItem;
 							lastGrabbedItem.setPosition(craftPositions[itemToSwapIndex].getX() + 31 - lastGrabbedItem.getWidth()/2, craftPositions[itemToSwapIndex].getY() + 30 - lastGrabbedItem.getHeight()/2);	
-							draggingItem = false;
-							enableSwap = false;
-							enableDrag = false;
+							setToFalseEnablers();
 							
 						}else {
 							inventory[lastGrabbedItemIndex] = itemToSwap;
@@ -296,21 +297,17 @@ public class Inventory extends Thread{
 							
 							handler.getWorld().getCrafting().getCrafteo()[itemToSwapIndex] = lastGrabbedItem;
 							lastGrabbedItem.setPosition(craftPositions[itemToSwapIndex].getX() + 31 - lastGrabbedItem.getWidth()/2, craftPositions[itemToSwapIndex].getY() + 30 - lastGrabbedItem.getHeight()/2);	
-							draggingItem = false;
-							enableSwap = false;
-							enableDrag = false;
+							setToFalseEnablers();
 						}
 						
-					}else if(!indexOfCraft && craftingArray && invSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap) {
+					}else if(craftingArray && movingInvSlots()) {
 						//cambios de la mesa de crafteo al inventario
 						if(itemToSwap == null) {
 							handler.getWorld().getCrafting().getCrafteo()[lastGrabbedItemIndex] = null;	
 							
 							inventory[itemToSwapIndex] = lastGrabbedItem;
 							lastGrabbedItem.setPosition(invPositions[itemToSwapIndex].getX() + 22 - lastGrabbedItem.getWidth()/2, invPositions[itemToSwapIndex].getY() + 21 - lastGrabbedItem.getHeight()/2);	
-							draggingItem = false;
-							enableSwap = false;
-							enableDrag = false;
+							setToFalseEnablers();
 							
 						}else {
 							handler.getWorld().getCrafting().getCrafteo()[lastGrabbedItemIndex] = itemToSwap;
@@ -318,21 +315,17 @@ public class Inventory extends Thread{
 						
 							inventory[itemToSwapIndex] = lastGrabbedItem;
 							lastGrabbedItem.setPosition(invPositions[itemToSwapIndex].getX() + 22 - lastGrabbedItem.getWidth()/2, invPositions[itemToSwapIndex].getY() + 21 - lastGrabbedItem.getHeight()/2);	
-							draggingItem = false;
-							enableSwap = false;
-							enableDrag = false;
+							setToFalseEnablers();
 						}
 					
-					}else if(indexOfCraft && craftingArray && craftSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap) {
+					}else if(craftingArray && movingCraftSlots()) {
 						//cambios en la mesa de crafteo
 						if(itemToSwap == null) {
 							handler.getWorld().getCrafting().getCrafteo()[lastGrabbedItemIndex] = null;	
 							
 							handler.getWorld().getCrafting().getCrafteo()[itemToSwapIndex] = lastGrabbedItem;
 							lastGrabbedItem.setPosition(craftPositions[itemToSwapIndex].getX() + 31 - lastGrabbedItem.getWidth()/2, craftPositions[itemToSwapIndex].getY() + 30 - lastGrabbedItem.getHeight()/2);	
-							draggingItem = false;
-							enableSwap = false;
-							enableDrag = false;
+							setToFalseEnablers();
 							
 						}else {
 							handler.getWorld().getCrafting().getCrafteo()[lastGrabbedItemIndex] = itemToSwap;
@@ -340,32 +333,50 @@ public class Inventory extends Thread{
 							
 							handler.getWorld().getCrafting().getCrafteo()[itemToSwapIndex] = lastGrabbedItem;
 							lastGrabbedItem.setPosition(craftPositions[itemToSwapIndex].getX() + 31 - lastGrabbedItem.getWidth()/2, craftPositions[itemToSwapIndex].getY() + 30 - lastGrabbedItem.getHeight()/2);	
-							draggingItem = false;
-							enableSwap = false;
-							enableDrag = false;
+							setToFalseEnablers();
 						}
 					
 					}else if(!craftingArray){
-						enableDrag = false;
-						lastGrabbedItem.setPosition(invPositions[lastGrabbedItemIndex].setInvPosition(lastGrabbedItem));
-						draggingItem = false;
-						
+						inventoryPositionsMouseExitWindow();
 					}else{
-						enableDrag = false;
-						lastGrabbedItem.setPosition(craftPositions[lastGrabbedItemIndex].setCraftPosition(lastGrabbedItem));
-						draggingItem = false;
+						craftingPositionsMouseExitWindow();
 					}
 				}	
 			}								
 		}
 	}
 	
+	public boolean movingInvSlots() {
+		return !indexOfCraft && invSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap;
+	}
+	
+	public boolean movingCraftSlots() {
+		return indexOfCraft && craftSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap;
+	}
+	
+	public void setToFalseEnablers() {
+		draggingItem = false;
+		enableSwap = false;
+		enableDrag = false;
+	}
+	
+	public void inventoryPositionsMouseExitWindow() {
+		enableDrag = false;
+		lastGrabbedItem.setPosition(invPositions[lastGrabbedItemIndex].setInvPosition(lastGrabbedItem));
+		draggingItem = false;
+	}
+	
+	public void craftingPositionsMouseExitWindow() {
+		enableDrag = false;
+		lastGrabbedItem.setPosition(craftPositions[lastGrabbedItemIndex].setCraftPosition(lastGrabbedItem));
+		draggingItem = false;
+	}
 	public int checkInventorySpaces() {
 		for(int i = 0; i < inventory.length; i++) if(inventory[i] == null) return i;
 		return - 1;
 	}
 	
-	public int searchItem(Item i) {
+	public int searchItemIndex(Item i) {
 		for (int c = 0; c < inventory.length; c++) if(inventory[c] != null) if(inventory[c].getId() == i.getId()) return c;
 		return - 1;
 	}
