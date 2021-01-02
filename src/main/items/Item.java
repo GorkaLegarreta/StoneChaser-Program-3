@@ -47,6 +47,7 @@ public class Item {
 		i.setPosition((int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()));
 		i.setItemQuantity(itemQuantity);
 		i.setActive();
+		if(handler.getWorld() != null) handler.getWorld().getItemManager().addToItems(i);
 		return i;
 	}
 	
@@ -73,6 +74,10 @@ public class Item {
 	public int itemY() {
 		yOffset = (int) handler.getGameCamera().getyOffset() * isFixed;
 		return y - yOffset;
+	}
+	
+	public BufferedImage getImage() {
+		return img;
 	}
 		
 	public String getName() {

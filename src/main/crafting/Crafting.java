@@ -3,6 +3,8 @@ package main.crafting;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
 
 import main.Handler;
 import main.gfx.Assets;
@@ -17,6 +19,8 @@ public class Crafting {
 	private Item resultadoCrafteo, grabbedItem;
 	
 	private Item[] crafteo = new Item[9];
+	
+	private ArrayList<Integer> notNull = new ArrayList<Integer>();
 	
 	//anchura y altura real de la mesa de crafteo: 200 y 186 respectivamente.
 	private int item, posicion, craftingTableWidth = 280, craftingTableHeight = 266, invSlotsWidth = 219, invSlotsHeight = 75, 
@@ -37,15 +41,22 @@ public class Crafting {
 	}
 	
 	public void craft() {
+	
+		updateNotNullIndexes();
 		
-		if(crafteo[0] == null && crafteo[1] == ItemManager.hierro && crafteo[2] == null && 
-				crafteo[3] == null && crafteo[4] == ItemManager.hierro && crafteo[5] == null && 
-				crafteo[6] == null && crafteo[7] == ItemManager.cuero && crafteo[8] == null) {
+		if(notNull.size() == 2) {
+			if(crafteo[notNull.get(0)].getId() == 4 && crafteo[notNull.get(0)].getItemQuantity() >= 2 && crafteo[notNull.get(1)].getId() == 2) {
+				resultadoCrafteo = ItemManager.espadaHierro.createItem(0, 0, 1);
+				resultadoCrafteo.setInactive();
+				//resultadoCrafteo.setPosition(493, 168);
+				resultadoCrafteo.setPosition(handler.getWorld().getInventory().getOutcomePosition().setOutcomePosition(resultadoCrafteo));
+				handler.getWorld().getInventory().setCraftingOutcome(resultadoCrafteo);
+			}
 			
-			resultadoCrafteo = ItemManager.espadaHierro;
-			
+		}else {
+			resultadoCrafteo = null;
+			handler.getWorld().getInventory().setCraftingOutcome(resultadoCrafteo);
 		}
-		
 	}
 	
 	public void render(Graphics g) {
@@ -53,6 +64,7 @@ public class Crafting {
 		if(c == true) {
 			g.drawImage(Assets.craftingTable, craftingTableX, craftingTableY, craftingTableWidth, craftingTableHeight, null);
 			g.drawImage(Assets.inventarioDesplegado, inventoryX, inventoryY, 384, 61, null);
+			g.drawImage(Assets.craftingOutcome, 530, 118, 62, 61, null);
 			for (Item i : crafteo) {
 				if(i != null)i.render(g);
 			}
@@ -104,6 +116,13 @@ public class Crafting {
 		
 		
 		if(callCraft) craft();	
+	}
+	
+	public void updateNotNullIndexes() {
+		
+		notNull.clear();
+		for (int i = 0; i < crafteo.length; i++) if(crafteo[i] != null) notNull.add(i);
+		
 	}
 	
 	public void setItemAndIndex(Item i, int n) {

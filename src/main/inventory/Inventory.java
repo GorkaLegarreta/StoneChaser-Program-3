@@ -17,7 +17,7 @@ public class Inventory extends Thread{
 	private long noDropNow, noDropBefore, enableDropMsg;
 	private boolean renderEnabler = false, selectItem1 = false, selectItem2 = false, 
 			paintPointerAt1 = false, paintPointerAt2 = false, enableDrag = false, drawBasicInv = true, enableSwap = true,
-			moveItemsEnabled = false, hasDraggedWasRun = false, draggingItem = false, indexOfCraft = false, craftingArray = false;
+			moveItemsEnabled = false, hasDraggedWasRun = false, draggingItem = false, indexOfCraft = false, craftingArray = false, grabbedOutcome = false;
 	
 	//AtomicBoolean para ejecutar código sólo una vez cuando se requiera
 	
@@ -31,15 +31,17 @@ public class Inventory extends Thread{
 	
 	//objetos de Item para hacer cambios en el inventario
 	
-	protected Item selectedItem, lastGrabbedItem, itemToSwap;
+	protected Item selectedItem, lastGrabbedItem, itemToSwap, craftingOutcome;
 	
 	//creamos un array de 6 posiciones para el inventario y otro de 9 para el crafteo en las que pondremos items y cajas de detección de clicks
 	
 	private Position[] invPositions = new Position[6], craftPositions = new Position[9];
+	private Position craftOutcomePosition;
 	
 	//creamos los rectángulos de detección de clicks para inventario y crafteo
 	
 	private Rectangle[] invSlots = new Rectangle[6], craftSlots = new Rectangle[9];
+	private Rectangle craftOutcomeSlot;
 	
 	//enteros para manejar las posiciones en los arrays
 	
@@ -92,7 +94,12 @@ public class Inventory extends Thread{
 		craftSlots[5] = new Rectangle(craftPositions[5].getX(), craftPositions[5].getY(), 62, 60);
 		craftSlots[6] = new Rectangle(craftPositions[6].getX(), craftPositions[6].getY(), 62, 60); 
 		craftSlots[7] = new Rectangle(craftPositions[7].getX(), craftPositions[7].getY(), 62, 60); 
-		craftSlots[8] = new Rectangle(craftPositions[8].getX(), craftPositions[8].getY(), 62, 60); 
+		craftSlots[8] = new Rectangle(craftPositions[8].getX(), craftPositions[8].getY(), 62, 60);
+		
+		//inicializamos el rectangulo y la posicion del slot para el resultado del crafteo
+		
+		craftOutcomePosition = new Position(530, 118);
+		craftOutcomeSlot = new Rectangle(craftOutcomePosition.getX(), craftOutcomePosition.getY(), 62, 60);
 		
 	}
 	
@@ -147,6 +154,7 @@ public class Inventory extends Thread{
 		
 		if(checkInv >= 0 && !drawBasicInv) g.drawImage(Assets.itemPointers, invPositions[checkInv].getX() - 12, invPositions[checkInv].getY() - 12, null);
 		if(checkCraft >= 0 && !drawBasicInv) g.drawImage(Assets.itemPointers, craftPositions[checkCraft].getX() - 1, craftPositions[checkCraft].getY() - 4, null);
+		if(checkMouseOnOutcome() && !drawBasicInv) g.drawImage(Assets.itemPointers, craftOutcomePosition.getX() - 2, craftOutcomePosition.getY() - 1, null);
 		if(drawBasicInv) g.drawImage(Assets.inventarioPlegado, (int) (handler.getWidth()/2 - 142/2), (int) (handler.getHeight() - 61), 142, 61, null);
 		
 		if(inventory[0] != null) inventory[0].render(g);
@@ -157,6 +165,9 @@ public class Inventory extends Thread{
 				if(inventory[i] != null) inventory[i].render(g);
 			}
 		}
+		
+		if(craftingOutcome != null) {craftingOutcome.render(g);}
+		
 		//solo se usa en el inventarioPlegado:
 		if(paintPointerAt1 && drawBasicInv) g.drawImage(Assets.itemPointers, handler.getWorld().getCrafting().getInventoryX() + 128, handler.getWorld().getCrafting().getInventoryY(), 66, 64, null);
 		if(paintPointerAt2 && drawBasicInv) g.drawImage(Assets.itemPointers, handler.getWorld().getCrafting().getInventoryX() + 190, handler.getWorld().getCrafting().getInventoryY(), 66, 64, null);
@@ -171,6 +182,7 @@ public class Inventory extends Thread{
 //		g.fillRect(handler.getWidth()/2 - 103, handler.getHeight()/2 - 18, 62, 60);
 //		g.fillRect(handler.getWidth()/2 - 31, handler.getHeight()/2 - 18, 62, 60);
 //		g.fillRect(handler.getWidth()/2 + 41, handler.getHeight()/2 - 18, 62, 60);
+//		g.fillRect(craftOutcomePosition.getX(), craftOutcomePosition.getY(), 62, 60);
 	}
 	
 	public void addToInventory(Item i) {
@@ -221,15 +233,24 @@ public class Inventory extends Thread{
 					itemToSwapIndex = i;
 					enableSwap = true;
 					indexOfCraft = true;
+					grabbedOutcome = false;
 				}else {
 					if(handler.getWorld().getCrafting().getCrafteo()[i] != null) draggingItem = true;
 					lastGrabbedItemIndex = i;
 					lastGrabbedItem = handler.getWorld().getCrafting().getCrafteo()[i];
 					enableDrag = true;
-					indexOfCraft = true;
 					craftingArray = true;
+					grabbedOutcome = false;
 				}
-			}	
+			}else if(handler.getMouseManager().isLeftPressed() && craftOutcomeSlot.contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY())) {
+				if(!draggingItem) {
+					lastGrabbedItem = craftingOutcome;
+					indexOfCraft = false;
+					enableDrag = true;
+					craftingArray = false;
+					grabbedOutcome = true;
+				}
+			}
 		}
 		
 		if(lastGrabbedItem != null) {
@@ -388,6 +409,11 @@ public class Inventory extends Thread{
 		}return -1;
 	}
 	
+	public boolean checkMouseOnOutcome() {
+		if(craftOutcomeSlot.contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY())) return true;
+		else return false;
+	}
+	
 //	public boolean dragChanged() {
 //		newDragX = handler.getMouseMovement().getPosition().getX();
 //		newDragY = handler.getMouseMovement().getPosition().getY();
@@ -439,5 +465,13 @@ public class Inventory extends Thread{
 	
 	public void moveItemsDisabled() {
 		this.moveItemsEnabled = false; 
+	}
+	
+	public void setCraftingOutcome(Item i) {
+		this.craftingOutcome = i;
+	}
+	
+	public Position getOutcomePosition() {
+		return craftOutcomePosition;
 	}
 }
