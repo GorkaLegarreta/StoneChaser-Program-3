@@ -28,8 +28,12 @@ public class Position {
 		this.y = y;
 	}
 	
-	public Position setItemPosition(Item i) {
+	public Position setInvPosition(Item i) {
 		return new Position(x + 22 - i.getWidth()/2, y + 21 - i.getHeight()/2);	
+	}
+	
+	public Position setCraftPosition(Item i) {
+		return new Position(x + 31 - i.getWidth()/2, y + 30 - i.getHeight()/2);	
 	}
 	
 }

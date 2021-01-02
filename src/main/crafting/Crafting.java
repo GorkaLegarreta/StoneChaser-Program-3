@@ -1,26 +1,26 @@
 package main.crafting;
 
+import java.awt.Color;
 import java.awt.Graphics;
-import java.util.Scanner;
+import java.awt.Rectangle;
 
 import main.Handler;
 import main.gfx.Assets;
-import main.inventory.Inventory;
 import main.items.Item;
 import main.items.ItemManager;
+import main.utilities.Position;
 
 public class Crafting {
 
 	protected Handler handler;
 	
-	private Item resultadoCrafteo;
+	private Item resultadoCrafteo, grabbedItem;
 	
-	private Item[] crafteo;
-	
-	private Scanner scIn = new Scanner(System.in);
+	private Item[] crafteo = new Item[9];
 	
 	//anchura y altura real de la mesa de crafteo: 200 y 186 respectivamente.
-	private int item, posicion, craftingTableWidth = 280, craftingTableHeight = 266, invSlotsWidth = 219, invSlotsHeight = 75, craftingTableX, craftingTableY, inventoryX, inventoryY;
+	private int item, posicion, craftingTableWidth = 280, craftingTableHeight = 266, invSlotsWidth = 219, invSlotsHeight = 75, 
+			craftingTableX, craftingTableY, inventoryX, inventoryY, grabbedItemIndex;
 	
 	private boolean c = false, callCraft = false;
 
@@ -29,11 +29,7 @@ public class Crafting {
 
 	public Crafting(Handler handler) {
 		this.handler = handler;
-		init();
-	}
-	
-	public void init() {
-		crafteo = new Item[9];
+		
 		craftingTableX = (handler.getWidth()/2) - (143); 
 		craftingTableY = (handler.getHeight()/2) - (185);
 		inventoryX = (int) (handler.getWidth()/2 - 384/2);
@@ -53,9 +49,13 @@ public class Crafting {
 	}
 	
 	public void render(Graphics g) {
+		
 		if(c == true) {
 			g.drawImage(Assets.craftingTable, craftingTableX, craftingTableY, craftingTableWidth, craftingTableHeight, null);
 			g.drawImage(Assets.inventarioDesplegado, inventoryX, inventoryY, 384, 61, null);
+			for (Item i : crafteo) {
+				if(i != null)i.render(g);
+			}
 		}
 	}
 	
@@ -97,12 +97,24 @@ public class Crafting {
 			
 		}
 		
-		if(callCraft) {
-			craft();
+		if(c == true) {
 			
-		}	
+		}
+		
+		
+		
+		if(callCraft) craft();	
+	}
+	
+	public void setItemAndIndex(Item i, int n) {
+		this.grabbedItem = i;
+		this.grabbedItemIndex = n;
 	}
 
+	public Item[] getCrafteo() {
+		return crafteo;
+	}
+	
 	public int getCraftingTableX() {
 		return craftingTableX;
 	}

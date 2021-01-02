@@ -1,5 +1,6 @@
 package main.inventory;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -16,49 +17,83 @@ public class Inventory extends Thread{
 	private long noDropNow, noDropBefore, enableDropMsg;
 	private boolean renderEnabler = false, selectItem1 = false, selectItem2 = false, 
 			paintPointerAt1 = false, paintPointerAt2 = false, enableDrag = false, drawBasicInv = true, enableSwap = true,
-			moveItemsEnabled = false, hasDraggedWasRun = false, isGrabbed = false, stopDragging = false, diffDrag = false, draggingItem = false;
+			moveItemsEnabled = false, hasDraggedWasRun = false, draggingItem = false, indexOfCraft = false, craftingArray = false;
+	
+	//AtomicBoolean para ejecutar código sólo una vez cuando se requiera
 	
 	private AtomicBoolean wasRun = new AtomicBoolean(false);
+	
+	//imagen del inventario
 	
 	protected BufferedImage inventoryImg;
 	
 	public Handler handler;
 	
+	//objetos de Item para hacer cambios en el inventario
+	
 	protected Item selectedItem, lastGrabbedItem, itemToSwap;
 	
-	//creamos un array de 6 posiciones en las que pondremos items y cajas de detección de clicks
-	protected Position[] positions = new Position[6];
+	//creamos un array de 6 posiciones para el inventario y otro de 9 para el crafteo en las que pondremos items y cajas de detección de clicks
 	
-	protected int selectedSlot = -1, lastGrabbedItemIndex, length, itemToSwapIndex, lastDragX, lastDragY, newDragX, newDragY;
+	private Position[] invPositions = new Position[6], craftPositions = new Position[9];
+	
+	//creamos los rectángulos de detección de clicks para inventario y crafteo
+	
+	private Rectangle[] invSlots = new Rectangle[6], craftSlots = new Rectangle[9];
+	
+	//enteros para manejar las posiciones en los arrays
+	
+	protected int selectedSlot = -1, lastGrabbedItemIndex, length, itemToSwapIndex;
+	
+	//array de items para los huecos del inventario
 	
 	private Item[] inventory = new Item[6];
-	private Rectangle[] slotRects = new Rectangle[6];
 	
 	public Inventory(Handler handler) {
 		
 		this.handler = handler;
 		
-		//llenamos el array de posiciones, lo hacemos aquí porque necesitamos handler.
+		//llenamos los arrays de posiciones del inventario y de la mesa de crafteo, lo hacemos aquí porque necesitamos handler.
 		
-		positions[0] = new Position(handler.getWidth()/2 - 53, handler.getHeight() - 49);
-		positions[1] = new Position(handler.getWidth()/2 + 10, handler.getHeight() - 49);
-		positions[2] = new Position(handler.getWidth()/2 - 114, handler.getHeight() - 49); 
-		positions[3] = new Position(handler.getWidth()/2 - 176, handler.getHeight() - 49); 
-		positions[4] = new Position(handler.getWidth()/2 + 72, handler.getHeight() - 49); 
-		positions[5] = new Position(handler.getWidth()/2 + 134, handler.getHeight() - 49);
+		invPositions[0] = new Position(handler.getWidth()/2 - 53, handler.getHeight() - 49);
+		invPositions[1] = new Position(handler.getWidth()/2 + 10, handler.getHeight() - 49);
+		invPositions[2] = new Position(handler.getWidth()/2 - 114, handler.getHeight() - 49); 
+		invPositions[3] = new Position(handler.getWidth()/2 - 176, handler.getHeight() - 49); 
+		invPositions[4] = new Position(handler.getWidth()/2 + 72, handler.getHeight() - 49); 
+		invPositions[5] = new Position(handler.getWidth()/2 + 134, handler.getHeight() - 49);
+		
+		
+		craftPositions[0] = new Position(handler.getWidth()/2 - 103, handler.getHeight()/2 - 148);
+		craftPositions[1] = new Position(handler.getWidth()/2 - 31, handler.getHeight()/2 - 148);
+		craftPositions[2] = new Position(handler.getWidth()/2 + 41, handler.getHeight()/2 - 148); 
+		craftPositions[3] = new Position(handler.getWidth()/2 - 103, handler.getHeight()/2 - 83); 
+		craftPositions[4] = new Position(handler.getWidth()/2 - 31, handler.getHeight()/2 - 83); 
+		craftPositions[5] = new Position(handler.getWidth()/2 + 41, handler.getHeight()/2 - 83);
+		craftPositions[6] = new Position(handler.getWidth()/2 - 103, handler.getHeight()/2 - 18); 
+		craftPositions[7] = new Position(handler.getWidth()/2 - 31, handler.getHeight()/2 - 18); 
+		craftPositions[8] = new Position(handler.getWidth()/2 + 41, handler.getHeight()/2 - 18); 
 		
 		//inicializamos los rectángulos aquí porque necesitamos el handler
 		
-		slotRects[0] = new Rectangle(positions[0].getX(), positions[0].getY(), 43, 42);
-		slotRects[1] = new Rectangle(positions[1].getX(), positions[1].getY(), 43, 42);
-		slotRects[2] = new Rectangle(positions[2].getX(), positions[2].getY(), 43, 42);
-		slotRects[3] = new Rectangle(positions[3].getX(), positions[3].getY(), 43, 42);
-		slotRects[4] = new Rectangle(positions[4].getX(), positions[4].getY(), 43, 42);
-		slotRects[5] = new Rectangle(positions[5].getX(), positions[5].getY(), 43, 42);
+		invSlots[0] = new Rectangle(invPositions[0].getX(), invPositions[0].getY(), 43, 42);
+		invSlots[1] = new Rectangle(invPositions[1].getX(), invPositions[1].getY(), 43, 42);
+		invSlots[2] = new Rectangle(invPositions[2].getX(), invPositions[2].getY(), 43, 42);
+		invSlots[3] = new Rectangle(invPositions[3].getX(), invPositions[3].getY(), 43, 42);
+		invSlots[4] = new Rectangle(invPositions[4].getX(), invPositions[4].getY(), 43, 42);
+		invSlots[5] = new Rectangle(invPositions[5].getX(), invPositions[5].getY(), 43, 42);
 		
-		//inicializamos lastDrag para poder a empezar a comparar con newDrag
-		lastDragX = handler.getMouseManager().getDragX();
-		lastDragY = handler.getMouseManager().getDragY();
+		//llenamos el array de rectángulos para comprobar la posicion del raton en los slots de la mesa de crafteo
+		
+		craftSlots[0] = new Rectangle(craftPositions[0].getX(), craftPositions[0].getY(), 62, 60);
+		craftSlots[1] = new Rectangle(craftPositions[1].getX(), craftPositions[1].getY(), 62, 60);
+		craftSlots[2] = new Rectangle(craftPositions[2].getX(), craftPositions[2].getY(), 62, 60); 
+		craftSlots[3] = new Rectangle(craftPositions[3].getX(), craftPositions[3].getY(), 62, 60); 
+		craftSlots[4] = new Rectangle(craftPositions[4].getX(), craftPositions[4].getY(), 62, 60); 
+		craftSlots[5] = new Rectangle(craftPositions[5].getX(), craftPositions[5].getY(), 62, 60);
+		craftSlots[6] = new Rectangle(craftPositions[6].getX(), craftPositions[6].getY(), 62, 60); 
+		craftSlots[7] = new Rectangle(craftPositions[7].getX(), craftPositions[7].getY(), 62, 60); 
+		craftSlots[8] = new Rectangle(craftPositions[8].getX(), craftPositions[8].getY(), 62, 60); 
+		
 	}
 	
 	public void tick() {
@@ -71,7 +106,7 @@ public class Inventory extends Thread{
 		
 		if(handler.getKeyManager().f) {
 			
-			if(selectedSlot != -1) {
+			if(selectedSlot > -1) {
 				if(inventory[selectedSlot] != null) {	
 							
 					inventory[selectedSlot].unFixItemPosition();
@@ -107,9 +142,11 @@ public class Inventory extends Thread{
 	
 	public void render(Graphics g) {
 		
-		int check = checkMouseOnInv();
+		int checkInv = checkMouseOnInv();
+		int checkCraft = checkMouseOnCraft();
 		
-		if(check >= 0 && !drawBasicInv) g.drawImage(Assets.itemPointers, positions[check].getX() - 12, positions[check].getY() - 12, null);
+		if(checkInv >= 0 && !drawBasicInv) g.drawImage(Assets.itemPointers, invPositions[checkInv].getX() - 12, invPositions[checkInv].getY() - 12, null);
+		if(checkCraft >= 0 && !drawBasicInv) g.drawImage(Assets.itemPointers, craftPositions[checkCraft].getX() - 1, craftPositions[checkCraft].getY() - 4, null);
 		if(drawBasicInv) g.drawImage(Assets.inventarioPlegado, (int) (handler.getWidth()/2 - 142/2), (int) (handler.getHeight() - 61), 142, 61, null);
 		
 		if(inventory[0] != null) inventory[0].render(g);
@@ -123,6 +160,17 @@ public class Inventory extends Thread{
 		//solo se usa en el inventarioPlegado:
 		if(paintPointerAt1 && drawBasicInv) g.drawImage(Assets.itemPointers, handler.getWorld().getCrafting().getInventoryX() + 128, handler.getWorld().getCrafting().getInventoryY(), 66, 64, null);
 		if(paintPointerAt2 && drawBasicInv) g.drawImage(Assets.itemPointers, handler.getWorld().getCrafting().getInventoryX() + 190, handler.getWorld().getCrafting().getInventoryY(), 66, 64, null);
+		
+//		g.setColor(Color.RED);
+//		g.fillRect(handler.getWidth()/2 - 103, handler.getHeight()/2 - 148, 62, 60);
+//		g.fillRect(handler.getWidth()/2 - 31, handler.getHeight()/2 - 148, 62, 60);
+//		g.fillRect(handler.getWidth()/2 + 41, handler.getHeight()/2 - 148, 62, 60);
+//		g.fillRect(handler.getWidth()/2 - 103, handler.getHeight()/2 - 83, 62, 60);
+//		g.fillRect(handler.getWidth()/2 - 31, handler.getHeight()/2 - 83, 62, 60);
+//		g.fillRect(handler.getWidth()/2 + 41, handler.getHeight()/2 - 83, 62, 60);
+//		g.fillRect(handler.getWidth()/2 - 103, handler.getHeight()/2 - 18, 62, 60);
+//		g.fillRect(handler.getWidth()/2 - 31, handler.getHeight()/2 - 18, 62, 60);
+//		g.fillRect(handler.getWidth()/2 + 41, handler.getHeight()/2 - 18, 62, 60);
 	}
 	
 	public void addToInventory(Item i) {
@@ -139,7 +187,7 @@ public class Inventory extends Thread{
 		else if(emptySlot >= 0) {
 			
 			inventory[emptySlot] = i;
-			i.setPosition(positions[emptySlot].getX() + 22 - i.getWidth()/2, positions[emptySlot].getY() + 21 - i.getHeight()/2);	//centramos el item
+			i.setPosition(invPositions[emptySlot].getX() + 22 - i.getWidth()/2, invPositions[emptySlot].getY() + 21 - i.getHeight()/2);	//centramos el item
 			i.setInactive();
 			i.fixItemPosition();
 			System.out.println(i.getName() + " has been picked up (hold E to open inventory, press F to drop)");
@@ -149,21 +197,39 @@ public class Inventory extends Thread{
 	}
 	
 	public void moveItems() {
-		for(int i = 0; i < slotRects.length; i++) {
-			if(handler.getMouseManager().isLeftPressed() && slotRects[i].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY())) {
+		for(int i = 0; i < craftSlots.length; i++) {
+			
+			if(i < invSlots.length && handler.getMouseManager().isLeftPressed() && invSlots[i].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY())) {
 				
 				if(draggingItem) {
 					itemToSwap = inventory[i];
 					itemToSwapIndex = i;
 					enableSwap = true;
+					indexOfCraft = false;
 				}else {
 					if(inventory[i] != null) draggingItem = true;
 					lastGrabbedItemIndex = i;
 					lastGrabbedItem = inventory[i];
 					enableDrag = true;
-					isGrabbed = true;
+					craftingArray = false;
 				}
-			}
+				
+			}else if(handler.getMouseManager().isLeftPressed() && craftSlots[i].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY())) {
+				
+				if(draggingItem) {
+					itemToSwap = handler.getWorld().getCrafting().getCrafteo()[i];
+					itemToSwapIndex = i;
+					enableSwap = true;
+					indexOfCraft = true;
+				}else {
+					if(handler.getWorld().getCrafting().getCrafteo()[i] != null) draggingItem = true;
+					lastGrabbedItemIndex = i;
+					lastGrabbedItem = handler.getWorld().getCrafting().getCrafteo()[i];
+					enableDrag = true;
+					indexOfCraft = true;
+					craftingArray = true;
+				}
+			}	
 		}
 		
 		if(lastGrabbedItem != null) {
@@ -174,21 +240,29 @@ public class Inventory extends Thread{
 					wasRun.set(true);
 				
 				if(handler.getMouseManager().isMouseExit()) {			//si el ratón ha salido de la pantalla...
-					lastGrabbedItem.setPosition(positions[lastGrabbedItemIndex].setItemPosition(lastGrabbedItem));
-					enableDrag = false;
-					isGrabbed = false;
+					if(!craftingArray){
+						enableDrag = false;
+						lastGrabbedItem.setPosition(invPositions[lastGrabbedItemIndex].setInvPosition(lastGrabbedItem));
+						draggingItem = false;
+						
+					}else{
+						enableDrag = false;
+						lastGrabbedItem.setPosition(craftPositions[lastGrabbedItemIndex].setCraftPosition(lastGrabbedItem));
+						draggingItem = false;
+					}
 				}	
 				
 			}else { 
 				
 				if(wasRun.getAndSet(false)) {
-					if(slotRects[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap) {
-						
+					
+					
+					if(!indexOfCraft && !craftingArray && invSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap) {
+							
 						if(itemToSwap == null) {
 							inventory[lastGrabbedItemIndex] = null;	
-							
 							inventory[itemToSwapIndex] = lastGrabbedItem;
-							lastGrabbedItem.setPosition(positions[itemToSwapIndex].getX() + 22 - lastGrabbedItem.getWidth()/2, positions[itemToSwapIndex].getY() + 21 - lastGrabbedItem.getHeight()/2);	
+							lastGrabbedItem.setPosition(invPositions[itemToSwapIndex].getX() + 22 - lastGrabbedItem.getWidth()/2, invPositions[itemToSwapIndex].getY() + 21 - lastGrabbedItem.getHeight()/2);	
 							
 							draggingItem = false;
 							enableSwap = false;
@@ -196,18 +270,89 @@ public class Inventory extends Thread{
 							
 						}else {
 							inventory[lastGrabbedItemIndex] = itemToSwap;
-							itemToSwap.setPosition(positions[lastGrabbedItemIndex].getX() + 22 - itemToSwap.getWidth()/2, positions[lastGrabbedItemIndex].getY() + 21 - itemToSwap.getHeight()/2);	
-							
+							itemToSwap.setPosition(invPositions[lastGrabbedItemIndex].getX() + 22 - itemToSwap.getWidth()/2, invPositions[lastGrabbedItemIndex].getY() + 21 - itemToSwap.getHeight()/2);	
 							inventory[itemToSwapIndex] = lastGrabbedItem;
-							lastGrabbedItem.setPosition(positions[itemToSwapIndex].getX() + 22 - lastGrabbedItem.getWidth()/2, positions[itemToSwapIndex].getY() + 21 - lastGrabbedItem.getHeight()/2);	
+							lastGrabbedItem.setPosition(invPositions[itemToSwapIndex].getX() + 22 - lastGrabbedItem.getWidth()/2, invPositions[itemToSwapIndex].getY() + 21 - lastGrabbedItem.getHeight()/2);	
 							
 							draggingItem = false;
 							enableSwap = false;
 							enableDrag = false;
 						}
+						
+					}else if(indexOfCraft && !craftingArray && craftSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap) {
+						//cambios del inventario a la mesa de crafteo
+						if(itemToSwap == null) {
+							inventory[lastGrabbedItemIndex] = null;	
+							
+							handler.getWorld().getCrafting().getCrafteo()[itemToSwapIndex] = lastGrabbedItem;
+							lastGrabbedItem.setPosition(craftPositions[itemToSwapIndex].getX() + 31 - lastGrabbedItem.getWidth()/2, craftPositions[itemToSwapIndex].getY() + 30 - lastGrabbedItem.getHeight()/2);	
+							draggingItem = false;
+							enableSwap = false;
+							enableDrag = false;
+							
+						}else {
+							inventory[lastGrabbedItemIndex] = itemToSwap;
+							itemToSwap.setPosition(invPositions[lastGrabbedItemIndex].getX() + 22 - itemToSwap.getWidth()/2, invPositions[lastGrabbedItemIndex].getY() + 21 - itemToSwap.getHeight()/2);	
+							
+							handler.getWorld().getCrafting().getCrafteo()[itemToSwapIndex] = lastGrabbedItem;
+							lastGrabbedItem.setPosition(craftPositions[itemToSwapIndex].getX() + 31 - lastGrabbedItem.getWidth()/2, craftPositions[itemToSwapIndex].getY() + 30 - lastGrabbedItem.getHeight()/2);	
+							draggingItem = false;
+							enableSwap = false;
+							enableDrag = false;
+						}
+						
+					}else if(!indexOfCraft && craftingArray && invSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap) {
+						//cambios de la mesa de crafteo al inventario
+						if(itemToSwap == null) {
+							handler.getWorld().getCrafting().getCrafteo()[lastGrabbedItemIndex] = null;	
+							
+							inventory[itemToSwapIndex] = lastGrabbedItem;
+							lastGrabbedItem.setPosition(invPositions[itemToSwapIndex].getX() + 22 - lastGrabbedItem.getWidth()/2, invPositions[itemToSwapIndex].getY() + 21 - lastGrabbedItem.getHeight()/2);	
+							draggingItem = false;
+							enableSwap = false;
+							enableDrag = false;
+							
+						}else {
+							handler.getWorld().getCrafting().getCrafteo()[lastGrabbedItemIndex] = itemToSwap;
+							itemToSwap.setPosition(craftPositions[lastGrabbedItemIndex].getX() + 31 - itemToSwap.getWidth()/2, craftPositions[lastGrabbedItemIndex].getY() + 30 - itemToSwap.getHeight()/2);	
+						
+							inventory[itemToSwapIndex] = lastGrabbedItem;
+							lastGrabbedItem.setPosition(invPositions[itemToSwapIndex].getX() + 22 - lastGrabbedItem.getWidth()/2, invPositions[itemToSwapIndex].getY() + 21 - lastGrabbedItem.getHeight()/2);	
+							draggingItem = false;
+							enableSwap = false;
+							enableDrag = false;
+						}
+					
+					}else if(indexOfCraft && craftingArray && craftSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap) {
+						//cambios en la mesa de crafteo
+						if(itemToSwap == null) {
+							handler.getWorld().getCrafting().getCrafteo()[lastGrabbedItemIndex] = null;	
+							
+							handler.getWorld().getCrafting().getCrafteo()[itemToSwapIndex] = lastGrabbedItem;
+							lastGrabbedItem.setPosition(craftPositions[itemToSwapIndex].getX() + 31 - lastGrabbedItem.getWidth()/2, craftPositions[itemToSwapIndex].getY() + 30 - lastGrabbedItem.getHeight()/2);	
+							draggingItem = false;
+							enableSwap = false;
+							enableDrag = false;
+							
+						}else {
+							handler.getWorld().getCrafting().getCrafteo()[lastGrabbedItemIndex] = itemToSwap;
+							itemToSwap.setPosition(craftPositions[lastGrabbedItemIndex].getX() + 31 - itemToSwap.getWidth()/2, craftPositions[lastGrabbedItemIndex].getY() + 30 - itemToSwap.getHeight()/2);	
+							
+							handler.getWorld().getCrafting().getCrafteo()[itemToSwapIndex] = lastGrabbedItem;
+							lastGrabbedItem.setPosition(craftPositions[itemToSwapIndex].getX() + 31 - lastGrabbedItem.getWidth()/2, craftPositions[itemToSwapIndex].getY() + 30 - lastGrabbedItem.getHeight()/2);	
+							draggingItem = false;
+							enableSwap = false;
+							enableDrag = false;
+						}
+					
+					}else if(!craftingArray){
+						enableDrag = false;
+						lastGrabbedItem.setPosition(invPositions[lastGrabbedItemIndex].setInvPosition(lastGrabbedItem));
+						draggingItem = false;
+						
 					}else{
 						enableDrag = false;
-						lastGrabbedItem.setPosition(positions[lastGrabbedItemIndex].setItemPosition(lastGrabbedItem));
+						lastGrabbedItem.setPosition(craftPositions[lastGrabbedItemIndex].setCraftPosition(lastGrabbedItem));
 						draggingItem = false;
 					}
 				}	
@@ -227,10 +372,17 @@ public class Inventory extends Thread{
 	
 	public int checkMouseOnInv() {
 		
-		for(int i = 0; i < slotRects.length; i++) {
-			if(slotRects[i].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY())) {
+		for(int i = 0; i < invSlots.length; i++) {
+			if(invSlots[i].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY())) {
 				return i;
-			}else if(slotRects[i].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY())/* && dragChanged()*/) {
+			}
+		}return -1;
+	}
+	
+	public int checkMouseOnCraft() {
+		
+		for(int i = 0; i < craftSlots.length; i++) {
+			if(craftSlots[i].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY())) {
 				return i;
 			}
 		}return -1;
