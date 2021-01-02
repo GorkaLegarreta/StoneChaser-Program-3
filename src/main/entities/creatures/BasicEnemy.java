@@ -24,6 +24,7 @@ public class BasicEnemy extends Creature{
 		
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void tick() {
 		if (!keyManager.pause) {

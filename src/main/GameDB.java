@@ -10,9 +10,7 @@ import java.sql.Statement;
 import main.states.GameState;
 
 public class GameDB {
-	//TODO ¿QUÉ LE OCURRE A LA VARIABLE CONN? NO DEJARLO ASI	
-	private static Statement stmt; //PARA CREAR LAS SENTENCIAS DE SQL	
-	private static Connection conn; //PARA CREAR LA CONEXION DE LA BD
+		
 	private static ResultSet rs; //COGER LA INFO DE LAS TABLAS
 	private static GameDB instance = null; //INSTANCIAR LA CLASE 
 	/////////////////////////////////////////////////////////////////
@@ -23,6 +21,7 @@ public class GameDB {
 			instance = new GameDB();
 			instance.initSqlite();
 			instance.createTableUSERS();
+			instance.createTableINVENTORY();
 		}
 		return instance;
 	}	
@@ -45,6 +44,21 @@ public class GameDB {
 			// #USER_CODE	USERNAME	SESSIONS	PLAYER_X	PLAYER_Y
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS USERS ( USER_CODE INT(1) NOT NULL, USERNAME VARCHAR(15),"
 								+ "SESSIONS INT(2), PLAYER_X INT(3), PLAYER_Y INT(3), PRIMARY KEY (USER_CODE) );");			
+			Game.LOGGER.log(Game.LOGGER.getLevel(),"Tabla cargada correctamente.");
+		} catch (SQLException e) {
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
+		}
+		
+	}
+	public void createTableINVENTORY() throws GameDBException {
+		try (	Connection conn= DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();				
+			){
+			//#USER_CODE	#ITEM_ID	ITEM_NAME	ITEM_X	ITEM_Y		ITEM_INDEX		QUANTITY				 	
+			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS INVENTORY ( USER_CODE INT(1) NOT NULL, ITEM_ID INT(1) "
+								+"NOT NULL,ITEM_NAME VARCHAR(25), ITEM_X INT(3), ITEM_Y INT(3), ITEM_INDEX INT(1)"
+								+",QUANTITY INT(2), PRIMARY KEY (USER_CODE, ITEM_ID), FOREIGN KEY (USER_CODE)	 "
+								+"REFERENCES USERS (USER_CODE) ON DELETE CASCADE ); ");			
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Tabla cargada correctamente.");
 		} catch (SQLException e) {
 			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
@@ -159,10 +173,11 @@ public class GameDB {
 	 */
 	public static void deleteUsers() throws GameDBException {
 		try (	
-				Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");				
+				Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();
 			){
 			
-			stmt = conn.createStatement();
+			
 			stmt.executeUpdate("DROP TABLE USERS;");
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha borrado toda la información de los usuarios");
 			
@@ -178,9 +193,9 @@ public class GameDB {
 	public static void deleteUsers(int world) throws GameDBException {
 		try (	
 				Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();
 			){
 			
-			stmt = conn.createStatement();
 			stmt.executeUpdate(String.format("DELETE FROM USERS WHERE USER_CODE = %d;",world));
 			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha borrado toda la información del usuario "+world);
 			

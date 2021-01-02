@@ -224,6 +224,7 @@ public class Game implements Runnable{
 			timer = 0;
 		}
 	}
+	@SuppressWarnings("static-access")
 	public boolean gameIsPaused() {
 		return keyManager.pause;
 	}
