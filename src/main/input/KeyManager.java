@@ -2,8 +2,6 @@ package main.input;
 
 import java.awt.event.*;
 
-import main.states.GameState;
-
 public class KeyManager implements KeyListener{
 
 	private static boolean[] keys;
@@ -28,7 +26,7 @@ public class KeyManager implements KeyListener{
 			one = keys[KeyEvent.VK_1];
 			two = keys[KeyEvent.VK_2];
 		} else {
-			for(boolean b : keys) b = false;
+			up = false; down = false; right = false; left = false; space = false; e = false; f = false; r = false; one = false; two = false;
 		}
 	}
 	/////////////////////////////////////////////////////////////////

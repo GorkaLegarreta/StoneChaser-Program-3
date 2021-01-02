@@ -4,12 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.logging.Level;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import main.Game;
 import main.GameDB;
@@ -54,7 +49,7 @@ public class MenuState extends State  {
 	
 	@Override
 	public void tick() throws GameDBException {	
-		for(int i = 1; i < 5; i++) strings[i-1] = GameDB.getGamePlayer(i);
+		for(int i = 1; i < 5; i++) strings[i-1] = GameDB.getGameUserName(i);
 		/////////////////////////////////////////////////////////////////
 		//				LOS BOTONES A LA IZQUIERDA					   //
 		/////////////////////////////////////////////////////////////////
@@ -164,7 +159,7 @@ public class MenuState extends State  {
 	public void createNewUser(int world) throws GameDBException {
 		optionPane = JOptionPane.showInputDialog("Introduce el nombre para el usuario");
 		if (optionPane == null) {
-			optionPane = GameDB.getGamePlayer(world);
+			optionPane = GameDB.getGameUserName(world);
 		} else {
 			GameDB.createGamePlayer(world, optionPane);
 			strings[world-1] = optionPane;

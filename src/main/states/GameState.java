@@ -4,16 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.logging.Level;
-import javax.swing.JOptionPane;
-import main.Game;
 import main.GameDB;
 import main.GameDBException;
 import main.Handler;
-import main.entities.creatures.Player;
 import main.worlds.World;
-import main.entities.statics.*;
-import main.gfx.Assets;
 import main.input.KeyManager;
 import main.input.MouseManager;
 import main.states.MenuState.WorldEnum;
@@ -24,7 +18,6 @@ public class GameState extends State{
 	private Rectangle saveButton;
 	private MouseManager mouseManager;
 	private KeyManager keyManager;
-	private int x, y, height, width;
 	public static boolean currentlySaving = false;
 	
 	public GameState(Handler handler) {
@@ -48,14 +41,8 @@ public class GameState extends State{
 			currentlySaving = true;			
 			new Thread( () -> {
 			try {
-				Thread.currentThread().sleep(1000);	
-				if (GameDB.existsUserPosition(getUser())) {
-					GameDB.updatePosition();
-					Thread.currentThread().sleep(1000);	
-				} else {
-					GameDB.insertIntoPosiciones(getUser(), getPlayerXPosition(), getPlayerYPosition());
-					Thread.currentThread().sleep(1000);	
-				}				
+				Thread.currentThread().sleep(1000);		
+				GameDB.updatePosition();
 				unPause();
 				currentlySaving = false;
 			} catch (InterruptedException | GameDBException e) {
@@ -88,14 +75,17 @@ public class GameState extends State{
 		}
 	}	
 	
+	@SuppressWarnings("static-access")
 	public void pause() {
 		keyManager.pause = true;
 	}
 	
+	@SuppressWarnings("static-access")
 	public void unPause() {
 		keyManager.pause = false;
 	}
 	
+	@SuppressWarnings("static-access")
 	public boolean gameIsPaused() {
 		return keyManager.pause;
 	}
@@ -129,22 +119,3 @@ public class GameState extends State{
 		}
 	}
 }
-/*
- * 
- */
-//JOptionPane.showConfirmDialog(null, "¿Quieres guardar el progreso del Mundo Actual?", "Guardar", JOptionPane.YES_NO_OPTION);
-//if (JOptionPane.showConfirmDialog(null, "¿Quieres guardar el progreso del Mundo Actual?", "Guardar", JOptionPane.YES_NO_OPTION)
-//		== JOptionPane.YES_OPTION) {
-//	
-//	//TODO más código para el guardado de la posicion actual, mundo en el que esta, vida, items...
-//	
-//			
-//} else if (JOptionPane.showConfirmDialog(null, "¿Quieres guardar el progreso del Mundo Actual?", "Guardar", JOptionPane.YES_NO_OPTION)
-//		== JOptionPane.NO_OPTION){				
-//	//TODO más código para que vuelva a la pantalla de juego...
-//	unPause();
-//}
-//unPause();
-/*
- * 
- */
