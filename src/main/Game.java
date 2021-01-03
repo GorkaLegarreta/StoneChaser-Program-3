@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +18,8 @@ import main.gfx.GameCamera;
 import main.input.KeyManager;
 import main.input.MouseManager;
 import main.input.ScreenMouseMovement;
+import main.inventory.Inventory;
+import main.items.Item;
 import main.states.GameState;
 import main.states.MenuState;
 import main.states.State;
@@ -27,6 +30,7 @@ public class Game implements Runnable{
 	private static Window window;	
 	private int width, height;
 	public String title;
+	private static HashMap <Integer,String> playersItems;
 	
 	//gameloop
 	
@@ -221,6 +225,24 @@ public class Game implements Runnable{
 			timer = 0;
 		}
 	}
+	public static HashMap<Integer,String> playerItemsMap(){
+		int user_code;
+		user_code = GameState.getUser();
+		
+		String itemNames = "";
+		Item[] items;
+		items = Inventory.getItemArray();
+		for (int i = 0; i<items.length ; i++) {
+			if (items[i] != null)
+				itemNames.concat(items[i].getName()+", ");
+		}
+		
+		playersItems.put(user_code, itemNames); 
+		return playersItems;
+	}
+	public static String getItemValues(int user_code) {
+		return playersItems.get(user_code);
+	}
 	@SuppressWarnings("static-access")
 	public boolean gameIsPaused() {
 		return keyManager.pause;
@@ -261,7 +283,7 @@ public class Game implements Runnable{
 		enableSpotlight = false;
 	}
 			
-	public synchronized  void start() {
+	public synchronized void start() {
 		
 		if(running)
 			return;

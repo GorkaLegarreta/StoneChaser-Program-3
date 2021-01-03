@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
 
 import main.states.GameState;
 
@@ -286,7 +287,7 @@ public class GameDB {
 		}
 		return false; 
 	}
-	public static void insertIntoInventory(int id, String name, int x, int y, int index , int quantity) throws GameDBException {
+	public static void insertIntoInventory(int id, String name, int x, int y, int index , int quantity)  {
 		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
@@ -302,7 +303,7 @@ public class GameDB {
 			ps.executeUpdate();
 			
 		} catch (SQLException e) {
-			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
+			
 		}
 	}
 	public static void deleteInventory(int world) throws GameDBException {
@@ -311,8 +312,7 @@ public class GameDB {
 				Statement stmt = conn.createStatement();
 			){
 			
-			stmt.executeUpdate(String.format("DELETE FROM INVENTORY WHERE USER_CODE = %d;",world));
-			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha borrado toda la información del usuario "+world);
+			stmt.executeUpdate(String.format("DELETE FROM INVENTORY WHERE USER_CODE = %d;",world));			
 			
 		} catch (SQLException e) {
 			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.logging.Level;
+import main.Game;
 import main.GameDB;
 import main.GameDBException;
 import main.Handler;
@@ -48,15 +50,17 @@ public class GameState extends State{
 			try {
 				Thread.currentThread().sleep(1000);		
 				GameDB.updatePosition();
-				GameDB.deleteInventory(GameState.getUser());
+				GameDB.deleteInventory(getUser());			
 				loopItemArray();
 				unPause();
 				currentlySaving = false;
+				
+				
 			} catch (InterruptedException | GameDBException e) {
 				Thread.currentThread().interrupt();
 			}
 			}).start();
-			
+			Game.LOGGER.log(Level.FINEST,"Se han guardado los datos de con éxito en la BD" );
 		}
 		//handler.getGameCamera().move(1, 0); //para establecer la posicion del jugador, pero tiene que ser en un init porque si no suma el valor y se va moviendo la cámara (cinemáticas?).
 	}
@@ -74,7 +78,7 @@ public class GameState extends State{
 	/////////////////////////////////////////////////////////////////
 	
 	public boolean saveButtonIsPressed() {
-		if (mouseManager.isLeftPressed() && saveButton.contains(mouseManager.getMouseX(),mouseManager.getMouseY())  ) {
+		if (mouseManager.isLeftPressed() && saveButton.contains(mouseManager.getMouseX(),mouseManager.getMouseY()) ) {
 			pause();
 			inv = Inventory.getItemArray();
 			return true;
@@ -90,22 +94,20 @@ public class GameState extends State{
 				
 				id = inv[i].getId();
 				name = inv[i].getName();
-				x = inv[i].getX();
-				y = inv[i].getY();
+				x = inv[i].itemX();
+				y = inv[i].itemY();
 				quantity = inv[i].getItemQuantity();
 				index = i;
-				try {
-					GameDB.insertIntoInventory(id,name,x,y,index,quantity);
-				} catch (GameDBException e) {
-					
-				}
+				GameDB.insertIntoInventory(id,name,x,y,index,quantity);
 			}
-		}
+			
+		}		
 	}
+	
 	
 	@SuppressWarnings("static-access")
 	public void pause() {
-		keyManager.pause = true;
+		keyManager.pause = true;		
 	}	
 	@SuppressWarnings("static-access")
 	public void unPause() {
