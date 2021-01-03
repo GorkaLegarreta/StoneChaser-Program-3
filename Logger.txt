@@ -1,14 +1,24 @@
-ene. 02, 2021 6:53:49 P. M. main.Game <clinit>
+ene. 03, 2021 11:26:02 A. M. main.Game <clinit>
 INFO: Logger y clases del StoneChaser inicializadas
-ene. 02, 2021 6:53:49 P. M. main.GameDB initSqlite
+ene. 03, 2021 11:26:02 A. M. main.GameDB initSqlite
 FINE: Se ha inicializado sqlite correctamente.
-ene. 02, 2021 6:53:49 P. M. main.GameDB createTableUSERS
-FINE: Tabla cargada correctamente.
-ene. 02, 2021 6:53:49 P. M. main.GameDB createTableINVENTORY
-FINE: Tabla cargada correctamente.
-ene. 02, 2021 6:53:49 P. M. main.Game <clinit>
+ene. 03, 2021 11:26:02 A. M. main.GameDB createTableUSERS
+FINE: Tabla USER cargada correctamente.
+ene. 03, 2021 11:26:02 A. M. main.GameDB createTableINVENTORY
+FINE: Tabla INVENTORY cargada correctamente.
+ene. 03, 2021 11:26:02 A. M. main.Game <clinit>
 FINE:  LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, FINE: 500
-ene. 02, 2021 6:53:51 P. M. main.states.MenuState worldIsloadedLogger
+ene. 03, 2021 11:26:04 A. M. main.states.MenuState worldIsloadedLogger
 INFO: Se ha iniciado como Mundo3
-ene. 02, 2021 6:53:51 P. M. main.states.MenuState worldIsloadedLogger
+ene. 03, 2021 11:26:04 A. M. main.states.MenuState worldIsloadedLogger
 CONFIG: GameState Cargada e inicializada en Configuracion Mundo3
+ene. 03, 2021 11:26:08 A. M. main.GameDB deleteInventory
+FINE: Se ha borrado toda la información del usuario 3
+ene. 03, 2021 11:26:08 A. M. main.GameDB deleteInventory
+FINE: Se ha borrado toda la información del usuario 3
+ene. 03, 2021 11:26:08 A. M. main.GameDB deleteInventory
+FINE: Se ha borrado toda la información del usuario 3
+ene. 03, 2021 11:26:08 A. M. main.GameDB deleteInventory
+FINE: Se ha borrado toda la información del usuario 3
+ene. 03, 2021 11:26:08 A. M. main.GameDB deleteInventory
+FINE: Se ha borrado toda la información del usuario 3

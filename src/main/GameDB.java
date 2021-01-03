@@ -43,8 +43,9 @@ public class GameDB {
 			){
 			// #USER_CODE	USERNAME	SESSIONS	PLAYER_X	PLAYER_Y
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS USERS ( USER_CODE INT(1) NOT NULL, USERNAME VARCHAR(15),"
-								+ "SESSIONS INT(2), PLAYER_X INT(3), PLAYER_Y INT(3), PRIMARY KEY (USER_CODE) );");			
-			Game.LOGGER.log(Game.LOGGER.getLevel(),"Tabla cargada correctamente.");
+								+ "SESSIONS INT(2), PLAYER_X INT(3), PLAYER_Y INT(3), PRIMARY KEY (USER_CODE) );" );			
+			
+			Game.LOGGER.log(Game.LOGGER.getLevel(),"Tabla USER cargada correctamente.");
 		} catch (SQLException e) {
 			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
@@ -56,10 +57,11 @@ public class GameDB {
 			){
 			//#USER_CODE	#ITEM_ID	ITEM_NAME	ITEM_X	ITEM_Y		ITEM_INDEX		QUANTITY				 	
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS INVENTORY ( USER_CODE INT(1) NOT NULL, ITEM_ID INT(1) "
-								+"NOT NULL,ITEM_NAME VARCHAR(25), ITEM_X INT(3), ITEM_Y INT(3), ITEM_INDEX INT(1)"
-								+",QUANTITY INT(2), PRIMARY KEY (USER_CODE, ITEM_ID), FOREIGN KEY (USER_CODE)	 "
-								+"REFERENCES USERS (USER_CODE) ON DELETE CASCADE ); ");			
-			Game.LOGGER.log(Game.LOGGER.getLevel(),"Tabla cargada correctamente.");
+							  + "NOT NULL,ITEM_NAME VARCHAR(25), ITEM_X INT(3), ITEM_Y INT(3), ITEM_INDEX INT(1) "
+							  + ",QUANTITY INT(2), PRIMARY KEY (USER_CODE, ITEM_ID), FOREIGN KEY (USER_CODE)	 "
+							  + "REFERENCES USERS (USER_CODE) ON DELETE CASCADE ); ");			
+			
+			Game.LOGGER.log(Game.LOGGER.getLevel(),"Tabla INVENTORY cargada correctamente.");
 		} catch (SQLException e) {
 			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
@@ -266,5 +268,54 @@ public class GameDB {
 		}
 		return -1; 
 	}
-	
+	/////////////////////////////////////////////////////////////////////////
+	//				METODOS PARA CREAR FILAS EN INVENTORY				   //
+	/////////////////////////////////////////////////////////////////////////
+	public static boolean existsObjectsInPlayersInventory(int user_code) throws GameDBException {
+		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();				
+			){
+			
+			rs = stmt.executeQuery(String.format("SELECT * FROM INVENTORY WHERE USER_CODE = %d AND ITEM_ID = %d;",user_code));			
+			while(rs.next()) {
+				if (user_code == rs.getInt("USER_CODE"))
+					return true; 
+			}
+		} catch (SQLException e) {
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
+		}
+		return false; 
+	}
+	public static void insertIntoInventory(int id, String name, int x, int y, int index , int quantity) throws GameDBException {
+		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();				
+			){
+			
+			PreparedStatement ps = conn.prepareStatement(	"INSERT INTO INVENTORY VALUES (?,?,?,?,?,?,?);"		);
+			ps.setInt(1, GameState.getUser());
+			ps.setInt(2, id);
+			ps.setString(3, name);
+			ps.setInt(4, x);
+			ps.setInt(5, y);			
+			ps.setInt(6, index);
+			ps.setInt(7, quantity);
+			ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
+		}
+	}
+	public static void deleteInventory(int world) throws GameDBException {
+		try (	
+				Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();
+			){
+			
+			stmt.executeUpdate(String.format("DELETE FROM INVENTORY WHERE USER_CODE = %d;",world));
+			Game.LOGGER.log(Game.LOGGER.getLevel(),"Se ha borrado toda la información del usuario "+world);
+			
+		} catch (SQLException e) {
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
+		}
+	}
 }	

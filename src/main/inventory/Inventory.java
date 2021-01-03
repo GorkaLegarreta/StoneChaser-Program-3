@@ -47,7 +47,7 @@ public class Inventory extends Thread{
 	
 	//array de items para los huecos del inventario
 	
-	private Item[] inventory = new Item[6];
+	private static Item[] inventory = new Item[6];
 	
 	public Inventory(Handler handler) {
 		
@@ -259,10 +259,6 @@ public class Inventory extends Thread{
 			}else { 
 				
 				if(wasRun.getAndSet(false)) {
-//					!indexOfCraft && !craftingArray && invSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap	
-//					indexOfCraft && !craftingArray && ccraftSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap
-//					indexOfCraft && craftingArray && craftSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap
-//					!indexOfCraft && craftingArray && invSlots[itemToSwapIndex].contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY()) && enableSwap
 //					
 					if(!craftingArray && movingInvSlots()) {
 							
@@ -399,6 +395,9 @@ public class Inventory extends Thread{
 		}return -1;
 	}
 	
+	public static Item[] getItemArray() {
+		return inventory;
+	}
 //	public boolean dragChanged() {
 //		newDragX = handler.getMouseMovement().getPosition().getX();
 //		newDragY = handler.getMouseMovement().getPosition().getY();
