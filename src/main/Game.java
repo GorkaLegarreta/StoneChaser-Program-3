@@ -53,7 +53,9 @@ public class Game implements Runnable{
 
 	private int sPx, sPy;
 	private int velX = 5, velY = 5;
-	private Spotlight spotlight, craftingTableSpotlight, inventorySpotlight1, inventorySpotlight2, inventorySpotlight3, inventorySpotlight4, inventorySpotlight5, inventorySpotlight6;
+	private Spotlight spotlight, craftingTableSpotlight, inventorySpotlight1, inventorySpotlight2, 
+					  inventorySpotlight3, inventorySpotlight4, inventorySpotlight5, inventorySpotlight6, craftingOutcomeSpotlight;
+	
 	private boolean enableSpotlight = false;
 	
 	//Input
@@ -172,13 +174,14 @@ public class Game implements Runnable{
 			//spotlight = new Spotlight( light's x, light's y, screen rect start x, screen rect start y, 
 			//							screen rect width, screen rect height, lights gradient start, lights gradient end, spotlight's radius, opacity, color, Graphics g)
 			
-			craftingTableSpotlight = new Spotlight(getWidth()/2, getHeight()/2 - 50, 0, 0, 700, 300, 0.5f, 0.6f, 250, 0.5f, new Color(0, 0, 0, 0), g);
+			craftingTableSpotlight = new Spotlight(getWidth()/2, getHeight()/2 - 50, 0, 0, 500, 300, 0.5f, 0.6f, 250, 0.5f, new Color(0, 0, 0, 0), g);
 			inventorySpotlight1 = new Spotlight(195, 370, 0, 300, 225, 100, 0.3f, 0.6f, 50, 0.5f, new Color(0, 0, 0, 0), g);
 			inventorySpotlight2 = new Spotlight(255, 370, 225, 300, 63, 100, 0.3f, 0.6f, 50, 0.5f, new Color(0, 0, 0, 0), g);
 			inventorySpotlight3 = new Spotlight(315, 370, 288, 300, 70, 100, 0.3f, 0.6f, 50, 0.5f, new Color(0, 0, 0, 0), g);
 			inventorySpotlight4 = new Spotlight(380, 370, 358, 300, 55, 100, 0.3f, 0.6f, 50, 0.5f, new Color(0, 0, 0, 0), g);
 			inventorySpotlight5 = new Spotlight(440, 370, 413, 300, 62, 100, 0.3f, 0.6f, 50, 0.5f, new Color(0, 0, 0, 0), g);
 			inventorySpotlight6 = new Spotlight(505, 370, 475, 300, 250, 100, 0.3f, 0.6f, 50, 0.5f, new Color(0, 0, 0, 0), g);
+			craftingOutcomeSpotlight = new Spotlight(560, 149, 500, 0, 200, 300, 0.4f, 0.6f, 75, 0.5f, new Color(0, 0, 0, 0), g);
 		}
 		
 		//Aqui dejamos de dibujar y actualizamos

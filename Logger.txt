@@ -1,17 +1,42 @@
+<<<<<<< HEAD
 ene. 03, 2021 6:56:28 P. M. main.Game <clinit>
+=======
+ene. 02, 2021 6:53:49 P. M. main.Game <clinit>
+>>>>>>> branch 'master' of https://github.com/GorkaLegarreta/StoneChaser-Program-3.git
 INFO: Logger y clases del StoneChaser inicializadas
+<<<<<<< HEAD
 ene. 03, 2021 6:56:28 P. M. main.GameDB initSqlite
+=======
+ene. 02, 2021 6:53:49 P. M. main.GameDB initSqlite
+>>>>>>> branch 'master' of https://github.com/GorkaLegarreta/StoneChaser-Program-3.git
 FINE: Se ha inicializado sqlite correctamente.
+<<<<<<< HEAD
 ene. 03, 2021 6:56:29 P. M. main.GameDB createTableUSERS
 FINE: Tabla USER cargada correctamente.
 ene. 03, 2021 6:56:29 P. M. main.GameDB createTableINVENTORY
 FINE: Tabla INVENTORY cargada correctamente.
 ene. 03, 2021 6:56:29 P. M. main.Game <clinit>
+=======
+ene. 02, 2021 6:53:49 P. M. main.GameDB createTableUSERS
+FINE: Tabla cargada correctamente.
+ene. 02, 2021 6:53:49 P. M. main.GameDB createTableINVENTORY
+FINE: Tabla cargada correctamente.
+ene. 02, 2021 6:53:49 P. M. main.Game <clinit>
+>>>>>>> branch 'master' of https://github.com/GorkaLegarreta/StoneChaser-Program-3.git
 FINE:  LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, FINE: 500
+<<<<<<< HEAD
 ene. 03, 2021 6:56:30 P. M. main.states.MenuState worldIsloadedLogger
+=======
+ene. 02, 2021 6:53:51 P. M. main.states.MenuState worldIsloadedLogger
+>>>>>>> branch 'master' of https://github.com/GorkaLegarreta/StoneChaser-Program-3.git
 INFO: Se ha iniciado como Mundo3
+<<<<<<< HEAD
 ene. 03, 2021 6:56:30 P. M. main.states.MenuState worldIsloadedLogger
+=======
+ene. 02, 2021 6:53:51 P. M. main.states.MenuState worldIsloadedLogger
+>>>>>>> branch 'master' of https://github.com/GorkaLegarreta/StoneChaser-Program-3.git
 CONFIG: GameState Cargada e inicializada en Configuracion Mundo3
+<<<<<<< HEAD
 ene. 03, 2021 6:56:32 P. M. main.states.GameState tick
 FINE: Se han guardado los datos de  con éxito en la BD
 ene. 03, 2021 6:56:32 P. M. main.states.GameState tick
@@ -28,3 +53,5 @@ ene. 03, 2021 6:56:32 P. M. main.states.GameState tick
 FINE: Se han guardado los datos de  con éxito en la BD
 ene. 03, 2021 6:56:32 P. M. main.states.GameState tick
 FINE: Se han guardado los datos de  con éxito en la BD
+=======
+>>>>>>> branch 'master' of https://github.com/GorkaLegarreta/StoneChaser-Program-3.git

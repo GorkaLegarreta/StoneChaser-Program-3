@@ -21,6 +21,8 @@ public class Item {
 	protected Color c;
 	protected BufferedImage img;
 	
+	protected boolean existsItem = true;
+	
 	//
 	public int xOffset, yOffset, isFixed = 1;
 	
@@ -47,22 +49,27 @@ public class Item {
 		i.setPosition((int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()));
 		i.setItemQuantity(itemQuantity);
 		i.setActive();
+		if(handler.getWorld() != null) handler.getWorld().getItemManager().addToItems(i);
 		return i;
 	}
 	
 	public void tick() {
 		
-		if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(itemBounds) && active) {
-			inv.addToInventory(this);		
-		}
+		
+			if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(itemBounds) && active) {
+				inv.addToInventory(this);		
+			}
+	
+	
 	}
 	
 	public void render(Graphics g) {
 		
+		if(existsItem) {
 			g.drawImage(img, itemX(), itemY(), width, height, null);
 			g.setColor(Color.WHITE);
 			g.drawString("" + itemQuantity, itemX(), itemY());
-	
+		}
 	}
 	
 	public int itemX() {
@@ -73,6 +80,10 @@ public class Item {
 	public int itemY() {
 		yOffset = (int) handler.getGameCamera().getyOffset() * isFixed;
 		return y - yOffset;
+	}
+	
+	public BufferedImage getImage() {
+		return img;
 	}
 		
 	public String getName() {
@@ -129,6 +140,10 @@ public class Item {
 
 	public void increaseItemQuantity(int increaseQuantity) {
 		this.itemQuantity += increaseQuantity;
+	}
+	
+	public void decreaseItemQuantity(int increaseQuantity) {
+		this.itemQuantity -= increaseQuantity;
 	}
 
 	public boolean isActive() {

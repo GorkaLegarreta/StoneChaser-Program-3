@@ -55,7 +55,7 @@ public class ItemManager {
 		items.add(cuero.createItem(220, 160, 3));
 		items.add(piedra.createItem(240, 90, 1));
 		items.add(cuerda.createItem(270, 110, 1));
-		items.add(hierro.createItem(320, 170, 1));
+		items.add(hierro.createItem(320, 170, 2));
 		items.add(palo.createItem(340, 220, 1));
 		items.add(casco.createItem(230, 75, 1));
 	}
@@ -94,6 +94,10 @@ public class ItemManager {
 	
 	public Crafting getCrafting() {
 		return crafting;
+	}
+	
+	public void addToItems(Item i) {
+		items.add(i);
 	}
 	
 }
