@@ -5,7 +5,8 @@ import java.awt.image.BufferedImage;
 public class Assets {
 	
 	public static BufferedImage player, sword, cuerda, hierro, palo, casco, craftingTable, trunk, 
-								stone, cuero, worldTest, inventarioPlegado, inventarioDesplegado, itemPointers, craftingOutcome;
+								stone, cuero, worldTest, inventarioPlegado, inventarioDesplegado, 
+								itemPointers, craftingOutcome, craftButton1, craftButton2;
 	
 	public static void init() {
 		
@@ -22,8 +23,11 @@ public class Assets {
 		SpriteSheet hrro = new SpriteSheet(ImageLoader.loadImage("/textures/hierro.png"));
 		SpriteSheet plo = new SpriteSheet(ImageLoader.loadImage("/textures/palo.png"));
 		SpriteSheet csco = new SpriteSheet(ImageLoader.loadImage("/textures/casco.png"));
-		SpriteSheet pntrs = new SpriteSheet(ImageLoader.loadImage("/textures/itemPointers.png"));		
+		SpriteSheet pntrs = new SpriteSheet(ImageLoader.loadImage("/textures/itemPointers.png"));
+		SpriteSheet crftbtn = new SpriteSheet(ImageLoader.loadImage("/textures/craftButton.png"));
 		
+		craftButton1 = crftbtn.crop(0, 0, 53, 19);
+		craftButton2 = crftbtn.crop(0, 19, 53, 19);
 		itemPointers = pntrs.crop(0, 0, 66, 64);
 		casco = csco.crop(0, 0, 27, 28);
 		palo = plo.crop(0, 0, 18, 19);

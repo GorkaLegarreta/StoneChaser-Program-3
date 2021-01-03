@@ -1,22 +1,19 @@
 package main.crafting;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import main.Handler;
 import main.gfx.Assets;
 import main.items.Item;
 import main.items.ItemManager;
-import main.utilities.Position;
 
 public class Crafting {
 
 	protected Handler handler;
 	
-	private Item resultadoCrafteo, grabbedItem;
+	private Item craftingOutcome, grabbedItem;
 	
 	private Item[] crafteo = new Item[9];
 	
@@ -26,7 +23,7 @@ public class Crafting {
 	private int item, posicion, craftingTableWidth = 280, craftingTableHeight = 266, invSlotsWidth = 219, invSlotsHeight = 75, 
 			craftingTableX, craftingTableY, inventoryX, inventoryY, grabbedItemIndex;
 	
-	private boolean c = false, callCraft = false;
+	private boolean c = false, craft = false;
 
 	private float ratio = 1500000000, update;
 	private long now, before = System.nanoTime();
@@ -44,19 +41,20 @@ public class Crafting {
 	
 		updateNotNullIndexes();
 		
-		if(notNull.size() == 2) {
-			if(crafteo[notNull.get(0)].getId() == 4 && crafteo[notNull.get(0)].getItemQuantity() >= 2 && crafteo[notNull.get(1)].getId() == 2) {
-				resultadoCrafteo = ItemManager.espadaHierro.createItem(0, 0, 1);
-				resultadoCrafteo.setInactive();
-				//resultadoCrafteo.setPosition(493, 168);
-				resultadoCrafteo.setPosition(handler.getWorld().getInventory().getOutcomePosition().setOutcomePosition(resultadoCrafteo));
-				handler.getWorld().getInventory().setCraftingOutcome(resultadoCrafteo);
-			}
+		
+		if(notNull.size() == 2 && notNull.get(0) == 4 && notNull.get(1) == 7 && crafteo[notNull.get(0)].getName() == "hierro" && 
+				crafteo[notNull.get(0)].getItemQuantity() >= 2 && crafteo[notNull.get(1)].getName() == "palo") {
 			
+			craftingOutcome = ItemManager.espadaHierro.createItem(0, 0, 1);
+			craftingOutcome.setInactive();
+			craftingOutcome.fixItemPosition();
+			craftingOutcome.setPosition(handler.getWorld().getInventory().getOutcomePosition().setOutcomePosition(craftingOutcome));
+			handler.getWorld().getInventory().setCraftingOutcome(craftingOutcome);
+			if(craft) toBeDecreased(1);
 		}else {
-			resultadoCrafteo = null;
-			handler.getWorld().getInventory().setCraftingOutcome(resultadoCrafteo);
-		}
+			craftingOutcome = null;
+			handler.getWorld().getInventory().setCraftingOutcome(craftingOutcome);
+		}	
 	}
 	
 	public void render(Graphics g) {
@@ -73,6 +71,8 @@ public class Crafting {
 	
 	public void tick() {
 		
+		checkItemQuantities();
+		
 		if(handler.getKeyManager().e && c == false) {		//update solo funciona cuando se activa el inventario, entonces no llegará a ser un valor tan alto que crashee el programa.
 															
 			now = System.nanoTime();			
@@ -81,12 +81,10 @@ public class Crafting {
 			if(update >= 1) {
 				before = System.nanoTime();				
 				c = true;
-				handler.getWorld().getInventory().displayFullInv();
 				update = 0;
 				handler.spotlightEnabler();
 				handler.getWorld().getInventory().stopDrawBasicInv();
 				handler.getWorld().getInventory().moveItemsEnabled();
-				callCraft = true;
 				handler.getWorld().getEntityManager().getPlayer().setPlayerInactive();
 			}			
 			
@@ -98,24 +96,22 @@ public class Crafting {
 			if(update >= 1) {
 				before = System.nanoTime();				
 				c = false;
-				handler.getWorld().getInventory().displayShortInv();
 				update = 0;
 				handler.spotlightDisabler();
 				handler.getWorld().getInventory().drawBasicInv();
 				handler.getWorld().getInventory().moveItemsDisabled();
-				callCraft = false;
 				handler.getWorld().getEntityManager().getPlayer().setPlayerActive();
 			}
 			
 		}
 		
 		if(c == true) {
-			
+			craft();
 		}
 		
 		
 		
-		if(callCraft) craft();	
+			
 	}
 	
 	public void updateNotNullIndexes() {
@@ -125,11 +121,26 @@ public class Crafting {
 		
 	}
 	
+	public void checkItemQuantities() {
+		
+		for (int i = 0; i < crafteo.length; i++) {
+			if(crafteo[i] != null && crafteo[i].getItemQuantity() < 1) crafteo[i] = null;
+		}	
+	}
+	
 	public void setItemAndIndex(Item i, int n) {
 		this.grabbedItem = i;
 		this.grabbedItemIndex = n;
 	}
 
+	public void toBeDecreased(int i) {
+		if( i == 1 ) {
+			crafteo[notNull.get(0)].decreaseItemQuantity(2);
+			crafteo[notNull.get(1)].decreaseItemQuantity(1);
+		}
+		craft = false;		//despues de craftear volvemos a poner esta variable en falso para que si se quiere craftear otra vez se tenga que volver a pulsar el boton de craftear
+	}
+	
 	public Item[] getCrafteo() {
 		return crafteo;
 	}
@@ -148,6 +159,10 @@ public class Crafting {
 
 	public int getInventoryY() {
 		return inventoryY;
+	}
+	
+	public void setCraftOn() {
+		this.craft = true;
 	}
 	
 }

@@ -37,7 +37,7 @@ public class Position {
 	}
 	
 	public Position setOutcomePosition(Item i) {
-		return new Position(x - 21 - i.getWidth()/2, y + 67 - i.getHeight()/2);	
+		return new Position(x + 30 - i.getWidth()/2, y + 30 - i.getHeight()/2);	
 	}
 	
 }
