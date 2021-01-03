@@ -11,6 +11,7 @@ import main.worlds.World;
 import main.input.KeyManager;
 import main.input.MouseManager;
 import main.inventory.Inventory;
+import main.items.Item;
 import main.states.MenuState.WorldEnum;
 
 public class GameState extends State{	
@@ -20,7 +21,9 @@ public class GameState extends State{
 	private MouseManager mouseManager;
 	private KeyManager keyManager;
 	public static boolean currentlySaving = false;
-	private static Inventory inv;
+	private static Item[] inv;
+	public int id,x,y,quantity,index;
+	public String name;
 	
 	public GameState(Handler handler) {
 		super(handler);
@@ -29,7 +32,7 @@ public class GameState extends State{
 		saveButton = new Rectangle(0, 380, 80, 20);		
 		mouseManager = handler.getMouseManager();
 		keyManager = handler.getKeyManager();
-		inv = handler.getWorld().getInventory();
+		inv = Inventory.getItemArray();
 	}
 	//////////////////////////////////////////////////////////////////
 	//					METODOS TICK & RENDER						//
@@ -45,7 +48,8 @@ public class GameState extends State{
 			try {
 				Thread.currentThread().sleep(1000);		
 				GameDB.updatePosition();
-				//TODO updateInventory
+				GameDB.deleteInventory(GameState.getUser());
+				loopItemArray();
 				unPause();
 				currentlySaving = false;
 			} catch (InterruptedException | GameDBException e) {
@@ -72,11 +76,32 @@ public class GameState extends State{
 	public boolean saveButtonIsPressed() {
 		if (mouseManager.isLeftPressed() && saveButton.contains(mouseManager.getMouseX(),mouseManager.getMouseY())  ) {
 			pause();
+			inv = Inventory.getItemArray();
 			return true;
 		} else {
 			return false;
 		}
-	}	
+	}
+	
+	public void loopItemArray() {
+		for (int i=0; i<inv.length; i++) {
+			
+			if (inv[i] != null) {
+				
+				id = inv[i].getId();
+				name = inv[i].getName();
+				x = inv[i].getX();
+				y = inv[i].getY();
+				quantity = inv[i].getItemQuantity();
+				index = i;
+				try {
+					GameDB.insertIntoInventory(id,name,x,y,index,quantity);
+				} catch (GameDBException e) {
+					
+				}
+			}
+		}
+	}
 	
 	@SuppressWarnings("static-access")
 	public void pause() {
