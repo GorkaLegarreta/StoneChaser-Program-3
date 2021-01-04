@@ -15,6 +15,7 @@ public class Item {
 	protected int x, y, itemQuantity, id;
 	protected int width, height;
 	protected boolean active;
+	public static boolean adderEnabled = true;
 	
 	protected Handler handler;
 	protected Inventory inv;
@@ -55,11 +56,7 @@ public class Item {
 	
 	public void tick() {
 		
-		
-			if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(itemBounds) && active) {
-				inv.addToInventory(this);		
-			}
-	
+		if(adderEnabled) if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(itemBounds) && active) inv.addToInventory(this);		
 	
 	}
 	
