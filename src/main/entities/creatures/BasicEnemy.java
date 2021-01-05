@@ -10,13 +10,18 @@ import main.input.KeyManager;
 
 public class BasicEnemy extends Creature{
 	
-	private static int alienSpeed = 2;
+	private static int basicEnemySpeed;
+	private int xMove;
 	private KeyManager keyManager;
-	private int xMove = alienSpeed;
 	
 	public BasicEnemy(Handler handler, float x, float y, int width, int height) {
 		super(handler, x, y, width, height);	
+		
 		keyManager = handler.getKeyManager();
+		
+		basicEnemySpeed = Integer.parseInt(handler.getPropertiesFile().getProperty("basicEnemySpeed"));
+		xMove = basicEnemySpeed;
+		
 		bounds.x = 0;
 		bounds.y = 0;
 		bounds.width = 50;
@@ -37,8 +42,8 @@ public class BasicEnemy extends Creature{
 			enemyMovement();		
 	}
 	public void enemyMovement() {
-		if(x > 600) xMove = - alienSpeed;
-		if(x < 20) xMove = Math.abs(alienSpeed);
+		if(x > 600) xMove = - basicEnemySpeed;
+		if(x < 20) xMove = Math.abs(basicEnemySpeed);
 		
 		x += xMove;
 		

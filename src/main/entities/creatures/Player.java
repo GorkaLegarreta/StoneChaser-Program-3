@@ -15,21 +15,26 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 	
 	private Animation animRight, animLeft;
 	private static long lastAttack = System.currentTimeMillis();
+	
 	private String lastAnim;
 	private long lastAttackTimer, attackCooldown = 500, attackTimer = attackCooldown;
-	private int kickDamage = 3;
-	private int lastDirection = 0;
-	private boolean playerActive = true;
-	private int relativeX, relativeY = 0;
-	Rectangle kickRect;
+	private int punchDamage, lastDirection = 0, relativeX, relativeY = 0;
 	
+	private boolean playerActive = true;
+	Rectangle punchRect;
 	
 	//player dimensions
-	private static final int PLAYER_WIDTH = 31, PLAYER_HEIGHT = 70;
+	private static int PLAYER_WIDTH, PLAYER_HEIGHT;
 	
 	public Player(Handler handler, float x, float y) {
-		super(handler, x, y, PLAYER_WIDTH*2, PLAYER_HEIGHT*2);
-	
+		super(handler, x, y, Integer.parseInt(handler.getPropertiesFile().getProperty("playerWidth"))*2, 
+				Integer.parseInt(handler.getPropertiesFile().getProperty("playerHeight"))*2);				//no ponemos PLAYER_WIDTH & HEIGHT directamente en super porque tienen que inicializarse
+																											//en el constructor, ya que necesitamos handler para acceder al fichero de propiedades
+		punchDamage = Integer.parseInt(handler.getPropertiesFile().getProperty("playerPunchDmg"));
+		
+		PLAYER_WIDTH = Integer.parseInt(handler.getPropertiesFile().getProperty("playerWidth"));
+		PLAYER_HEIGHT = Integer.parseInt(handler.getPropertiesFile().getProperty("playerHeight"));
+		
 		bounds.x = 0;
 		bounds.y = 0;
 		bounds.width = PLAYER_WIDTH*2;
@@ -99,42 +104,42 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 			lastDirection = 3;
 		}
 		if(handler.getKeyManager().space) {
-			kick();
+			punch();
 		}	
 	}
 	
-	public void kick() {
+	public void punch() {
 		long attackNow = System.currentTimeMillis();
 		long attackEnabler = attackNow - lastAttack;
         
 		if (attackEnabler > 150) {
         	lastAttack = attackNow;
 
-			kickRect = new Rectangle();
-			kickRect.width = 50;
-			kickRect.height = 30;
+			punchRect = new Rectangle();
+			punchRect.width = 50;
+			punchRect.height = 30;
 
 			if(xMove<0 || lastDirection == 0) {
-				kickRect.x = (int) (x + bounds.x - kickRect.width); 								
-				kickRect.y = (int) (y + bounds.y + bounds.height/2 - kickRect.height/2);
+				punchRect.x = (int) (x + bounds.x - punchRect.width); 								
+				punchRect.y = (int) (y + bounds.y + bounds.height/2 - punchRect.height/2);
 				// LOGGER
 				Game.LOGGER.log(Level.FINEST,"Le pega con kickRect izquierda");
 			}
 			if(xMove>0 || lastDirection == 1) {
-				kickRect.x = (int) (x + bounds.x + bounds.width); 						
-				kickRect.y = (int) (y + bounds.y + bounds.height/2 - kickRect.height/2);
+				punchRect.x = (int) (x + bounds.x + bounds.width); 						
+				punchRect.y = (int) (y + bounds.y + bounds.height/2 - punchRect.height/2);
 				// LOGGER
 				Game.LOGGER.log(Level.FINEST,"Le pega con kickRect derecha");
 			}
 			if(yMove<0 || lastDirection == 2) {
-				kickRect.x = (int) (x + bounds.x + bounds.width/2 - kickRect.width/2); 
-				kickRect.y = (int) (y + bounds.y - kickRect.height);
+				punchRect.x = (int) (x + bounds.x + bounds.width/2 - punchRect.width/2); 
+				punchRect.y = (int) (y + bounds.y - punchRect.height);
 				// LOGGER
 				Game.LOGGER.log(Level.FINEST,"Le pega con kickRect arriba");
 			}
 			if(yMove>0 || lastDirection == 3) {
-				kickRect.x = (int) (x + bounds.x + bounds.width/2 -kickRect.width/2);  
-				kickRect.y = (int) (y + bounds.y + bounds.height);
+				punchRect.x = (int) (x + bounds.x + bounds.width/2 -punchRect.width/2);  
+				punchRect.y = (int) (y + bounds.y + bounds.height);
 				// LOGGER
 				Game.LOGGER.log(Level.FINEST,"Le pega con kickRect abajo");
 			}
@@ -147,9 +152,9 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 				if(e.equals(this)) {
 	            	continue; //pasa al siguiente valor del for loop ya que no nos queremos herir a nosotros
 	            	
-	            }if(e.getCollisionBounds(0f, 0f).intersects(kickRect)) {	//le pasamos un offset de 0 porque hasta el momento en cada entidad estamos aplicando el offset.
+	            }if(e.getCollisionBounds(0f, 0f).intersects(punchRect)) {	//le pasamos un offset de 0 porque hasta el momento en cada entidad estamos aplicando el offset.
 	            	
-	            	e.hurt(kickDamage);										//sólo herimos a cada entidad una vez
+	            	e.hurt(punchDamage);										//sólo herimos a cada entidad una vez
 	                return;
 	            }
 			}
@@ -158,14 +163,13 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 
 	public void render(Graphics g) {
 		g.setColor(Color.BLUE);
-		g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()), (int) (y + bounds.y - handler.getGameCamera().getyOffset()), 62, 140);
+		g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()), (int) (y + bounds.y - handler.getGameCamera().getyOffset()), PLAYER_WIDTH*2, PLAYER_HEIGHT*2);
 		
-		g.drawImage(Assets.player, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), 62, 140, null);
-		
+		g.drawImage(Assets.player, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), PLAYER_WIDTH*2, PLAYER_HEIGHT*2, null);
 		// ESTO HACE QUE SE VEA KICKRECT
-		if(kickRect != null && handler.getKeyManager().space) { 
+		if(punchRect != null && handler.getKeyManager().space) { 
 			g.setColor(Color.BLUE);
-			g.fillRect((int) (kickRect.x - handler.getGameCamera().getxOffset()), (int) (kickRect.y - handler.getGameCamera().getyOffset()), kickRect.width, kickRect.height);
+			g.fillRect((int) (punchRect.x - handler.getGameCamera().getxOffset()), (int) (punchRect.y - handler.getGameCamera().getyOffset()), punchRect.width, punchRect.height);
 		}
 		
 //		g.drawImage(getCurrentAnimationFrame(), (int) (x), (int) (y), width, height,  null);
