@@ -55,8 +55,8 @@ public class ItemManager {
 		items.add(cuero.createItem(220, 160, 3));
 		items.add(piedra.createItem(240, 90, 1));
 		items.add(cuerda.createItem(270, 110, 1));
-		items.add(hierro.createItem(320, 170, 2));
-		items.add(palo.createItem(340, 220, 1));
+		items.add(hierro.createItem(320, 170, 40));
+		items.add(palo.createItem(340, 220, 20));
 		items.add(casco.createItem(230, 75, 1));
 	}
 	
