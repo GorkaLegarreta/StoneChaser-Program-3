@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Properties;
+
 import main.gfx.GameCamera;
 import main.input.KeyManager;
 import main.input.MouseManager;
@@ -46,6 +48,10 @@ public class Handler {
 	
 	public void spotlightDisabler() {
 		game.spotlightDisabler();
+	}
+	
+	public Properties getPropertiesFile() {
+		return game.getPropertiesFile();
 	}
 	
 	public Game getGame() {

@@ -5,17 +5,13 @@ import main.entities.Entity;
 
 
 public abstract class Creature extends Entity{ //tipo específico de criatura
-
-	public static final float DEFAULT_SPEED = 1.8f;
-	public static final int DEFAULT_CREATURE_WIDTH = 50;
-	public static final int DEFAULT_CREATURE_HEIGHT = 50;
 	
 	protected float speed;
 	protected float xMove, yMove;
 	
 	public Creature(Handler handler, float x, float y, int width, int height) {
 		super(handler, x, y, width, height); //super super nos lleva al constructor de Entity
-		speed = DEFAULT_SPEED;
+		speed = Float.parseFloat(handler.getPropertiesFile().getProperty("defaultSpeed"));
 		xMove = 0;
 		yMove = 0;
 	}

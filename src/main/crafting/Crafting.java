@@ -83,6 +83,7 @@ public class Crafting {
 				c = true;
 				update = 0;
 				handler.spotlightEnabler();
+				Item.adderEnabled = false;
 				handler.getWorld().getInventory().stopDrawBasicInv();
 				handler.getWorld().getInventory().moveItemsEnabled();
 				handler.getWorld().getEntityManager().getPlayer().setPlayerInactive();
@@ -98,6 +99,8 @@ public class Crafting {
 				c = false;
 				update = 0;
 				handler.spotlightDisabler();
+				Item.adderEnabled = true;				
+				putItemsBackInInv();
 				handler.getWorld().getInventory().drawBasicInv();
 				handler.getWorld().getInventory().moveItemsDisabled();
 				handler.getWorld().getEntityManager().getPlayer().setPlayerActive();
@@ -112,6 +115,11 @@ public class Crafting {
 		
 		
 			
+	}
+	
+	public void putItemsBackInInv() {
+		for (Item item : crafteo) if(item != null) handler.getWorld().getInventory().addToInventory(item);
+		for (int i = 0; i < crafteo.length; i++) crafteo[i] = null;
 	}
 	
 	public void updateNotNullIndexes() {

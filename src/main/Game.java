@@ -3,11 +3,15 @@ package main;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,6 +67,10 @@ public class Game implements Runnable{
 	private MouseManager mouseManager;
 	private ScreenMouseMovement mouseMovement; //necesaria ya que te da la posicion del raton independientemente de si se está draggeando (click a la vez que se mueve)
 											   //o si se está moviendo sin click, en awt estos son eventos distintos y da problemas en el inventario.
+	
+	//fichero de propiedades
+	Properties properties = new Properties();
+	InputStream is = null;
 	
 	//Camera
 	private GameCamera gameCamera;
@@ -129,12 +137,21 @@ public class Game implements Runnable{
 		window.getCanvas().addMouseMotionListener(mouseManager);
 		mouseMovement = new ScreenMouseMovement(window.getCanvas());
 		
+		//fichero propiedades
+		
+		try {
+			is = new FileInputStream("datos.properties");
+			properties.load(is);
+			
+		} catch (FileNotFoundException e) {e.printStackTrace();} catch (IOException e) {e.printStackTrace();}
+		
 		Assets.init();		
 		handler = new Handler(this); //coge el objeto de esta clase
 		gameCamera = new GameCamera(handler, 0, 0);
 		menuState = new MenuState(handler);
 		gameState = new GameState(handler); //nos referimos a la clase game, a esta misma clase		
 		State.setState(menuState);
+		
 	}
 	
 	private void tick() throws GameDBException {
@@ -243,6 +260,7 @@ public class Game implements Runnable{
 		playersItems.put(user_code, itemNames); 
 		return playersItems;
 	}
+	
 	public static String getItemValues(int user_code) {
 		return playersItems.get(user_code);
 	}
@@ -252,6 +270,10 @@ public class Game implements Runnable{
 	}
 	public static Window getWindow() {
 		return window;
+	}
+	
+	public Properties getPropertiesFile() {
+		return properties;
 	}
 	
 	public KeyManager getKeyManager(){

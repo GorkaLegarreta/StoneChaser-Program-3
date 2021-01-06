@@ -7,7 +7,6 @@ import main.Handler;
 public abstract class Entity {
 	
 	protected Handler handler;
-	public static final int DEFAULT_HEALTH = 10;
 	protected float x, y; //los cálculos pueden ser de tipo float (no podemos pintar medio pixel).
 	protected int width, height;
 	protected int health, totalDamage;
@@ -20,9 +19,8 @@ public abstract class Entity {
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		health = DEFAULT_HEALTH;
+		health = Integer.parseInt(handler.getPropertiesFile().getProperty("defaultHealth"));
 		totalDamage = 0;
-		
 		bounds = new Rectangle(0, 0, width, height);
 	}
 	

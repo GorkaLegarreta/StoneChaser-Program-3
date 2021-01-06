@@ -18,7 +18,7 @@ public class Inventory extends Thread{
 	private long noDropNow, noDropBefore, enableDropMsg;
 	@SuppressWarnings("unused")
 	private boolean selectItem1 = false, selectItem2 = false, paintPointerAt1 = false, paintPointerAt2 = false, 
-					enableDrag = false, drawBasicInv = true, enableSwap = true, moveItemsEnabled = false, 
+					enableDrag = false, drawBasicInv = true, enableSwap = true, moveItemsEnabled = false, itemAdderEnabler = true, 
 					hasDraggedWasRun = false, draggingItem = false, indexOfCraft = false, craftingArray = false, grabbedOutcome = false;
 	
 	//AtomicBoolean para ejecutar código sólo una vez cuando se requiera
@@ -199,24 +199,23 @@ public class Inventory extends Thread{
 	public void addToInventory(Item i) {
 		//siempre trabaja con el mismo array inventory, por eso sólo pasamos un item.
 		
-		int searchedItemIndex = searchItemIndex(i);
-		int emptySlot = checkInventorySpaces();
-		
-		if(searchedItemIndex >= 0) {
-			inventory[searchedItemIndex].increaseItemQuantity(i.getItemQuantity());
-			i.setInactive();
-			System.out.println(i.getName() + " has been picked up (hold E to open inventory, press F to drop)");	
-		}
-		else if(emptySlot >= 0) {
+			int searchedItemIndex = searchItemIndex(i);
+			int emptySlot = checkInventorySpaces();
 			
-			inventory[emptySlot] = i;
-			i.setPosition(invPositions[emptySlot].getX() + 22 - i.getWidth()/2, invPositions[emptySlot].getY() + 21 - i.getHeight()/2);	//centramos el item
-			i.setInactive();
-			i.fixItemPosition();
-			System.out.println(i.getName() + " has been picked up (hold E to open inventory, press F to drop)");
+			if(searchedItemIndex >= 0) {
+				inventory[searchedItemIndex].increaseItemQuantity(i.getItemQuantity());
+				i.setInactive();
+				System.out.println(i.getName() + " has been picked up (hold E to open inventory, press F to drop)");	
+			}
+			else if(emptySlot >= 0) {
 				
-		}else { System.out.println("The inventory is full"); }		
-			
+				inventory[emptySlot] = i;
+				i.setPosition(invPositions[emptySlot].getX() + 22 - i.getWidth()/2, invPositions[emptySlot].getY() + 21 - i.getHeight()/2);	//centramos el item
+				i.setInactive();
+				i.fixItemPosition();
+				System.out.println(i.getName() + " has been picked up (hold E to open inventory, press F to drop)");
+					
+			}else { System.out.println("The inventory is full"); }		
 	}
 	
 	public void moveItems() {
@@ -256,7 +255,9 @@ public class Inventory extends Thread{
 				}
 			}else if(handler.getMouseManager().isLeftPressed() && craftOutcomeButton.contains(handler.getMouseMovement().getPosition().getX(), handler.getMouseMovement().getPosition().getY())) {
 				if(!draggingItem && craftingOutcome != null && pressTimer() && (checkInventorySpaces() >= 0 || searchItemIndex(craftingOutcome) >= 0)) {
+						itemAdderEnabler = true;
 						addToInventory(craftingOutcome);
+						itemAdderEnabler = false;
 						handler.getWorld().getCrafting().setCraftOn();
 				}
 			}
@@ -433,6 +434,8 @@ public class Inventory extends Thread{
 		for (int i = 0; i < inventory.length; i++) if(inventory[i] != null && inventory[i].getItemQuantity() < 1) inventory[i] = null;
 	}
 	
+	
+	
 	public boolean pressTimer() {
 		long now = System.currentTimeMillis();
 		long timeDiff = now - before;
@@ -461,6 +464,7 @@ public class Inventory extends Thread{
 //		}
 //	}
 
+	
 	public void selectItem1() {
 		this.selectItem1 = true;
 	}
