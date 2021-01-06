@@ -75,16 +75,16 @@ public class Game implements Runnable{
 	public final static Logger LOGGER = Logger.getLogger(Game.class.getName());
 	public static FileHandler fh;
 	
-	//static SE EJECUTA AL CARGAR LA CLASE; AL PRINCIPIO; UNA SOLA VEZ
+	//static 
 	static {		
 		try {
-			fh = new FileHandler("Logger.txt",false);
 			/*
 			 *  ESTABLECE LEVEL DEL LOGGER ESCRIBIRA LOGS SUPERIORES A ESTE NIVEL
 			 *  CAMBIANDO ESTE NIVEL SE FILTRARAN LOS LOGGERS QUE SE ESCRIBEN EN 
 			 *  EL FICHERO; LOS QUE APARECEN EN CONSOLA (LEVEL.INFO) TAMBIEN APARECERAN
 			 *  EN EL FICHERO LOGGER.TXT SI EL NIVEL SE LO PERMITE
 			 */
+			fh = new FileHandler("Logger.txt",false);			
 			LOGGER.setLevel(Level.FINE);			
 			LOGGER.addHandler(fh);
 			SimpleFormatter formatter = new SimpleFormatter();
