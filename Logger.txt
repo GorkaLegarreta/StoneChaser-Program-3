@@ -1,16 +1,14 @@
-ene. 03, 2021 11:22:56 P. M. main.Game <clinit>
+ene. 08, 2021 11:55:31 P. M. main.Game <clinit>
 INFO: Logger y clases del StoneChaser inicializadas
-ene. 03, 2021 11:22:56 P. M. main.GameDB initSqlite
+ene. 08, 2021 11:55:31 P. M. main.GameDB initSqlite
 FINE: Se ha inicializado sqlite correctamente.
-ene. 03, 2021 11:22:56 P. M. main.GameDB createTableUSERS
+ene. 08, 2021 11:55:32 P. M. main.GameDB createTableUSERS
 FINE: Tabla USER cargada correctamente.
-ene. 03, 2021 11:22:57 P. M. main.GameDB createTableINVENTORY
+ene. 08, 2021 11:55:32 P. M. main.GameDB createTableINVENTORY
 FINE: Tabla INVENTORY cargada correctamente.
-ene. 03, 2021 11:22:57 P. M. main.Game <clinit>
+ene. 08, 2021 11:55:32 P. M. main.Game <clinit>
 FINE:  LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, FINE: 500
-ene. 03, 2021 11:23:05 P. M. main.GameDB createGamePlayer
-FINE: Se ha creado correctamente el usuario nuevo.
-ene. 03, 2021 11:23:06 P. M. main.states.MenuState worldIsloadedLogger
-INFO: Se ha iniciado como Mundo3
-ene. 03, 2021 11:23:06 P. M. main.states.MenuState worldIsloadedLogger
-CONFIG: GameState Cargada e inicializada en Configuracion Mundo3
+ene. 08, 2021 11:55:33 P. M. main.states.MenuState worldIsloadedLogger
+INFO: Se ha iniciado como Mundo1
+ene. 08, 2021 11:55:33 P. M. main.states.MenuState worldIsloadedLogger
+CONFIG: GameState Cargada e inicializada en Configuracion Mundo1

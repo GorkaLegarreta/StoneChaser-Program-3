@@ -1,8 +1,6 @@
 package main.worlds;
 
-import java.awt.Color;
 import java.awt.Graphics;
-
 import main.Handler;
 import main.crafting.Crafting;
 import main.entities.EntityManager;
@@ -10,38 +8,36 @@ import main.entities.creatures.BasicEnemy;
 import main.entities.creatures.Player;
 import main.gfx.Assets;
 import main.inventory.Inventory;
-import main.items.Item;
 import main.items.ItemManager;
 
 public class World {
 
 	private Handler handler;
 	private int width, height;
-
+	private Player player;
 	
 	//Entities
-	private EntityManager entityManager;
+	private EntityManager entityManager;	
 	
-	private Item i;
 	private ItemManager im;
 	
 	public World(Handler handler) {
 		this.handler = handler;
-		
-		entityManager = new EntityManager(handler, new Player(handler, 150, 170), new BasicEnemy(handler,20,20,50,50));
+		player = new Player(handler,100,100);
+		entityManager = new EntityManager(handler, player, new BasicEnemy(handler,20,20,50,50));
 		
 		im = new ItemManager(handler);
-		
-		
-		
 	}
 	
+	/////////////////////////////////////////////////////////////////
+	//					METODOS TICK & RENDER					   //
+	/////////////////////////////////////////////////////////////////
 	public void tick() {
 		
 		entityManager.tick();
 		im.tick();
-	}
-	
+		
+	}	
 	public void render(Graphics g) {
 		
 		//world graphics
@@ -55,6 +51,9 @@ public class World {
 		
 	}
 	
+	/////////////////////////////////////////////////////////////////
+	//					GETTERS & SETTERS						   //
+	/////////////////////////////////////////////////////////////////
 	public int getWidth() {
 		return width;
 	}
@@ -73,6 +72,10 @@ public class World {
 	
 	public Inventory getInventory() {
 		return im.getInventory();
+	}
+	
+	public Player getPlayer() {
+		return player;
 	}
 	
 	public Crafting getCrafting() {

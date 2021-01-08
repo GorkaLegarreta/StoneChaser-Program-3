@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -16,14 +15,11 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-
 import main.gfx.Assets;
 import main.gfx.GameCamera;
 import main.input.KeyManager;
 import main.input.MouseManager;
 import main.input.ScreenMouseMovement;
-import main.inventory.Inventory;
-import main.items.Item;
 import main.states.GameState;
 import main.states.MenuState;
 import main.states.State;
@@ -54,7 +50,6 @@ public class Game implements Runnable{
 	public State gameState;
 	
 	//spotlight
-
 	private int sPx, sPy;
 	private int velX = 5, velY = 5;
 	private Spotlight spotlight, craftingTableSpotlight, inventorySpotlight1, inventorySpotlight2, 
@@ -128,7 +123,7 @@ public class Game implements Runnable{
 		LOGGER.log(Level.FINEST,"Objeto Game creada en el constructor");		
 	}
 	
-	private void init() {		
+	private void init(){		
 		window = new Window(title, width, height,fh);
 		window.getFrame().addKeyListener(keyManager);
 		window.getFrame().addMouseListener(mouseManager);
@@ -208,7 +203,9 @@ public class Game implements Runnable{
 	
 	public void run() {
 		
+		
 		init();
+		
 		
 		before = System.nanoTime();		//nanoTime mide en nanosegundos
 		fps = 60;						//queremos que el juego funcione a 60 frames por segundo
@@ -245,21 +242,21 @@ public class Game implements Runnable{
 			timer = 0;
 		}
 	}
-	public static HashMap<Integer,String> playerItemsMap(){
-		int user_code;
-		user_code = GameState.getUser();
-		
-		String itemNames = "";
-		Item[] items;
-		items = Inventory.getItemArray();
-		for (int i = 0; i<items.length ; i++) {
-			if (items[i] != null)
-				itemNames.concat(items[i].getName()+", ");
-		}
-		
-		playersItems.put(user_code, itemNames); 
-		return playersItems;
-	}
+//	public static HashMap<Integer,String> playerItemsMap(){
+//		int user_code;
+//		user_code = GameState.getUser();
+//		
+//		String itemNames = "";
+//		Item[] items;
+//		items = Inventory.getItemArray();
+//		for (int i = 0; i<items.length ; i++) {
+//			if (items[i] != null)
+//				itemNames.concat(items[i].getName()+", ");
+//		}
+//		
+//		playersItems.put(user_code, itemNames); 
+//		return playersItems;
+//	}
 	
 	public static String getItemValues(int user_code) {
 		return playersItems.get(user_code);

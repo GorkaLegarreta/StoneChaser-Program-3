@@ -1,7 +1,6 @@
 package main.entities;
 
 import java.awt.*;
-
 import main.Handler;
 
 public abstract class Entity {
@@ -24,10 +23,7 @@ public abstract class Entity {
 		bounds = new Rectangle(0, 0, width, height);
 	}
 	
-	public float getX() {
-		return x;
-	}
-
+	
 	public int getHealth() {
 		return health;
 	}
@@ -50,6 +46,10 @@ public abstract class Entity {
 
 	public float getY() {
 		return y;
+	}
+	
+	public float getX() {
+		return x;
 	}
 
 	public void setY(float y) {

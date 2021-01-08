@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import main.Game;
+import main.GameDBException;
 import main.Handler;
 
 public class StateTest {
@@ -32,7 +33,7 @@ public class StateTest {
 //		GameState gameState = new GameState(handler);
 	}
 	@Test
-	public void gameStateTest() {
+	public void gameStateTest() throws GameDBException {
 		System.out.println("Test");
 		Game game = new Game("StoneChaser", 700, 400);
 		Handler handler = new Handler(game);
@@ -50,7 +51,7 @@ public class StateTest {
 	}
 	
 	@After
-	public void after() {
+	public void after() throws GameDBException {
 		System.out.println("After");
 		Game game = new Game("StoneChaser", 700, 400);
 		Handler handler = new Handler(game);
@@ -59,7 +60,7 @@ public class StateTest {
 	}
 	
 	@AfterClass
-	public static void afterClass() {
+	public static void afterClass() throws GameDBException {
 		System.out.println("AfterClass");
 		Game game = new Game("StoneChaser", 700, 400);
 		Handler handler = new Handler(game);
