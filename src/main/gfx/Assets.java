@@ -6,44 +6,55 @@ public class Assets {
 	
 	public static BufferedImage player, sword, cuerda, hierro, palo, casco, craftingTable, trunk, 
 								stone, cuero, worldTest, inventarioPlegado, inventarioDesplegado, 
-								itemPointers, craftingOutcome, craftButton1, craftButton2;
+								itemPointers, craftingOutcome, craftButton1, craftButton2, 
+								player_standStill_right, player_standStill_left;
+	
+	public static BufferedImage[] playerRightAnim = new BufferedImage[7], playerLeftAnim = new BufferedImage[7];
 	
 	public static void init() {
 		
-		SpriteSheet plyr = new SpriteSheet(ImageLoader.loadImage("/textures/jugador.png")); 
-		SpriteSheet inv = new SpriteSheet(ImageLoader.loadImage("/textures/Inventory.png"));
-		SpriteSheet trnk = new SpriteSheet(ImageLoader.loadImage("/textures/trunk.png"));
-		SpriteSheet stn = new SpriteSheet(ImageLoader.loadImage("/textures/stone.png"));
-		SpriteSheet invplgdo = new SpriteSheet(ImageLoader.loadImage("/textures/inventarioPlegado.png"));
-		SpriteSheet invdesplgdo = new SpriteSheet(ImageLoader.loadImage("/textures/inventarioDesplegado.png"));
-		SpriteSheet wrldTst = new SpriteSheet(ImageLoader.loadImage("/textures/worldTest.png"));
-		SpriteSheet swrd = new SpriteSheet(ImageLoader.loadImage("/textures/sword.png"));
-		SpriteSheet cro = new SpriteSheet(ImageLoader.loadImage("/textures/cuero.png"));
-		SpriteSheet rope = new SpriteSheet(ImageLoader.loadImage("/textures/rope.png"));
-		SpriteSheet hrro = new SpriteSheet(ImageLoader.loadImage("/textures/hierro.png"));
-		SpriteSheet plo = new SpriteSheet(ImageLoader.loadImage("/textures/palo.png"));
-		SpriteSheet csco = new SpriteSheet(ImageLoader.loadImage("/textures/casco.png"));
-		SpriteSheet pntrs = new SpriteSheet(ImageLoader.loadImage("/textures/itemPointers.png"));
-		SpriteSheet crftbtn = new SpriteSheet(ImageLoader.loadImage("/textures/craftButton.png"));
+		SpriteSheet allSprites = new SpriteSheet(ImageLoader.loadImage("/textures/allSprites.png")); 
 		
-		craftButton1 = crftbtn.crop(0, 0, 53, 19);
-		craftButton2 = crftbtn.crop(0, 19, 53, 19);
-		itemPointers = pntrs.crop(0, 0, 66, 64);
-		casco = csco.crop(0, 0, 27, 28);
-		palo = plo.crop(0, 0, 18, 19);
-		hierro = hrro.crop(0, 0, 17, 20);
-		cuero = cro.crop(0, 0, 25, 23);
-		cuerda = rope.crop(0, 0, 23, 23);
-		player = plyr.crop(5, 6, 31, 70);
-		sword = swrd.crop(0, 0, 20, 20);
-		craftingTable = inv.crop(0, 0, 200, 186);
-		inventarioPlegado = invplgdo.crop(0, 0, 142, 61);
-		inventarioDesplegado = invdesplgdo.crop(0, 0, 384, 61);
-		trunk = trnk.crop(0, 0, 18, 20);
-		stone = stn.crop(0, 0, 17, 10);
-		worldTest = wrldTst.crop(0, 0, 700, 400);
-		craftingOutcome = inv.crop(24, 22, 53, 48);
+		//mundos y fondos
+		worldTest = allSprites.crop(0, 500, 700, 400);
 		
+		//inventario y UI
+		craftingTable = allSprites.crop(500, 200, 200, 186);
+		inventarioPlegado = allSprites.crop(766, 200, 142, 61);
+		inventarioDesplegado = allSprites.crop(500, 386, 384, 61);
+		itemPointers = allSprites.crop(700, 200, 66, 64);
+		craftButton1 = allSprites.crop(908, 200, 53, 19);
+		craftButton2 = allSprites.crop(908, 218, 53, 19);
+		craftingOutcome = allSprites.crop(524, 222, 53, 48);
+		
+		//items
+		casco = allSprites.crop(612, 0, 27, 28);
+		palo = allSprites.crop(554, 0, 18, 19);
+		hierro = allSprites.crop(595, 0, 17, 20);
+		cuero = allSprites.crop(639, 0, 25, 23);
+		cuerda = allSprites.crop(572, 0, 23, 23);
+		sword = allSprites.crop(535, 0, 20, 20);
+		trunk = allSprites.crop(517, 0, 18, 20);
+		stone = allSprites.crop(500, 0, 17, 10);
+		
+		//jugador y sprites de las animaciones de movimiento
+		//player = allSprites.crop(0, 0, 31, 70); 
+		playerRightAnim[0] = allSprites.crop(31, 0, 36, 70);
+		playerRightAnim[1] = allSprites.crop(67, 0, 36, 70);
+		playerRightAnim[2] = allSprites.crop(103, 0, 36, 70);
+		playerRightAnim[3] = allSprites.crop(140, 0, 36, 70);
+		playerRightAnim[4] = allSprites.crop(176, 0, 36, 70);
+		playerRightAnim[5] = allSprites.crop(212, 0, 36, 70);
+		playerRightAnim[6] = allSprites.crop(248, 0, 36, 70);
+		playerLeftAnim[0] = allSprites.crop(248, 140, 36, 70);
+		playerLeftAnim[1] = allSprites.crop(212, 140, 36, 70);
+		playerLeftAnim[2] = allSprites.crop(176, 140, 36, 70);
+		playerLeftAnim[3] = allSprites.crop(140, 140, 36, 70);
+		playerLeftAnim[4] = allSprites.crop(104, 140, 36, 70);
+		playerLeftAnim[5] = allSprites.crop(68, 140, 36, 70);
+		playerLeftAnim[6] = allSprites.crop(32, 140, 36, 70);
+		player_standStill_right = allSprites.crop(0, 70, 36, 70);
+		player_standStill_left = allSprites.crop(36, 70, 36, 70);
 	}
 	
 }
