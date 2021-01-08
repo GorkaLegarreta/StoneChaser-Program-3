@@ -3,6 +3,7 @@ package main.entities.creatures;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 
 import main.Game;
@@ -16,9 +17,8 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 	private Animation animRight, animLeft;
 	private static long lastAttack = System.currentTimeMillis();
 	
-	private String lastAnim;
-	private long lastAttackTimer, attackCooldown = 500, attackTimer = attackCooldown;
-	private int punchDamage, lastDirection = 0, relativeX, relativeY = 0;
+	private long attackCooldown = 150;
+	private int punchDamage, lastDirection = 0;
 	
 	private boolean playerActive = true;
 	Rectangle punchRect;
@@ -35,6 +35,10 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 		PLAYER_WIDTH = Integer.parseInt(handler.getPropertiesFile().getProperty("playerWidth"));
 		PLAYER_HEIGHT = Integer.parseInt(handler.getPropertiesFile().getProperty("playerHeight"));
 		
+		//animations
+		animRight = new Animation(80, Assets.playerRightAnim);
+		animLeft = new Animation(80, Assets.playerLeftAnim);
+		
 		bounds.x = 0;
 		bounds.y = 0;
 		bounds.width = PLAYER_WIDTH*2;
@@ -43,21 +47,15 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 
 
 	public void tick() {
-		/*
-		
-		//Animations
-		animRight.tick();
-		animLeft.tick();
-		//movement
-		getInput();
-		move();
-		
-		*/
 		
 		handler.getGameCamera().centerOnEntity(this); //to center THIS player
 		
-		
 		if(playerActive) {
+		
+			//Animations
+			animRight.tick();
+			animLeft.tick();
+			
 			move();
 			getInput();
 		}
@@ -112,7 +110,7 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 		long attackNow = System.currentTimeMillis();
 		long attackEnabler = attackNow - lastAttack;
         
-		if (attackEnabler > 150) {
+		if (attackEnabler > attackCooldown) {
         	lastAttack = attackNow;
 
 			punchRect = new Rectangle();
@@ -162,10 +160,10 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 	}	
 
 	public void render(Graphics g) {
-		g.setColor(Color.BLUE);
-		g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()), (int) (y + bounds.y - handler.getGameCamera().getyOffset()), PLAYER_WIDTH*2, PLAYER_HEIGHT*2);
+//		g.setColor(Color.BLUE);
+//		g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()), (int) (y + bounds.y - handler.getGameCamera().getyOffset()), PLAYER_WIDTH*2, PLAYER_HEIGHT*2);
 		
-		g.drawImage(Assets.player, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), PLAYER_WIDTH*2, PLAYER_HEIGHT*2, null);
+		g.drawImage(getCurrentAnimationFrame(), (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), PLAYER_WIDTH*2, PLAYER_HEIGHT*2, null);
 		// ESTO HACE QUE SE VEA KICKRECT
 		if(punchRect != null && handler.getKeyManager().space) { 
 			g.setColor(Color.BLUE);
@@ -176,30 +174,30 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 
 	}
 	
-	/*private BufferedImage getCurrentAnimationFrame() {
+	private BufferedImage getCurrentAnimationFrame() {
 			
 		
 		
 		if(xMove < 0 && yMove != 0) { //moves left and in any direction in the y axis
-			lastAnim = "left";
+			lastDirection = 0;
 			return animLeft.getCurrentFrame();
 		}else if(xMove > 0 && yMove != 0) { //moves right and in any direction in the y axis
-			lastAnim = "right";
+			lastDirection = 1;
 			return animRight.getCurrentFrame();
 		}else if(xMove < 0) { //only moves left
-			lastAnim = "left";
+			lastDirection = 0;
 			return animLeft.getCurrentFrame(); 
 		}else if(xMove > 0) { //only moves right
-			lastAnim = "right";
+			lastDirection = 1;
 			return animRight.getCurrentFrame();
 		}else if(yMove != 0) { //only moves up or down
-			if(lastAnim == "left") return animLeft.getCurrentFrame();
+			if(lastDirection == 0) return animLeft.getCurrentFrame();
 			else return animRight.getCurrentFrame();
 		}else {
-			if(lastAnim == "left") return Assets.player_standStill_left;
-			else return Assets.player_standStill_right;
+			if(lastDirection == 1) return Assets.player_standStill_right;
+			else return Assets.player_standStill_left;
 		}
-	}*/
+	}
 	
 	public void setPlayerActive() {
 		playerActive = true;
