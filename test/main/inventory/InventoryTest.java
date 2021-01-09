@@ -2,34 +2,38 @@ package main.inventory;
 
 import static org.junit.Assert.assertEquals;
 
-import java.awt.image.BufferedImage;
-
+import org.junit.Before;
 import org.junit.Test;
 
 import main.Game;
 import main.Handler;
+import main.gfx.Assets;
 import main.items.Item;
-import main.items.ItemManager;
+import main.worlds.World;
 
 public class InventoryTest {
+	
+	Game game;
+	Handler handler;
+	Inventory inv;
+	Item madera;
+	World world;
+	
+	@Before
+	public void setUp() {
+		game = new Game("Stonechaser", 700, 400);
+		handler = new Handler(game);
+		inv = new Inventory(handler);
+		madera = new Item("madera", Assets.trunk, (int) (18*2), (int) (20*2), 0, handler, inv);
+		world = new World(handler);
+	}
 	
 	@Test
 	public void testAddToInventory() {
 		
-		boolean result;
-		
-		Game game = new Game("Stonechaser", 700, 400);
-		Handler handler = new Handler(game);
-		Inventory inv = new Inventory(handler);
-		
-		inv.addToInventory(ItemManager.madera);
-		
-		if(inv.selectedItem.getName().equals("madera"))result = true;
-		else result = false;
-		
-		assertEquals(result, true);
+		inv.addToInventory(madera);
+		assertEquals(madera, world.getInventory().getItemArray()[0]);
 		
 	}
 
-	
 }
