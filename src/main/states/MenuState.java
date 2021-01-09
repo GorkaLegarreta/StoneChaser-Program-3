@@ -17,11 +17,10 @@ public class MenuState extends State  {
 	private MouseManager mouseManager;
 	private Rectangle lbl1, lbl2, lbl3, lbl4;	
 	private Rectangle user1, user2, user3, user4;
-
 	private String string1, string2, string3, string4;	
 	private String[] strings = {string1, string2, string3, string4};
 	private String optionPane;
-
+	
 	private static WorldEnum world;
 	
 	public static enum WorldEnum{
@@ -56,8 +55,9 @@ public class MenuState extends State  {
 		if(panelIsClicked(lbl1)) {	
 			if(GameDB.existsGamePlayer(1)) {
 				GameDB.incSessionNumber(1);
-				changeToGameState();												
-				world = WorldEnum.MUNDO1;	
+				world = WorldEnum.MUNDO1;
+				changeToGameState(1);												
+					
 				// TODO más código para que se cargue la posicion del jugador, el mundo en el que estaba, salud items...
 				
 				worldIsloadedLogger(1);
@@ -67,8 +67,9 @@ public class MenuState extends State  {
 		} else if(panelIsClicked(lbl2)) {			
 			if(GameDB.existsGamePlayer(2)) {				
 				GameDB.incSessionNumber(2);
-				changeToGameState();
-				world = WorldEnum.MUNDO2;				
+				world = WorldEnum.MUNDO2;
+				changeToGameState(2);
+							
 				// TODO más código para que se cargue la posicion del jugador, el mundo en el que estaba, salud items...
 				
 				worldIsloadedLogger(2);
@@ -78,8 +79,9 @@ public class MenuState extends State  {
 		} else if(panelIsClicked(lbl3)) {			
 			if(GameDB.existsGamePlayer(3)) {				
 				GameDB.incSessionNumber(3);
-				changeToGameState();	
-				world = WorldEnum.MUNDO3;	
+				world = WorldEnum.MUNDO3;
+				changeToGameState(3);	
+					
 				// TODO más código para que se cargue la posicion del jugador, el mundo en el que estaba, salud items...
 				
 				worldIsloadedLogger(3);
@@ -89,8 +91,9 @@ public class MenuState extends State  {
 		} else if(panelIsClicked(lbl4)) {			
 			if(GameDB.existsGamePlayer(4)) {				
 				GameDB.incSessionNumber(4);
-				changeToGameState();
 				world = WorldEnum.MUNDO4;
+				changeToGameState(4);
+				
 				// TODO más código para que se cargue la posicion del jugador, el mundo en el que estaba, salud items...
 				
 				worldIsloadedLogger(4);
@@ -114,11 +117,9 @@ public class MenuState extends State  {
 	
 	@Override
 	public void render(Graphics g) {
-		Color c = new Color(255, 200, 120);
-		g.setColor(c);		
+		Color orange = new Color(255, 200, 120);
+		g.setColor(orange);		
 		g.setFont(new Font("Arial", Font.TRUETYPE_FONT, 20));
-//		g.fillRoundRect(play.x,play.y,play.width,play.height, 35, 35);			
-//		g.drawRoundRect(play.x,play.y,play.width,play.height, 35, 35);	
 		g.fillRoundRect(lbl1.x,lbl1.y,lbl1.width,lbl1.height, 35, 35);
 		g.fillRoundRect(lbl2.x,lbl2.y,lbl2.width,lbl2.height, 35, 35);
 		g.fillRoundRect(lbl3.x,lbl3.y,lbl3.width,lbl3.height, 35, 35);
@@ -134,8 +135,6 @@ public class MenuState extends State  {
 		g.drawString("MUNDO 3", 60, 225);
 		g.drawString("MUNDO 4", 60, 305);
 		
-//		g.drawString(String.format("Mouse moved at %d,%d", mouseManager.getMouseX(), mouseManager.getMouseY()), 250, 50);
-//		g.drawString(String.format("Mouse clicked at %d,%d", mouseManager.getClickX(), mouseManager.getClickY()), 250, 135);
 		/*
 		 * 
 		 */
@@ -143,9 +142,9 @@ public class MenuState extends State  {
 		g.drawString(strings[1], 380, 145);
 		g.drawString(strings[2], 380, 225);
 		g.drawString(strings[3], 380, 305);
-		//g.drawString(GameDB.getGamePlayer(4), 380, 305);
 		
 	}
+	
 	public boolean panelIsClicked(Rectangle obj) {
 		return mouseManager.isLeftPressed() && obj.contains(mouseManager.getMouseX(), mouseManager.getMouseY());
 	}
@@ -153,7 +152,11 @@ public class MenuState extends State  {
 		Game.LOGGER.log(Level.INFO,"Se ha iniciado como Mundo"+world);	
 		Game.LOGGER.log(Level.CONFIG,"GameState Cargada e inicializada en Configuracion Mundo"+world);
 	}
-	public void changeToGameState() {
+	public void changeToGameState(int user) {
+		
+		GameState.handler.getWorld().getPlayer().setPlayerX(user);
+		GameState.handler.getWorld().getPlayer().setPlayerY(user);
+		
 		State.setState(handler.getGame().gameState);
 	}
 	public void createNewUser(int world) throws GameDBException {
@@ -173,13 +176,4 @@ public class MenuState extends State  {
 			
 		}
 	}
-//	public void replaceExistingUser(int world) {
-//		optionPane = JOptionPane.showInputDialog("Introduce el nombre del nuevo Usuario");
-//		if (optionPane == null) {
-//			optionPane = GameDB.getGamePlayer(world);
-//		} else {
-//			GameDB.createGamePlayer(world, optionPane);
-//			strings[world-1] = optionPane;
-//		}
-//	}
 }

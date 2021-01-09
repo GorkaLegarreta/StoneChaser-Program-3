@@ -3,7 +3,6 @@ package main.entities.creatures;
 import main.Handler;
 import main.entities.Entity;
 
-
 public abstract class Creature extends Entity{ //tipo específico de criatura
 	
 	protected float speed;

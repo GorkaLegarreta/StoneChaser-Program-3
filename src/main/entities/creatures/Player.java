@@ -5,8 +5,8 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
-
 import main.Game;
+import main.GameDB;
 import main.Handler;
 import main.gfx.Animation;
 import main.gfx.Assets;
@@ -212,5 +212,12 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 	}
 	public float getPlayerY() {
 		return this.y;
+	}
+	
+	public void setPlayerX(int user) {
+		this.x = GameDB.getGamePlayerXPosition(user);
+	}
+	public void setPlayerY(int user) {
+		this.y = GameDB.getGamePlayerYPosition(user);
 	}
 }

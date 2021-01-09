@@ -1,7 +1,6 @@
 package main;
 
 import java.util.Properties;
-
 import main.gfx.GameCamera;
 import main.input.KeyManager;
 import main.input.MouseManager;

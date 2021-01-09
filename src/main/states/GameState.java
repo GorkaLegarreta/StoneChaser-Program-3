@@ -28,7 +28,7 @@ public class GameState extends State{
 	public String name;
 	
 	public GameState(Handler handler) {
-		super(handler);
+		super(handler);		
 		world = new World(handler);
 		handler.setWorld(world);		
 		saveButton = new Rectangle(0, 380, 80, 20);		
@@ -47,18 +47,18 @@ public class GameState extends State{
 		if (saveButtonIsPressed()) {
 			currentlySaving = true;			
 			new Thread( () -> {
-			try {
-				Thread.currentThread().sleep(1000);		
-				GameDB.updatePosition();
-				GameDB.deleteInventory(getUser());			
-				loopItemArray();
-				unPause();
-				currentlySaving = false;
-				
-				
-			} catch (InterruptedException | GameDBException e) {
-				Thread.currentThread().interrupt();
-			}
+				try {
+					Thread.currentThread().sleep(1000);		
+					GameDB.updatePosition();
+					GameDB.deleteInventory(getUser());			
+					loopItemArray();
+					unPause();
+					currentlySaving = false;
+					
+					
+				} catch (InterruptedException | GameDBException e) {
+					Thread.currentThread().interrupt();
+				}
 			}).start();
 			Game.LOGGER.log(Level.FINEST,"Se han guardado los datos de con éxito en la BD" );
 		}
