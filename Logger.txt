@@ -1,14 +1,10 @@
-ene. 10, 2021 12:58:40 P. M. main.Game <clinit>
+ene. 10, 2021 6:03:16 P. M. main.Game <clinit>
 INFO: Logger y clases del StoneChaser inicializadas
-ene. 10, 2021 12:58:40 P. M. main.GameDB initSqlite
+ene. 10, 2021 6:03:16 P. M. main.GameDB initSqlite
 FINE: Se ha inicializado sqlite correctamente.
-ene. 10, 2021 12:58:41 P. M. main.GameDB createTableUSERS
+ene. 10, 2021 6:03:16 P. M. main.GameDB createTableUSERS
 FINE: Tabla USER cargada correctamente.
-ene. 10, 2021 12:58:41 P. M. main.GameDB createTableINVENTORY
+ene. 10, 2021 6:03:16 P. M. main.GameDB createTableINVENTORY
 FINE: Tabla INVENTORY cargada correctamente.
-ene. 10, 2021 12:58:41 P. M. main.Game <clinit>
+ene. 10, 2021 6:03:16 P. M. main.Game <clinit>
 FINE:  LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, FINE: 500
-ene. 10, 2021 12:58:43 P. M. main.GameDB getNumberSessions
-FINE: Se ha creado correctamente el usuario nuevo.
-ene. 10, 2021 12:58:43 P. M. main.GameDB getNumberSessions
-FINE: Se ha creado correctamente el usuario nuevo.
