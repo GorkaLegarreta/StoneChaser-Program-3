@@ -446,7 +446,7 @@ public class Inventory extends Thread{
 	}
 	
 
-	public static Item[] getItemArray() {
+	public Item[] getItemArray() {
 		return inventory;
 	}
 

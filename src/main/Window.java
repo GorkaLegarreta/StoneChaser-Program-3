@@ -9,6 +9,8 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import javax.swing.JFrame;
 
+import main.states.MenuState;
+
 public class Window implements Serializable{
 
 	/**
@@ -19,6 +21,7 @@ public class Window implements Serializable{
 	private Canvas canvas; 
 	private String title;
 	private int width, height;
+	private static boolean visibility = true;
 	
 	public Window(String title, int width, int height, FileHandler fh) {
 		this.title = title;
@@ -64,4 +67,17 @@ public class Window implements Serializable{
 		return frame;
 	}	
 	
+	public void setInvisibility() {
+		frame.setVisible(false);
+		visibility = false;
+	}
+	
+	public void setVisibility() {
+		frame.setVisible(true);
+		visibility = true;
+	}
+	
+	public static boolean getVisibility() {
+		return visibility;
+	}
 }

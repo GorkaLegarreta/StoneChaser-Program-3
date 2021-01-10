@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import main.items.Item;
 import main.states.GameState;
 
 public class GameDB {
@@ -226,7 +228,7 @@ public class GameDB {
 	 * position already existed and its being updated
 	 * @throws GameDBException 
 	 */
-	public static void updatePosition() throws GameDBException {
+	public static void updateUserPosition() throws GameDBException {
 		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
@@ -271,15 +273,14 @@ public class GameDB {
 	/////////////////////////////////////////////////////////////////////////
 	//				METODOS PARA CREAR FILAS EN INVENTORY				   //
 	/////////////////////////////////////////////////////////////////////////
-	public static boolean existsObjectsInPlayersInventory(int user_code) throws GameDBException {
+	public static boolean existsObjectsInPlayersInventory(int user_code, int item_id) throws GameDBException {
 		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
 				Statement stmt = conn.createStatement();				
 			){
 			
-			rs = stmt.executeQuery(String.format("SELECT * FROM INVENTORY WHERE USER_CODE = %d AND ITEM_ID = %d;",user_code));			
+			rs = stmt.executeQuery(String.format("SELECT * FROM INVENTORY WHERE USER_CODE = %d AND ITEM_ID = %d;",user_code,item_id));			
 			while(rs.next()) {
-				if (user_code == rs.getInt("USER_CODE"))
-					return true; 
+				return true; 
 			}
 		} catch (SQLException e) {
 			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
@@ -316,5 +317,52 @@ public class GameDB {
 		} catch (SQLException e) {
 			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
 		}
+	}
+	/////////////////////////////////////////////////////////////////////////////////////////
+	//				METODOS PARA CARGAR LOS DATOS  DESDE INVENTORY						   //
+	/////////////////////////////////////////////////////////////////////////////////////////
+	public static int getInventoryObjectXPosition(int user_code, int index) throws GameDBException {
+		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();				
+			){
+			
+			rs = stmt.executeQuery(String.format("SELECT ITEM_X FROM INVENTORY WHERE USER_CODE = %d AND ITEM_INDEX = %d;",user_code,index));			
+			return rs.getInt("ITEM_X");
+		} catch (SQLException e) {
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
+		} 
+	}
+	public static int getInventoryObjectYPosition(int user_code, int index) throws GameDBException {
+		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();				
+			){
+			
+			rs = stmt.executeQuery(String.format("SELECT ITEM_Y FROM INVENTORY WHERE USER_CODE = %d AND ITEM_INDEX = %d;",user_code,index));			
+			return rs.getInt("ITEM_Y");
+		} catch (SQLException e) {
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
+		} 
+	}
+	public static int getInventoryObjectQuantity(int user_code, int index) throws GameDBException {
+		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();				
+			){
+			
+			rs = stmt.executeQuery(String.format("SELECT ITEM_Y FROM INVENTORY WHERE USER_CODE = %d AND ITEM_INDEX = %d;",user_code,index));			
+			return rs.getInt("QUANTITY");
+		} catch (SQLException e) {
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
+		} 
+	}
+	public static int getInventoryItemID(int user_code, int index) throws GameDBException {
+		try (	Connection conn = DriverManager.getConnection("jdbc:sqlite:StoneChaserDB.db");
+				Statement stmt = conn.createStatement();				
+			){
+			
+			rs = stmt.executeQuery(String.format("SELECT ITEM_Y FROM INVENTORY WHERE USER_CODE = %d AND ITEM_INDEX = %d;",user_code,index));			
+			return rs.getInt("ITEM_ID");
+		} catch (SQLException e) {
+			throw new GameDBException("Ha ocurrido un error al ejecutar una sentencia de la base de datos. ", e);
+		} 
 	}
 }	

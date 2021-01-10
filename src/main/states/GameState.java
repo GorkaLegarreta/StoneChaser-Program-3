@@ -12,7 +12,6 @@ import main.Handler;
 import main.worlds.World;
 import main.input.KeyManager;
 import main.input.MouseManager;
-import main.inventory.Inventory;
 import main.items.Item;
 import main.states.MenuState.WorldEnum;
 
@@ -34,7 +33,7 @@ public class GameState extends State{
 		saveButton = new Rectangle(0, 380, 80, 20);		
 		mouseManager = handler.getMouseManager();
 		keyManager = handler.getKeyManager();
-		inv = Inventory.getItemArray();
+		inv = handler.getWorld().getInventory().getItemArray();
 	}
 	//////////////////////////////////////////////////////////////////
 	//					METODOS TICK & RENDER						//
@@ -49,7 +48,7 @@ public class GameState extends State{
 			new Thread( () -> {
 				try {
 					Thread.currentThread().sleep(1000);		
-					GameDB.updatePosition();
+					GameDB.updateUserPosition();
 					GameDB.deleteInventory(getUser());			
 					loopItemArray();
 					unPause();
@@ -80,7 +79,7 @@ public class GameState extends State{
 	public boolean saveButtonIsPressed() {
 		if (mouseManager.isLeftPressed() && saveButton.contains(mouseManager.getMouseX(),mouseManager.getMouseY()) ) {
 			pause();
-			inv = Inventory.getItemArray();
+			inv = handler.getWorld().getInventory().getItemArray();
 			return true;
 		} else {
 			return false;
