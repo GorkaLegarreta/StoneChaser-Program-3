@@ -15,7 +15,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
-
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
@@ -30,15 +30,11 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.Border;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
-
 import main.Game;
 import main.GameDB;
 import main.GameDBException;
@@ -53,11 +49,12 @@ public class Viewer extends JFrame {
 	private JPanel down;
 	//inicio
 	private JTable table;
-	private JScrollBar scrollBar;
+	private JScrollPane scrollPane;
 	//fin
 	private DefaultTableModel dtm;
 	private String[] header;
 	private Object[][] data;
+	private int user_code;
 	
 	public Viewer() {
 		// Settings
@@ -76,8 +73,9 @@ public class Viewer extends JFrame {
 		// Upload JList
 		loadJList();
 		
-		// Closing events
-		addWindowListener(createWindowListener());
+		//Closing events
+		addWindowListener(closingEvents());
+		
 	}
 	
 	public void configMenuBar() {
@@ -102,7 +100,8 @@ public class Viewer extends JFrame {
 		salir.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				exit();		
+				dispose();
+				Game.getWindow().setVisibility();	
 			}
 		});
 		exportar.addActionListener(new ActionListener() {			
@@ -139,9 +138,16 @@ public class Viewer extends JFrame {
 		userNameJList.addListSelectionListener(new ListSelectionListener() {			
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				loadUserInformation();
-				createInventoryTable();
-				loadUserInventoryTable();
+				user_code = userNameJList.getSelectedIndex()+1;
+				try {
+					if (GameDB.existsGamePlayer(user_code)) {
+						loadUserInformation();
+						createInventoryTable();
+						loadUserInventoryTable();
+					} 
+				} catch (GameDBException ex) {
+					ex.printStackTrace();
+				}
 			}			
 		});
 		
@@ -181,25 +187,7 @@ public class Viewer extends JFrame {
 			userNameListModel.addElement(GameDB.getGameUserName(i+1));
 		}		
 	}
-	/*
-	 * FUNCIONA PERFECTO
-	 */
-	public void loadUserInformation() {
-		int user_code = userNameJList.getSelectedIndex()+1;
-		try {
-			if (GameDB.existsGamePlayer(user_code)) {
-				sessions.setText("Sesiones: "+Integer.toString(GameDB.getNumberSessions(user_code)));
-				x.setText("Player_X: "+Integer.toString(GameDB.getGamePlayerXPosition(user_code)));
-				y.setText("Player_Y: "+Integer.toString(GameDB.getGamePlayerYPosition(user_code)));
-			} else {
-				sessions.setText("Sesiones:");
-				x.setText("Player_X:");
-				y.setText("Player_Y:");
-			}
-		} catch (GameDBException e) {
-			e.printStackTrace();
-		}		
-	}
+	
 	private void createInventoryTable() {
 		String [] header = {"Jugador","Espacio en Inventario","Item","Cantidad"};
 		data = null;
@@ -209,25 +197,94 @@ public class Viewer extends JFrame {
 		table.setFillsViewportHeight(true);
 		down.add(scrollPane, BorderLayout.CENTER);
 	}
-	
-	
 	public void loadUserInventoryTable() {
-		int user_code = userNameJList.getSelectedIndex()+1;	
 		try {
-			if (GameDB.existsGamePlayer(user_code)) {
-				for(int i=0;i<6;i++) {
-					if (GameDB.theObjectInPlayersInventory(user_code, i)) {
-						Object [] rowData = {getName(user_code), i, getItem(user_code, i), getQuantity(user_code, i)};
-						dtm.addRow(rowData);
-					}
-				}					
-			} else {
-				
-			}
+			for(int i=0;i<6;i++) {
+				if (GameDB.theObjectInPlayersInventory(user_code, i)) {
+					Object [] rowData = {getUserName(user_code), i, getItemName(user_code, i), getItemQuantity(user_code, i)};
+					dtm.addRow(rowData);
+				}
+			}				
 		} catch (GameDBException e) {
 			e.printStackTrace();
 		}
 	}
+	public void loadTable() {
+		try {
+			ArrayList<ArrayList<Object>> data = new ArrayList<ArrayList<Object>>();
+			for(int i=0;i<6;i++) {
+				if (GameDB.theObjectInPlayersInventory(user_code, i)) {
+					ArrayList<Object> arr = new ArrayList<Object>();
+					arr.add(getUserName(user_code));
+					arr.add(i);
+					arr.add(getItemName(user_code, i));
+					arr.add(getItemQuantity(user_code, i));
+					data.add(arr);
+				}
+			}
+			MyTableModel mod = new MyTableModel(data);
+	        table.setModel((TableModel) mod);
+	        JScrollBar sc = scrollPane.getVerticalScrollBar();
+	        sc.setValue(0);
+		} catch (GameDBException e) {
+			e.printStackTrace();
+		}
+	}
+	class MyTableModel implements TableModel {
+    	ArrayList<ArrayList<Object>> data = new ArrayList<ArrayList<Object>>();
+    	ArrayList<String> columnNames = new ArrayList<String>();
+
+		public MyTableModel( ArrayList<ArrayList<Object>> d) {
+			super();
+	    	columnNames.add("Jugador");
+	    	columnNames.add("Posición en Inventario");
+	    	columnNames.add("Item");
+	    	columnNames.add("Cantidad");
+			for (ArrayList<Object> a: d) {
+				data.add(a);
+			}
+		}
+
+		@Override
+		public int getRowCount() {
+			return data.size();
+		}
+
+		@Override
+		public int getColumnCount() {
+			return columnNames.size();
+		}
+
+		@Override
+		public String getColumnName(int columnIndex) {
+			return columnNames.get(columnIndex);
+		}
+
+		@Override
+		public Class<?> getColumnClass(int columnIndex) {
+			return String.class;
+		}
+
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			return false;
+		}
+
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			return data.get(rowIndex).get(columnIndex);
+		}
+
+		@Override
+		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {}
+
+		@Override
+		public void addTableModelListener(TableModelListener l) {}
+
+		@Override
+		public void removeTableModelListener(TableModelListener l) {}
+	}
+	
 //	public void loadCompletelyInventoryTable() {	
 //		try {
 //			for (int user_code = 1; user_code<5; user_code++) {
@@ -266,54 +323,13 @@ public class Viewer extends JFrame {
 		  constraints.weightx = 1;   
 		  constraints.weighty = row == 0 ? 0.2 : 0.8;    
 		  form.add(component, constraints); 
-	}
-	public WindowListener createWindowListener() {
-		WindowListener wl = new WindowListener() {
-			
-			@Override
-			public void windowOpened(WindowEvent e) {
-							
-			}			
-			@Override
-			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}			
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}			
-			@Override
-			public void windowDeactivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}			
-			@Override
-			public void windowClosing(WindowEvent e) {
-				exit();
-				
-			}			
-			@Override
-			public void windowClosed(WindowEvent e) {
-//				Game.getWindow().setVisibility();
-//				setVisible(false);
-			}			
-			@Override
-			public void windowActivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		};
-		return wl;
-	}
+	}	
 	
-	
-	public String getName(int user_code) {
+	public String getUserName(int user_code) {
 		return GameDB.getGameUserName(user_code);
 	}
 	
-	public String getItem(int user_code, int item_index) {
+	public String getItemName(int user_code, int item_index) {
 		try {
 			return GameDB.getItemName(user_code, item_index);
 		} catch (GameDBException e) {
@@ -322,7 +338,7 @@ public class Viewer extends JFrame {
 		return "";
 	}
 	
-	public int getQuantity(int user_code, int item_index) {
+	public int getItemQuantity(int user_code, int item_index) {
 		try {
 			return GameDB.getInventoryObjectQuantity(user_code, item_index);
 		} catch (GameDBException e) {
@@ -330,9 +346,72 @@ public class Viewer extends JFrame {
 		}
 		return 0;
 	}
-	public void exit() {
-		dispose();
-		Game.getWindow().setVisibility();
+	
+	public WindowListener closingEvents() {
+		
+		WindowListener wl = new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent e) {}
+			
+			@Override
+			public void windowIconified(WindowEvent e) {}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e) {}	
+			
+			@Override
+			public void windowDeactivated(WindowEvent e) {}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				dispose();
+				Game.getWindow().setVisibility();		
+			}			
+			
+			@Override
+			public void windowClosed(WindowEvent e) {
+				dispose();
+				Game.getWindow().setVisibility();
+			}	
+			
+			@Override
+			public void windowActivated(WindowEvent e) {}
+		};
+		return wl;
+	 }
+	/*
+	 * FUNCIONA PERFECTO
+	 */
+	public void loadUserInformation() {
+		try {
+			if (GameDB.existsGamePlayer(user_code)) {
+				sessions.setText("Sesiones: "+Integer.toString(GameDB.getNumberSessions(user_code)));
+				x.setText("Player_X: "+Integer.toString(GameDB.getGamePlayerXPosition(user_code)));
+				y.setText("Player_Y: "+Integer.toString(GameDB.getGamePlayerYPosition(user_code)));
+			} else {
+				sessions.setText("Sesiones:");
+				x.setText("Player_X:");
+				y.setText("Player_Y:");
+			}
+		} catch (GameDBException e) {
+			e.printStackTrace();
+		}		
+	}
+	public void clearUserInformation() {
+		try {
+			if (GameDB.existsGamePlayer(user_code)) {
+				sessions.setText("Sesiones: "+Integer.toString(GameDB.getNumberSessions(user_code)));
+				x.setText("Player_X: "+Integer.toString(GameDB.getGamePlayerXPosition(user_code)));
+				y.setText("Player_Y: "+Integer.toString(GameDB.getGamePlayerYPosition(user_code)));
+			} else {
+				sessions.setText("Sesiones:");
+				x.setText("Player_X:");
+				y.setText("Player_Y:");
+			}
+		} catch (GameDBException e) {
+			e.printStackTrace();
+		}		
 	}
 }
 

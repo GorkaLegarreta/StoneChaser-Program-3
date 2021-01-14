@@ -129,14 +129,14 @@ public class MenuState extends State  {
 		/////////////////////////////////////////////////////////////////
 		//				POSIBLE BOTÓN DE MOSTRAR TABLAS				   //
 		/////////////////////////////////////////////////////////////////		
-//		if (panelIsClicked(window)) {
-//			if (!freeze) {
-//				changeWindow();
-//				startStop();
-//			} 
-//		}
-		openWindow();
-		solveFreezeProblem();
+		if (panelIsClicked(window)) {
+			if (!freeze) {
+				changeWindow();
+				startStop();
+			} 
+		}
+//		openWindow();
+//		solveFreezeProblem();
 	}
 	
 	@Override
