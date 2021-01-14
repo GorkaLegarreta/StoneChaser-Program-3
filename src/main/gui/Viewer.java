@@ -34,8 +34,10 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 import main.Game;
 import main.GameDB;
@@ -49,8 +51,12 @@ public class Viewer extends JFrame {
 	private JList<String> userNameJList;
 	private JLabel sessions, x, y;
 	private JPanel down;
+	//inicio
 	private JTable table;
+	private JScrollBar scrollBar;
+	//fin
 	private DefaultTableModel dtm;
+	private String[] header;
 	private Object[][] data;
 	
 	public Viewer() {
@@ -88,10 +94,28 @@ public class Viewer extends JFrame {
 		datos.add(exportar);
 		menuBar.add(datos);
 		
+		JMenu tabla = new JMenu("Tabla");
+		JMenuItem todos = new JMenuItem("Mostrar todo");
+		tabla.add(todos);
+		menuBar.add(tabla);
+		
 		salir.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				exit();		
+			}
+		});
+		exportar.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+							
+			}
+		});
+		todos.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				createInventoryTable();
+				loadUserInventoryTable();
 			}
 		});
 	}
@@ -112,16 +136,13 @@ public class Viewer extends JFrame {
 		left.add(userNameJList, BorderLayout.CENTER);
 		JLabel bottom = new JLabel("Usuarios inicializados: "+GameDB.getGameUsers()+"/4");
 		left.add(bottom, BorderLayout.SOUTH);
-		userNameJList.addListSelectionListener(new ListSelectionListener() {
-			
+		userNameJList.addListSelectionListener(new ListSelectionListener() {			
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				loadUserInformation();
 				createInventoryTable();
 				loadUserInventoryTable();
-			}
-
-			
+			}			
 		});
 		
 		// Right
@@ -160,11 +181,13 @@ public class Viewer extends JFrame {
 			userNameListModel.addElement(GameDB.getGameUserName(i+1));
 		}		
 	}
-	
+	/*
+	 * FUNCIONA PERFECTO
+	 */
 	public void loadUserInformation() {
-		int user_code = userNameJList.getSelectedIndex() + 1;
+		int user_code = userNameJList.getSelectedIndex()+1;
 		try {
-			if (GameDB.getNumberSessions(user_code) != -1) {
+			if (GameDB.existsGamePlayer(user_code)) {
 				sessions.setText("Sesiones: "+Integer.toString(GameDB.getNumberSessions(user_code)));
 				x.setText("Player_X: "+Integer.toString(GameDB.getGamePlayerXPosition(user_code)));
 				y.setText("Player_Y: "+Integer.toString(GameDB.getGamePlayerYPosition(user_code)));
@@ -175,11 +198,10 @@ public class Viewer extends JFrame {
 			}
 		} catch (GameDBException e) {
 			e.printStackTrace();
-		}
-		
+		}		
 	}
 	private void createInventoryTable() {
-		String[] header = {"Jugador","Espacio en Inventario","Item","Cantidad"};
+		String [] header = {"Jugador","Espacio en Inventario","Item","Cantidad"};
 		data = null;
 		dtm = new DefaultTableModel(data, header);
 		table = new JTable(dtm);
@@ -187,11 +209,12 @@ public class Viewer extends JFrame {
 		table.setFillsViewportHeight(true);
 		down.add(scrollPane, BorderLayout.CENTER);
 	}
-	//TODO change table
+	
+	
 	public void loadUserInventoryTable() {
-		int user_code = userNameJList.getSelectedIndex() + 1;	
+		int user_code = userNameJList.getSelectedIndex()+1;	
 		try {
-			if (GameDB.getNumberSessions(user_code) != -1) {
+			if (GameDB.existsGamePlayer(user_code)) {
 				for(int i=0;i<6;i++) {
 					if (GameDB.theObjectInPlayersInventory(user_code, i)) {
 						Object [] rowData = {getName(user_code), i, getItem(user_code, i), getQuantity(user_code, i)};
@@ -199,13 +222,28 @@ public class Viewer extends JFrame {
 					}
 				}					
 			} else {
-				data = null;
+				
 			}
 		} catch (GameDBException e) {
 			e.printStackTrace();
 		}
 	}
-	
+//	public void loadCompletelyInventoryTable() {	
+//		try {
+//			for (int user_code = 1; user_code<5; user_code++) {
+//				
+//					for(int i=0;i<6;i++) {
+//						if (GameDB.theObjectInPlayersInventory(user_code, i)) {
+//							Object [] rowData = {getName(user_code), i, getItem(user_code, i), getQuantity(user_code, i)};
+//							dtm.addRow(rowData);
+//						}
+//					}					
+//			} 
+//			
+//		} catch (GameDBException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	
 	private void addComponentToLayout(JPanel form, Component component, int row, int column) {   

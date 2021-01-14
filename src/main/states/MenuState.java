@@ -128,14 +128,15 @@ public class MenuState extends State  {
 		}
 		/////////////////////////////////////////////////////////////////
 		//				POSIBLE BOTÓN DE MOSTRAR TABLAS				   //
-		/////////////////////////////////////////////////////////////////
-		
-		if (panelIsClicked(window)) {
-			if (!freeze) {
-				changeWindow();
-				startStop();
-			} 
-		}
+		/////////////////////////////////////////////////////////////////		
+//		if (panelIsClicked(window)) {
+//			if (!freeze) {
+//				changeWindow();
+//				startStop();
+//			} 
+//		}
+		openWindow();
+		solveFreezeProblem();
 	}
 	
 	@Override
@@ -158,10 +159,10 @@ public class MenuState extends State  {
 		g.drawString("MUNDO 3", 60, 225);
 		g.drawString("MUNDO 4", 60, 305);
 		
+		g.setFont(new Font("Arial", Font.TRUETYPE_FONT, 15));
+		g.drawString("OPEN STATISTICS", 280, 375);
 		g.setFont(new Font("Arial", Font.TRUETYPE_FONT, 20));
-		g.drawRect(window.x, window.y, window.width, window.height);
-		g.drawString("OPEN TABLE", 280, 375);
-		
+		g.drawRect(window.x, window.y, window.width, window.height);		
 		g.drawString(strings[0], 380, 60);
 		g.drawString(strings[1], 380, 145);
 		g.drawString(strings[2], 380, 225);
@@ -209,11 +210,25 @@ public class MenuState extends State  {
 			}
 		});
 	}
+	public void openWindow() {
+		if (panelIsClicked(window)) {
+			if (!freeze) {
+				changeWindow();
+				startStop();
+			}
+		}
+	}
 	public static void startStop() {
 		if(freeze) {
 			freeze = false;
 		} else {
 			freeze = true;
+		}
+	}
+	@SuppressWarnings("static-access")
+	public void solveFreezeProblem() {
+		if(Game.getWindow().getVisibility()) {
+			freeze=false;
 		}
 	}
 }
