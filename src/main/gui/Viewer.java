@@ -1,22 +1,15 @@
 package main.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.JobAttributes.DefaultSelectionType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
@@ -34,12 +27,10 @@ import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import main.Game;
 import main.GameDB;
 import main.GameDBException;
-import main.states.MenuState;
 
 public class Viewer extends JFrame {
 
@@ -55,7 +46,7 @@ public class Viewer extends JFrame {
 	private int user_code;
 	
 	public Viewer() {
-		// Settings
+		// JFrame
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
 		setTitle("Game Session Viewer");
@@ -63,10 +54,10 @@ public class Viewer extends JFrame {
 		setLocationRelativeTo(null);
 		
 		// MenuBar
-		configMenuBar();
+		createMenuBar();
 		
 		// Central Panel
-		configFrameDivider();
+		createMainPanel();
 		
 		// Upload JList
 		loadJList();
@@ -76,7 +67,7 @@ public class Viewer extends JFrame {
 		
 	}
 	
-	public void configMenuBar() {
+	public void createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
@@ -108,7 +99,7 @@ public class Viewer extends JFrame {
 	/**
 	 * JFrame will be divided into three panels: left, right up and right bottom panels.
 	 */
-	public void configFrameDivider() {
+	public void createMainPanel() {
 		JPanel panel = new JPanel(new GridBagLayout());
 		
 		// Left
@@ -159,14 +150,29 @@ public class Viewer extends JFrame {
 		addComponentToLayout(panel,right,0,1);
 		addComponentToRightLayout(right, up, 0, 0);
 		addComponentToRightLayout(right, down, 1, 0);
-		add(panel);
-		
+		add(panel);		
 		
 	}
 	
 	public void loadJList() {
 		for (int i=0; i<4; i++) {
 			userNameListModel.addElement(GameDB.getGameUserName(i+1));
+		}		
+	}
+	
+	public void loadUserInformation() {
+		try {
+			if (GameDB.existsGamePlayer(user_code)) {
+				sessions.setText("Sesiones: "+Integer.toString(GameDB.getNumberSessions(user_code)));
+				x.setText("Player_X: "+Integer.toString(GameDB.getGamePlayerXPosition(user_code)));
+				y.setText("Player_Y: "+Integer.toString(GameDB.getGamePlayerYPosition(user_code)));
+			} else {
+				sessions.setText("Sesiones:");
+				x.setText("Player_X:");
+				y.setText("Player_Y:");
+			}
+		} catch (GameDBException e) {
+			e.printStackTrace();
 		}		
 	}
 	
@@ -191,6 +197,7 @@ public class Viewer extends JFrame {
 			e.printStackTrace();
 		}
 	}
+	
 	class MyTableModel implements TableModel {
     	ArrayList<ArrayList<Object>> data = new ArrayList<ArrayList<Object>>();
     	ArrayList<String> columnNames = new ArrayList<String>();
@@ -245,25 +252,7 @@ public class Viewer extends JFrame {
 		@Override
 		public void removeTableModelListener(TableModelListener l) {}
 	}
-	
-//	public void loadCompletelyInventoryTable() {	
-//		try {
-//			for (int user_code = 1; user_code<5; user_code++) {
-//				
-//					for(int i=0;i<6;i++) {
-//						if (GameDB.theObjectInPlayersInventory(user_code, i)) {
-//							Object [] rowData = {getName(user_code), i, getItem(user_code, i), getQuantity(user_code, i)};
-//							dtm.addRow(rowData);
-//						}
-//					}					
-//			} 
-//			
-//		} catch (GameDBException e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
-	
+		
 	private void addComponentToLayout(JPanel form, Component component, int row, int column) {   
 		  GridBagConstraints constraints = new GridBagConstraints();   
 		  constraints.fill = GridBagConstraints. BOTH ;    
@@ -339,56 +328,7 @@ public class Viewer extends JFrame {
 			@Override
 			public void windowActivated(WindowEvent e) {}
 		};
+		
 		return wl;
-	 }
-	/*
-	 * FUNCIONA PERFECTO
-	 */
-	public void loadUserInformation() {
-		try {
-			if (GameDB.existsGamePlayer(user_code)) {
-				sessions.setText("Sesiones: "+Integer.toString(GameDB.getNumberSessions(user_code)));
-				x.setText("Player_X: "+Integer.toString(GameDB.getGamePlayerXPosition(user_code)));
-				y.setText("Player_Y: "+Integer.toString(GameDB.getGamePlayerYPosition(user_code)));
-			} else {
-				sessions.setText("Sesiones:");
-				x.setText("Player_X:");
-				y.setText("Player_Y:");
-			}
-		} catch (GameDBException e) {
-			e.printStackTrace();
-		}		
 	}
-	
 }
-
-//data = {
-//		{getName(user_code), 0, getItem(user_code, 0), getQuantity(user_code, 0)},
-//		{getName(user_code), 1, getItem(user_code, 1), getQuantity(user_code, 1)},
-//		{getName(user_code), 2, getItem(user_code, 2), getQuantity(user_code, 2)},
-//		{getName(user_code), 3, getItem(user_code, 3), getQuantity(user_code, 3)},
-//		{getName(user_code), 4, getItem(user_code, 4), getQuantity(user_code, 4)},
-//		{getName(user_code), 5, getItem(user_code, 5), getQuantity(user_code, 5)}
-//};
-//Object[][] data = {
-//		{"Mary", "Campione", "Esquiar", 6},
-//		{"Lhucas", "Huml", "Patinar", 54},
-//		{"Kathya", "Walrath", "Escalar", 4},
-//		{"Marcus", "Andrews", "Correr",6},
-//		{"Angela", "Lalth", "Nadar", 7}
-//		};
-//try {
-//	for (int item_index = 0; item_index<6; item_index++) {
-//		if (GameDB.theObjectInPlayersInventory(user_code, item_index)) {
-//			
-//			String name = userNameJList.getSelectedValue();
-//			String space = Integer.toString(item_index);
-//			String item = GameDB.getItemName(user_code, item_index);
-//			String quantity = Integer.toString(GameDB.getInventoryObjectQuantity(user_code, item_index));
-//			
-//			String [] row = {name,space,item,quantity};					
-//		}
-//	}
-//} catch (GameDBException e) {
-//		e.printStackTrace();				
-//}
