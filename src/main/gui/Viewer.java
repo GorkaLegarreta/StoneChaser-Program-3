@@ -3,6 +3,7 @@ package main.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -47,13 +48,10 @@ public class Viewer extends JFrame {
 	private JList<String> userNameJList;
 	private JLabel sessions, x, y;
 	private JPanel down;
-	//inicio
+	
 	private JTable table;
 	private JScrollPane scrollPane;
-	//fin
-	private DefaultTableModel dtm;
-	private String[] header;
-	private Object[][] data;
+	
 	private int user_code;
 	
 	public Viewer() {
@@ -104,19 +102,7 @@ public class Viewer extends JFrame {
 				Game.getWindow().setVisibility();	
 			}
 		});
-		exportar.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-							
-			}
-		});
-		todos.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				createInventoryTable();
-				loadUserInventoryTable();
-			}
-		});
+		
 	}
 		
 	/**
@@ -135,19 +121,13 @@ public class Viewer extends JFrame {
 		left.add(userNameJList, BorderLayout.CENTER);
 		JLabel bottom = new JLabel("Usuarios inicializados: "+GameDB.getGameUsers()+"/4");
 		left.add(bottom, BorderLayout.SOUTH);
+		
 		userNameJList.addListSelectionListener(new ListSelectionListener() {			
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				user_code = userNameJList.getSelectedIndex()+1;
-				try {
-					if (GameDB.existsGamePlayer(user_code)) {
-						loadUserInformation();
-						createInventoryTable();
-						loadUserInventoryTable();
-					} 
-				} catch (GameDBException ex) {
-					ex.printStackTrace();
-				}
+				loadUserInformation();
+				loadJTable();
 			}			
 		});
 		
@@ -171,7 +151,9 @@ public class Viewer extends JFrame {
 		down = new JPanel(new BorderLayout());
 		down.setBorder(border);
 		
-		
+		table = new JTable();
+		scrollPane = new JScrollPane(table);
+		down.add(scrollPane, BorderLayout.CENTER);
 				
 		addComponentToLayout(panel,left,0,0);
 		addComponentToLayout(panel,right,0,1);
@@ -188,28 +170,7 @@ public class Viewer extends JFrame {
 		}		
 	}
 	
-	private void createInventoryTable() {
-		String [] header = {"Jugador","Espacio en Inventario","Item","Cantidad"};
-		data = null;
-		dtm = new DefaultTableModel(data, header);
-		table = new JTable(dtm);
-		JScrollPane scrollPane = new JScrollPane(table);
-		table.setFillsViewportHeight(true);
-		down.add(scrollPane, BorderLayout.CENTER);
-	}
-	public void loadUserInventoryTable() {
-		try {
-			for(int i=0;i<6;i++) {
-				if (GameDB.theObjectInPlayersInventory(user_code, i)) {
-					Object [] rowData = {getUserName(user_code), i, getItemName(user_code, i), getItemQuantity(user_code, i)};
-					dtm.addRow(rowData);
-				}
-			}				
-		} catch (GameDBException e) {
-			e.printStackTrace();
-		}
-	}
-	public void loadTable() {
+	public void loadJTable() {
 		try {
 			ArrayList<ArrayList<Object>> data = new ArrayList<ArrayList<Object>>();
 			for(int i=0;i<6;i++) {
@@ -398,21 +359,7 @@ public class Viewer extends JFrame {
 			e.printStackTrace();
 		}		
 	}
-	public void clearUserInformation() {
-		try {
-			if (GameDB.existsGamePlayer(user_code)) {
-				sessions.setText("Sesiones: "+Integer.toString(GameDB.getNumberSessions(user_code)));
-				x.setText("Player_X: "+Integer.toString(GameDB.getGamePlayerXPosition(user_code)));
-				y.setText("Player_Y: "+Integer.toString(GameDB.getGamePlayerYPosition(user_code)));
-			} else {
-				sessions.setText("Sesiones:");
-				x.setText("Player_X:");
-				y.setText("Player_Y:");
-			}
-		} catch (GameDBException e) {
-			e.printStackTrace();
-		}		
-	}
+	
 }
 
 //data = {
