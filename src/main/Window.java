@@ -9,8 +9,6 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import javax.swing.JFrame;
 
-import main.states.MenuState;
-
 public class Window implements Serializable{
 
 	/**

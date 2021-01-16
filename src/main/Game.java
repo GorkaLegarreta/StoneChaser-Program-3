@@ -50,8 +50,7 @@ public class Game implements Runnable{
 	public State gameState;
 	
 	//spotlight
-	private int sPx, sPy;
-	private int velX = 5, velY = 5;
+	@SuppressWarnings("unused")
 	private Spotlight spotlight, craftingTableSpotlight, inventorySpotlight1, inventorySpotlight2, 
 					  inventorySpotlight3, inventorySpotlight4, inventorySpotlight5, inventorySpotlight6, craftingOutcomeSpotlight;
 	

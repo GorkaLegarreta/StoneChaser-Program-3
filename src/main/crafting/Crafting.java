@@ -2,8 +2,6 @@ package main.crafting;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import main.Handler;
 import main.gfx.Assets;
 import main.items.Item;
@@ -13,6 +11,7 @@ public class Crafting {
 
 	protected Handler handler;
 	
+	@SuppressWarnings("unused")
 	private Item craftingOutcome, grabbedItem;
 	
 	private Item[] crafteo = new Item[9];
@@ -20,6 +19,7 @@ public class Crafting {
 	private ArrayList<Integer> notNull = new ArrayList<Integer>();
 	
 	//anchura y altura real de la mesa de crafteo: 200 y 186 respectivamente.
+	@SuppressWarnings("unused")
 	private int item, posicion, craftingTableWidth = 280, craftingTableHeight = 266, invSlotsWidth = 219, invSlotsHeight = 75, 
 			craftingTableX, craftingTableY, inventoryX, inventoryY, grabbedItemIndex;
 	
