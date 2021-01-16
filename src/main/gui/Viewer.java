@@ -9,6 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -19,6 +23,7 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -82,7 +87,7 @@ public class Viewer extends JFrame {
 		menuBar.add(datos);
 		
 		JMenu tabla = new JMenu("Tabla");
-		JMenuItem todos = new JMenuItem("Mostrar todo");
+		JMenuItem todos = new JMenuItem("Mostrar todos");
 		tabla.add(todos);
 		menuBar.add(tabla);
 		
@@ -101,9 +106,19 @@ public class Viewer extends JFrame {
 				
 			}
 		});
+		exportar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				exportarJTable();
+			}
+		});
+		
 		
 	}
 		
+	
+
 	/**
 	 * JFrame will be divided into three panels: left, right up and right bottom panels.
 	 */
@@ -183,6 +198,59 @@ public class Viewer extends JFrame {
 			e.printStackTrace();
 		}		
 	}
+	
+	public void exportarJTable() {
+		String nombre = JOptionPane.showInputDialog("Introduce el nombre para el fichero");
+		if (nombre == "") {
+			nombre = userNameJList.getSelectedValue()+"_JTable.csv";
+		} else {
+			nombre = nombre+"_JTable.csv";
+		}
+		
+		BufferedWriter bw = null;
+				
+		try {
+			
+			bw = new BufferedWriter(new FileWriter(new File(nombre)));
+			bw.write("player;pocket;item;quantity");
+			bw.newLine();
+		
+			TableModel mod = table.getModel();
+			
+			for (int i = 0;i < mod.getRowCount();i++) {
+				String player = ""; 
+				int pocket = 0;
+				String item = ""; 
+				int quantity = 0; 
+
+				for (int j = 0;j < mod.getColumnCount();j++) {
+					Object ob = mod.getValueAt(i, j);
+					if (j == 0) player = (String) ob;
+					if (j == 1) pocket = (int) ob;
+					if (j == 2) item = (String) ob;
+					if (j == 3) quantity = (int) ob;
+				}
+				
+				bw.write(player+";"+pocket+";"+item+";"+quantity);
+				bw.newLine();
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (bw != null) bw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+       JOptionPane.showMessageDialog( this, "La tabla seleccionada con el nombre: "+nombre+", se ha exportado correctamente.", "Mensaje", JOptionPane.INFORMATION_MESSAGE );
+
+	}
+		
+	
 	
 	public void loadJTable() {
 		try {
