@@ -93,6 +93,14 @@ public class Viewer extends JFrame {
 				Game.getWindow().setVisibility();	
 			}
 		});
+		todos.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				completarJTable();
+				
+			}
+		});
 		
 	}
 		
@@ -187,6 +195,32 @@ public class Viewer extends JFrame {
 					arr.add(getItemName(user_code, i));
 					arr.add(getItemQuantity(user_code, i));
 					data.add(arr);
+				}
+			}
+			MyTableModel mod = new MyTableModel(data);
+	        table.setModel((TableModel) mod);
+	        JScrollBar sc = scrollPane.getVerticalScrollBar();
+	        sc.setValue(0);
+		} catch (GameDBException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void completarJTable() {
+		try {
+			ArrayList<ArrayList<Object>> data = new ArrayList<ArrayList<Object>>();
+			for (int u=1; u<=4;u++) {
+				if (GameDB.existsGamePlayer(u)) {
+					for(int i=0;i<6;i++) {
+						if (GameDB.theObjectInPlayersInventory(u, i)) {
+							ArrayList<Object> arr = new ArrayList<Object>();
+							arr.add(getUserName(u));
+							arr.add(i);
+							arr.add(getItemName(u, i));
+							arr.add(getItemQuantity(u, i));
+							data.add(arr);
+						}
+					}
 				}
 			}
 			MyTableModel mod = new MyTableModel(data);
