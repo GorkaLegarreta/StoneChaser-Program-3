@@ -2,11 +2,8 @@ package main.states;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
-import org.junit.AfterClass;
+import java.awt.Graphics;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import main.Game;
 import main.GameDBException;
@@ -14,57 +11,36 @@ import main.Handler;
 
 public class StateTest {
 	
+	private State state = null;
+	private State menu;
+	private State game;
+	private Game stoneChaser;
+	private Handler handler;
 	
-	
-	@BeforeClass
-	public static void beforeClass() {
-		System.out.println("Before Class");	
-		Game game = new Game("StoneChaser", 700, 400);
-		Handler handler = new Handler(game);
-//		MenuState menuState = new MenuState(handler);
-//		GameState gameState = new GameState(handler);
-	}
 	@Before
-	public void before() {
-		System.out.println("Before");
-		Game game = new Game("StoneChaser", 700, 400);
-		Handler handler = new Handler(game);
-//		MenuState menuState = new MenuState(handler);
-//		GameState gameState = new GameState(handler);
-	}
-	@Test
-	public void gameStateTest() throws GameDBException {
-		System.out.println("Test");
-		Game game = new Game("StoneChaser", 700, 400);
-		Handler handler = new Handler(game);
-		GameState gameState = new GameState(handler);
-		//assertEquals(gameState,handler.getGame().gameState);
-	}
-
-	@Test
-	public void menuStateTest() {		
-		System.out.println("Test");
-		Game game = new Game("StoneChaser", 700, 400);
-		Handler handler = new Handler(game);
-		MenuState menuState = new MenuState(handler);
-		//assertEquals(menuState,handler.getGame().menuState);
+	public void prepare() {
+		stoneChaser = new Game("", 100, 100);
+		handler = new Handler(stoneChaser);
+		menu = new State(handler) {			
+			@Override
+			public void tick() throws GameDBException {}			
+			@Override
+			public void render(Graphics g) {}
+		};
+		game = new State(handler) {			
+			@Override
+			public void tick() throws GameDBException {}			
+			@Override
+			public void render(Graphics g) {}
+		};
 	}
 	
-	@After
-	public void after() throws GameDBException {
-		System.out.println("After");
-		Game game = new Game("StoneChaser", 700, 400);
-		Handler handler = new Handler(game);
-		MenuState menuState = new MenuState(handler);
-		GameState gameState = new GameState(handler);
-	}
-	
-	@AfterClass
-	public static void afterClass() throws GameDBException {
-		System.out.println("AfterClass");
-		Game game = new Game("StoneChaser", 700, 400);
-		Handler handler = new Handler(game);
-		MenuState menuState = new MenuState(handler);
-		GameState gameState = new GameState(handler);
+	@SuppressWarnings("static-access")
+	@Test
+	public void TestSetState() {		
+		state.setState(menu);
+		assertEquals(stoneChaser.menuState, state);
+		state.setState(game);
+		assertEquals(stoneChaser.gameState, state);
 	}
 }

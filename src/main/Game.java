@@ -245,21 +245,6 @@ public class Game implements Runnable{
 			timer = 0;
 		}
 	}
-//	public static HashMap<Integer,String> playerItemsMap(){
-//		int user_code;
-//		user_code = GameState.getUser();
-//		
-//		String itemNames = "";
-//		Item[] items;
-//		items = Inventory.getItemArray();
-//		for (int i = 0; i<items.length ; i++) {
-//			if (items[i] != null)
-//				itemNames.concat(items[i].getName()+", ");
-//		}
-//		
-//		playersItems.put(user_code, itemNames); 
-//		return playersItems;
-//	}
 	
 	public static String getItemValues(int user_code) {
 		return playersItems.get(user_code);
@@ -344,3 +329,19 @@ public class Game implements Runnable{
     }
 	
 }
+
+//public static HashMap<Integer,String> playerItemsMap(){
+//	int user_code;
+//	user_code = GameState.getUser();
+//	
+//	String itemNames = "";
+//	Item[] items;
+//	items = Inventory.getItemArray();
+//	for (int i = 0; i<items.length ; i++) {
+//		if (items[i] != null)
+//			itemNames.concat(items[i].getName()+", ");
+//	}
+//	
+//	playersItems.put(user_code, itemNames); 
+//	return playersItems;
+//}
