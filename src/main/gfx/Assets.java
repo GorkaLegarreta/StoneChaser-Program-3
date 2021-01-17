@@ -5,18 +5,20 @@ import java.awt.image.BufferedImage;
 public class Assets {
 	
 	public static BufferedImage player, sword, cuerda, hierro, palo, casco, craftingTable, trunk, 
-								stone, cuero, worldTest, inventarioPlegado, inventarioDesplegado, 
+								stone, cuero, jungleWorld, inventarioPlegado, inventarioDesplegado, 
 								itemPointers, craftingOutcome, craftButton1, craftButton2, 
-								player_standStill_right, player_standStill_left;
+								player_standStill_right, player_standStill_left, tree;
 	
 	public static BufferedImage[] playerRightAnim = new BufferedImage[7], playerLeftAnim = new BufferedImage[7];
 	
 	public static void init() {
 		
-		SpriteSheet allSprites = new SpriteSheet(ImageLoader.loadImage("/textures/allSprites.png")); 
+		SpriteSheet allSprites = new SpriteSheet(ImageLoader.loadImage("/textures/allSprites.png"));
+		SpriteSheet jungleWrld = new SpriteSheet(ImageLoader.loadImage("/textures/jungla.png")); 
 		
 		//mundos y fondos
-		worldTest = allSprites.crop(0, 500, 700, 400);
+		jungleWorld = jungleWrld.crop(0, 0, 1400, 800);
+		tree = allSprites.crop(664, 0, 64, 111);
 		
 		//inventario y UI
 		craftingTable = allSprites.crop(500, 200, 200, 186);

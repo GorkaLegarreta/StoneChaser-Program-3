@@ -18,7 +18,7 @@ public class EntityManager {
 		
 		public int compare(Entity a, Entity b) {
 			
-			if(a.getY() < b.getY()){ //comprueba los "pies" o la parte de abajo de cada entidad para saber cual debe renderizarse antes
+			if(a.getY() + a.getHeight() < b.getY() + b.getHeight()){ //comprueba los "pies" o la parte de abajo de cada entidad para saber cual debe renderizarse antes
 				return -1; //renderizamos b antes que a 
 			}else{
 				return 1; //renderizamos a antes que b

@@ -6,13 +6,17 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
+
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+
 import main.Game;
 import main.GameDB;
 import main.GameDBException;
@@ -112,15 +116,40 @@ public class MenuState extends State  {
 		/////////////////////////////////////////////////////////////////
 		if (panelIsClicked(user1)) {
 			confirmToDeleteUser(1);
+			
+			try (BufferedWriter bw = new BufferedWriter(new FileWriter("user1Inv.txt"))){
+				bw.write("");
+				bw.flush();
+			} catch (IOException e) {
+				Game.LOGGER.log(Level.FINEST, "Se ha vaciado el fichero contenedor de los items del usuario borrado.");
+			}
 		}
 		if(panelIsClicked(user2)) {			
 			confirmToDeleteUser(2);
+			try (BufferedWriter bw = new BufferedWriter(new FileWriter("user2Inv.txt"))){
+				bw.write("");
+				bw.flush();
+			} catch (IOException e) {
+				Game.LOGGER.log(Level.FINEST, "Se ha vaciado el fichero contenedor de los items del usuario borrado.");
+			}
 		}
 		if(panelIsClicked(user3)) {			
 			confirmToDeleteUser(3);
+			try (BufferedWriter bw = new BufferedWriter(new FileWriter("user3Inv.txt"))){
+				bw.write("");
+				bw.flush();
+			} catch (IOException e) {
+				Game.LOGGER.log(Level.FINEST, "Se ha vaciado el fichero contenedor de los items del usuario borrado.");
+			}
 		}
 		if(panelIsClicked(user4)) {
-			confirmToDeleteUser(4);		
+			confirmToDeleteUser(4);
+			try (BufferedWriter bw = new BufferedWriter(new FileWriter("user4Inv.txt"))){
+				bw.write("");
+				bw.flush();
+			} catch (IOException e) {
+				Game.LOGGER.log(Level.FINEST, "Se ha vaciado el fichero contenedor de los items del usuario borrado.");
+			}
 		}
 		/////////////////////////////////////////////////////////////////
 		//				 BOTÓN DE PARTE INFERIOR 					   //
