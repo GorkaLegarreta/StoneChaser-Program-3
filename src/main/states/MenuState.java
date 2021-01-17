@@ -4,13 +4,25 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
+
 import javax.swing.JOptionPane;
+
 import main.Game;
 import main.GameDB;
 import main.GameDBException;
 import main.Handler;
+import main.gfx.Assets;
 import main.input.MouseManager;
+import main.items.Item;
 
 public class MenuState extends State  {
 
@@ -57,7 +69,7 @@ public class MenuState extends State  {
 				GameDB.incSessionNumber(1);
 				world = WorldEnum.MUNDO1;
 				changeToGameState(1);												
-					
+				
 				// TODO más código para que se cargue la posicion del jugador, el mundo en el que estaba, salud items...
 				
 				worldIsloadedLogger(1);
@@ -69,7 +81,7 @@ public class MenuState extends State  {
 				GameDB.incSessionNumber(2);
 				world = WorldEnum.MUNDO2;
 				changeToGameState(2);
-							
+				
 				// TODO más código para que se cargue la posicion del jugador, el mundo en el que estaba, salud items...
 				
 				worldIsloadedLogger(2);
@@ -157,8 +169,71 @@ public class MenuState extends State  {
 		GameState.handler.getWorld().getPlayer().setPlayerX(user);
 		GameState.handler.getWorld().getPlayer().setPlayerY(user);
 		
+		handler.setUser(user);
+		
+		if(handler.getPropertiesFile().getProperty("hasUserPlayed"+user).contentEquals("true")) getUserInventory(user);
+		else handler.getPropertiesFile().setProperty("hasUserPlayed"+user, "true");
+		
 		State.setState(handler.getGame().gameState);
 	}
+	
+	public void getUserInventory(int user) {
+		
+		File f;
+		
+		//incializamos los parámetros que meteremos en el constructor de item.
+		
+		String name = ""; 
+		BufferedImage img = Assets.stone; 
+		int width = 23, height = 23, id = 1, quant = 1;
+		
+		if(user == 1) f = new File("user1Inv.txt");
+		else if(user == 2) f = new File("user2Inv.txt");
+		else if(user == 3) f = new File("user3Inv.txt");
+		else f = new File("user4Inv.txt");
+		
+		StringTokenizer stk;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(f))){
+			String line = reader.readLine(); //si el fichero está vacío o no hay mas líneas devuelve null
+			
+			while(line != null) {
+				
+				int c = 0;
+				stk = new StringTokenizer(line, ",");
+				
+				while(stk.hasMoreTokens()) {
+					
+					String word = stk.nextToken();
+					
+					if(c == 0) {
+						name = word;
+					}else if(c == 1) {
+						img = Assets.getImgByName(word);
+					}else if(c == 2) {
+						width = Integer.parseInt(word);
+					}else if(c == 3) {
+						height = Integer.parseInt(word);
+					}else if(c == 4) {
+						id = Integer.parseInt(word);
+					}else {
+						quant = Integer.parseInt(word);
+					}
+					
+					c++;
+					
+				}
+				Item item = new Item(name, img, width, height, id, handler, handler.getWorld().getInventory());
+				handler.getWorld().getInventory().addToInventory(item.createItem(0, 0, quant));
+				line = reader.readLine();
+			}
+			
+		}catch (IOException e) {
+			Game.LOGGER.log(Level.SEVERE, "El inventario no ha podido ser cargado. Error: " + Game.getStackTrace(e));
+		}
+
+	}
+	
 	public void createNewUser(int world) throws GameDBException {
 		optionPane = JOptionPane.showInputDialog("Introduce el nombre para el usuario");
 		if (optionPane == null) {
@@ -176,4 +251,5 @@ public class MenuState extends State  {
 			
 		}
 	}
+	
 }

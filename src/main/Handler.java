@@ -1,5 +1,6 @@
 package main;
 
+import java.io.Serializable;
 import java.util.Properties;
 import main.gfx.GameCamera;
 import main.input.KeyManager;
@@ -7,11 +8,15 @@ import main.input.MouseManager;
 import main.input.ScreenMouseMovement;
 import main.worlds.World;
 
-public class Handler {
+public class Handler implements Serializable{
 
+	
+	private static final long serialVersionUID = -8869259633233223110L;
+	
 	private Game game;
 	private World world;
-		
+	private int user;			//numero de usuario	
+	
 	public Handler(Game game) {
 		this.game = game;
 	}
@@ -51,6 +56,14 @@ public class Handler {
 	
 	public Properties getPropertiesFile() {
 		return game.getPropertiesFile();
+	}
+	
+	public void setUser(int user) {
+		this.user = user;
+	}
+	
+	public int getUser() {
+		return user;
 	}
 	
 	public Game getGame() {

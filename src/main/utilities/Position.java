@@ -1,8 +1,13 @@
 package main.utilities;
 
+import java.io.Serializable;
+
 import main.items.Item;
 
-public class Position {
+public class Position implements Serializable{
+	
+	private static final long serialVersionUID = 2560895177948165894L;
+	
 	//clase simple para organizar posiciones
 	
 	private int x, y;

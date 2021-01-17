@@ -4,13 +4,17 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 import main.Handler;
 import main.inventory.Inventory;
 import main.utilities.Position;
 
-public class Item {
+public class Item  implements Serializable{
 
+	
+	private static final long serialVersionUID = 404770141825457345L;
+	
 	protected String name;
 	protected int x, y, itemQuantity, id;
 	protected int width, height;

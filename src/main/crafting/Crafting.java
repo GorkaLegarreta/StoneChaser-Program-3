@@ -1,15 +1,18 @@
 package main.crafting;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import main.Handler;
 import main.gfx.Assets;
 import main.items.Item;
 import main.items.ItemManager;
 
-public class Crafting {
+public class Crafting implements Serializable{
+
+	
+	private static final long serialVersionUID = 2736086664648766117L;
 
 	protected Handler handler;
 	
