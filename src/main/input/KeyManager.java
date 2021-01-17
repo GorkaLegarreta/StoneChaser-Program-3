@@ -61,4 +61,8 @@ public class KeyManager implements KeyListener{
 			keys[ke.getKeyCode()] = true;			
 		}
 	}
+	@SuppressWarnings({ "unused", "static-access"})
+	private boolean[] getKeyArray(){
+		return this.keys;
+	}
 }

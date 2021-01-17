@@ -87,11 +87,16 @@ public class Game implements Runnable{
 			 *  EN EL FICHERO LOGGER.TXT SI EL NIVEL SE LO PERMITE
 			 */
 			fh = new FileHandler("Logger.txt",false);			
-			LOGGER.setLevel(Level.FINE);			
+			LOGGER.setLevel(Level.FINEST);			
 			LOGGER.addHandler(fh);
 			SimpleFormatter formatter = new SimpleFormatter();
 			fh.setFormatter(formatter);
-			// LOG QUE APARECE TANTO EN LOGGER.TXT COMO EN CONSOLA POR EL (LEVEL.INFO)
+			/*
+			 *  LOG QUE APARECE TANTO EN LOGGER.TXT COMO EN CONSOLA POR EL (LEVEL.INFO).
+			 *  DEMOSTRACION DE QUE SE IMPRIMEN LOGS DEL MISMO NIVEL AL ESTABLECIDO 
+			 * 	POR DEFECTO EN FINEST = 300 NIVEL MUY BAJO QUE SE SUPERA FACILMENTE 
+			 */
+			LOGGER.log(LOGGER.getLevel()," LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, "+LOGGER.getLevel().toString()+": "+LOGGER.getLevel().intValue());
 			LOGGER.log(Level.INFO,"Logger y clases del StoneChaser inicializadas"); 
 			
 			// CREAR LA CONEXION A LA BD
@@ -103,13 +108,7 @@ public class Game implements Runnable{
 			LOGGER.log(Level.SEVERE,Game.getStackTrace(e));
 		} catch (GameDBException e) {
 			e.printStackTrace();		//nos indica que no se ha podido establecer la conexión y lo registra en el logger
-		}	
-		/*
-		 *  DEMOSTRACION DE QUE SE IMPRIMEN LOGS DEL MISMO NIVEL AL ESTABLECIDO 
-		 *  POR DEFECTO EN FINEST = 300 NIVEL MUY BAJO QUE SE SUPERA FACILMENTE 
-		 */		
-		LOGGER.log(LOGGER.getLevel()," LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, "+LOGGER.getLevel().toString()+": "+LOGGER.getLevel().intValue());
-		
+		}		
 	}
 	
 	public Game(String title, int width, int height) {

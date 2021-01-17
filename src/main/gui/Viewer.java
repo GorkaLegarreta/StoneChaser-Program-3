@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
@@ -70,6 +72,8 @@ public class Viewer extends JFrame {
 		//Closing events
 		addWindowListener(closingEvents());
 		
+		//Logger
+		Game.LOGGER.info("Ventana de Viewer correctamente cargada. Selección de usuario para ver los datos.");
 	}
 	
 	public void createMenuBar() {
@@ -111,6 +115,7 @@ public class Viewer extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				exportarJTable();
+				Game.LOGGER.log(Level.FINE, "El fichero csv ha sido creado perfectamente");
 			}
 		});
 		
@@ -141,7 +146,7 @@ public class Viewer extends JFrame {
 			public void valueChanged(ListSelectionEvent e) {
 				user_code = userNameJList.getSelectedIndex()+1;
 				loadUserInformation();
-				loadJTable();
+				loadJTable();							
 			}			
 		});
 		
@@ -201,11 +206,7 @@ public class Viewer extends JFrame {
 	
 	public void exportarJTable() {
 		String nombre = JOptionPane.showInputDialog("Introduce el nombre para el fichero");
-		if (nombre == "") {
-			nombre = userNameJList.getSelectedValue()+"_JTable.csv";
-		} else {
-			nombre = nombre+"_JTable.csv";
-		}
+		nombre = nombre+"_JTable.csv";
 		
 		BufferedWriter bw = null;
 				
@@ -269,7 +270,7 @@ public class Viewer extends JFrame {
 	        table.setModel((TableModel) mod);
 	        JScrollBar sc = scrollPane.getVerticalScrollBar();
 	        sc.setValue(0);
-		} catch (GameDBException e) {
+	    } catch (GameDBException e) {
 			e.printStackTrace();
 		}
 	}
