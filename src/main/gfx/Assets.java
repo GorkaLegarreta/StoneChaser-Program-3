@@ -24,7 +24,7 @@ public class Assets {
 		inventarioDesplegado = allSprites.crop(500, 386, 384, 61);
 		itemPointers = allSprites.crop(700, 200, 66, 64);
 		craftButton1 = allSprites.crop(908, 200, 53, 19);
-		craftButton2 = allSprites.crop(908, 218, 53, 19);
+		craftButton2 = allSprites.crop(908, 219, 53, 19);
 		craftingOutcome = allSprites.crop(524, 222, 53, 48);
 		
 		//items
@@ -33,7 +33,7 @@ public class Assets {
 		hierro = allSprites.crop(595, 0, 17, 20);
 		cuero = allSprites.crop(639, 0, 25, 23);
 		cuerda = allSprites.crop(572, 0, 23, 23);
-		sword = allSprites.crop(535, 0, 20, 20);
+		sword = allSprites.crop(535, 0, 19, 20);
 		trunk = allSprites.crop(517, 0, 18, 20);
 		stone = allSprites.crop(500, 0, 17, 10);
 		
@@ -57,4 +57,29 @@ public class Assets {
 		player_standStill_left = allSprites.crop(36, 70, 36, 70);
 	}
 	
+	public static BufferedImage getImgByName(String itemName) {
+		
+		if(itemName.equals("casco")) return casco;
+		else if(itemName.equals("palo")) return palo;
+		else if(itemName.equals("hierro")) return hierro;
+		else if(itemName.equals("cuero")) return cuero;
+		else if(itemName.equals("cuerda")) return cuerda;
+		else if(itemName.equals("trunk")) return trunk;
+		else if(itemName.equals("sword")) return sword;
+		else return stone;
+				
+	}
+	
+	public static String getNameByImg(BufferedImage img) {
+		
+		if(img.equals(casco)) return "casco";
+		else if(img.equals(palo)) return "palo";
+		else if(img.equals(hierro)) return "hierro";
+		else if(img.equals(cuero)) return "cuero";
+		else if(img.equals(cuerda)) return "cuerda";
+		else if(img.equals(trunk)) return "trunk";
+		else if(img.equals(sword)) return "sword";
+		else return "stone";
+				
+	}	
 }

@@ -3,16 +3,20 @@ package main.inventory;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import main.Handler;
 import main.gfx.Assets;
 import main.items.Item;
 import main.states.GameState;
 import main.utilities.Position;
 
-public class Inventory extends Thread{
+public class Inventory{
 
 	private long noDropNow, noDropBefore, enableDropMsg;
 	@SuppressWarnings("unused")
@@ -57,7 +61,7 @@ public class Inventory extends Thread{
 	
 	//array de items para los huecos del inventario
 	
-	private static Item[] inventory = new Item[6];
+	private Item[] inventory = new Item[6];
 	
 	public Inventory(Handler handler) {
 		
@@ -108,7 +112,6 @@ public class Inventory extends Thread{
 		
 		craftOutcomePosition = new Position(530, 118);
 		craftOutcomeButton = new Rectangle(craftOutcomePosition.getX() - 7, craftOutcomePosition.getY() + 75, 80, 30);
-		
 	}
 	
 	public void tick() {
@@ -213,7 +216,6 @@ public class Inventory extends Thread{
 				i.setInactive();
 				i.fixItemPosition();
 				System.out.println(i.getName() + " has been picked up (hold E to open inventory, press F to drop)");
-					
 			}else { System.out.println("The inventory is full"); }		
 	}
 	
@@ -277,7 +279,7 @@ public class Inventory extends Thread{
 			}else { 
 				
 				if(wasRun.getAndSet(false)) {
-//					
+					
 					if(!craftingArray && movingInvSlots()) {
 						//cambios en el inventario	
 						if(itemToSwap == null) {
@@ -448,6 +450,10 @@ public class Inventory extends Thread{
 
 	public Item[] getItemArray() {
 		return inventory;
+	}
+	
+	public void setItemArray(Item[] itemArray) {
+		inventory = itemArray;
 	}
 
 //	public boolean dragChanged() {

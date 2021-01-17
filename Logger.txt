@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 ene. 16, 2021 7:40:49 P. M. main.Game <clinit>
 FINEST:  LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, FINEST: 300
 ene. 16, 2021 7:40:49 P. M. main.Game <clinit>
+=======
+ene. 08, 2021 11:55:31 P. M. main.Game <clinit>
+>>>>>>> branch 'master' of https://github.com/GorkaLegarreta/StoneChaser-Program-3.git
 INFO: Logger y clases del StoneChaser inicializadas
+<<<<<<< HEAD
 ene. 16, 2021 7:40:49 P. M. main.GameDB initSqlite
 FINEST: Se ha inicializado sqlite correctamente.
 ene. 16, 2021 7:40:50 P. M. main.GameDB createTableUSERS
@@ -16,3 +21,17 @@ ene. 16, 2021 7:40:51 P. M. main.gui.Viewer <init>
 INFO: Ventana de Viewer correctamente cargada. Selección de usuario para ver los datos.
 ene. 16, 2021 7:40:57 P. M. main.gui.Viewer$3 actionPerformed
 FINE: El fichero csv ha sido creado perfectamente
+=======
+ene. 08, 2021 11:55:31 P. M. main.GameDB initSqlite
+FINE: Se ha inicializado sqlite correctamente.
+ene. 08, 2021 11:55:32 P. M. main.GameDB createTableUSERS
+FINE: Tabla USER cargada correctamente.
+ene. 08, 2021 11:55:32 P. M. main.GameDB createTableINVENTORY
+FINE: Tabla INVENTORY cargada correctamente.
+ene. 08, 2021 11:55:32 P. M. main.Game <clinit>
+FINE:  LOG que se escribe en Logger.txt y es de nivel de prioridad del propio logger, FINE: 500
+ene. 08, 2021 11:55:33 P. M. main.states.MenuState worldIsloadedLogger
+INFO: Se ha iniciado como Mundo1
+ene. 08, 2021 11:55:33 P. M. main.states.MenuState worldIsloadedLogger
+CONFIG: GameState Cargada e inicializada en Configuracion Mundo1
+>>>>>>> branch 'master' of https://github.com/GorkaLegarreta/StoneChaser-Program-3.git
