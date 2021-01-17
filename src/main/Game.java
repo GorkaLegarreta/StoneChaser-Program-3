@@ -149,12 +149,6 @@ public class Game implements Runnable{
 	
 	private void tick() throws GameDBException {
 		
-//		if(sPx<= 0 || sPx >= 700) velX = -velX;		//efecto de luz para spotlight
-//		if(sPy<= 0 || sPy>= 400) velY = -velY;
-//		
-//		sPx += -velX;
-//		sPy += -velY;
-		
 		keyManager.tick();
 		mouseMovement.tick();
 		
@@ -181,9 +175,6 @@ public class Game implements Runnable{
 		
 		if(enableSpotlight) { 
 			
-			//spotlight = new Spotlight( light's x, light's y, screen rect start x, screen rect start y, 
-			//							screen rect width, screen rect height, lights gradient start, lights gradient end, spotlight's radius, opacity, color, Graphics g)
-			
 			craftingTableSpotlight = new Spotlight(getWidth()/2, getHeight()/2 - 50, 0, 0, 500, 300, 0.5f, 0.6f, 250, 0.5f, new Color(0, 0, 0, 0), g);
 			inventorySpotlight1 = new Spotlight(195, 370, 0, 300, 225, 100, 0.3f, 0.6f, 50, 0.5f, new Color(0, 0, 0, 0), g);
 			inventorySpotlight2 = new Spotlight(255, 370, 225, 300, 63, 100, 0.3f, 0.6f, 50, 0.5f, new Color(0, 0, 0, 0), g);
@@ -199,11 +190,9 @@ public class Game implements Runnable{
 		g.dispose();
 	}
 	
-	public void run() {
+	public void run() {		
 		
-		
-		init();
-		
+		init();		
 		
 		before = System.nanoTime();		//nanoTime mide en nanosegundos
 		fps = 60;						//queremos que el juego funcione a 60 frames por segundo
@@ -328,19 +317,3 @@ public class Game implements Runnable{
     }
 	
 }
-
-//public static HashMap<Integer,String> playerItemsMap(){
-//	int user_code;
-//	user_code = GameState.getUser();
-//	
-//	String itemNames = "";
-//	Item[] items;
-//	items = Inventory.getItemArray();
-//	for (int i = 0; i<items.length ; i++) {
-//		if (items[i] != null)
-//			itemNames.concat(items[i].getName()+", ");
-//	}
-//	
-//	playersItems.put(user_code, itemNames); 
-//	return playersItems;
-//}

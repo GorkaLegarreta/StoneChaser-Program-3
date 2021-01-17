@@ -1,7 +1,6 @@
 package main.states;
 
 import java.awt.Graphics;
-
 import main.GameDBException;
 import main.Handler;
 

@@ -6,7 +6,7 @@ import main.gfx.GameCamera;
 import main.input.KeyManager;
 import main.input.MouseManager;
 import main.input.ScreenMouseMovement;
-import main.worlds.World;
+import main.worlds.JungleWorld;
 
 public class Handler implements Serializable{
 
@@ -14,7 +14,7 @@ public class Handler implements Serializable{
 	private static final long serialVersionUID = -8869259633233223110L;
 	
 	private Game game;
-	private World world;
+	private JungleWorld world;
 	private int user;			//numero de usuario	
 	
 	public Handler(Game game) {
@@ -74,11 +74,11 @@ public class Handler implements Serializable{
 		this.game = game;
 	}
 	
-	public World getWorld() {
+	public JungleWorld getWorld() {
 		return world;
 	}
 
-	public void setWorld(World world) {
+	public void setWorld(JungleWorld world) {
 		this.world = world;
 	}
 }

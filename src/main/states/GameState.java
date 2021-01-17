@@ -6,12 +6,9 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.logging.Level;
-
 import main.Game;
 import main.GameDB;
 import main.GameDBException;
@@ -21,22 +18,22 @@ import main.input.KeyManager;
 import main.input.MouseManager;
 import main.items.Item;
 import main.states.MenuState.WorldEnum;
-import main.worlds.World;
+import main.worlds.JungleWorld;
 
 public class GameState extends State{	
 	
-	private World world;
+	private JungleWorld world;
 	private Rectangle saveButton;
 	private MouseManager mouseManager;
 	private KeyManager keyManager;
-	public static boolean currentlySaving = false;
+	public boolean currentlySaving = false;
 	private Item[] inv;
 	public int id,x,y,quantity,index;
 	public String name;
 	
 	public GameState(Handler handler) {
 		super(handler);		
-		world = new World(handler);
+		world = new JungleWorld(handler);
 		handler.setWorld(world);	
 		saveButton = new Rectangle(0, 380, 80, 20);		
 		mouseManager = handler.getMouseManager();
@@ -57,7 +54,8 @@ public class GameState extends State{
 				try {
 					Thread.currentThread().sleep(1000);		
 					GameDB.updateUserPosition();
-					GameDB.deleteInventory(getUser());			
+					GameDB.deleteInventory(getUser());	
+					updatePlayersInventory();
 					unPause();
 					currentlySaving = false;
 					
@@ -68,7 +66,6 @@ public class GameState extends State{
 			}).start();
 			Game.LOGGER.log(Level.FINEST,"Se han guardado los datos de con éxito en la BD" );
 		}
-		//handler.getGameCamera().move(1, 0); //para establecer la posicion del jugador, pero tiene que ser en un init porque si no suma el valor y se va moviendo la cámara (cinemáticas?).
 	}
 	
 	public void render(Graphics g) {
@@ -87,10 +84,10 @@ public class GameState extends State{
 		if (mouseManager.isLeftPressed() && saveButton.contains(mouseManager.getMouseX(), mouseManager.getMouseY()) ) {
 			pause();
 			
-			if(handler.getUser() == 1) saveItems(1);
-			if(handler.getUser() == 2) saveItems(2); 
-			if(handler.getUser() == 3) saveItems(3);	
-			if(handler.getUser() == 4) saveItems(4);
+			if(getUser() == 1) saveItems(1);
+			if(getUser() == 2) saveItems(2); 
+			if(getUser() == 3) saveItems(3);	
+			if(getUser() == 4) saveItems(4);
 			
 			return true;
 		} else {
@@ -121,54 +118,24 @@ public class GameState extends State{
 			
 		} catch (IOException e) {
 			Game.LOGGER.log(Level.WARNING, "No se ha podido guardar el inventario del usuario. Error: " + Game.getStackTrace(e));
+		}		
+	}
+	
+	public void updatePlayersInventory() {		
+		for (int i=0; i<inv.length; i++) {	
+			if (inv[i] != null) {
+				
+				id = inv[i].getId();
+				name = inv[i].getName();
+				x = inv[i].itemX();
+				y = inv[i].itemY();
+				quantity = inv[i].getItemQuantity();
+				index = i;
+				GameDB.insertIntoInventory(id,name,x,y,index,quantity);
+			}
 		}
-			
+	}
 		
-		
-//		for (int i=0; i<inv.length; i++) {
-//			
-//			if (inv[i] != null) {
-//				
-//				id = inv[i].getId();
-//				name = inv[i].getName();
-//				x = inv[i].itemX();
-//				y = inv[i].itemY();
-//				quantity = inv[i].getItemQuantity();
-//				index = i;
-//				GameDB.insertIntoInventory(id,name,x,y,index,quantity);
-//			}
-//			
-//		}		
-	}
-	
-	
-	@SuppressWarnings("static-access")
-	public void pause() {
-		keyManager.pause = true;		
-	}	
-	@SuppressWarnings("static-access")
-	public void unPause() {
-		keyManager.pause = false;
-	}	
-	@SuppressWarnings("static-access")
-	public boolean gameIsPaused() {
-		return keyManager.pause;
-	}
-	
-	public static int getPlayerXPosition() {
-		return handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0F).x;
-	}
-	public static int getPlayerYPosition() {
-		return handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0F).y;
-	}
-	public static int getItemXPosition() {
-		return 0;
-	}
-	public static int getItemYPosition() {
-		return 0;
-	}
-	
-	
 	public static int getUser() {
 		if (MenuState.getWorldEnum().compareTo(WorldEnum.MUNDO1)==0) {
 			return 1;
@@ -188,5 +155,25 @@ public class GameState extends State{
 		if (saveButtonIsPressed() || currentlySaving) {
 			g.drawString("SAVING", 1, 20);
 		}
+	}
+
+	@SuppressWarnings("static-access")
+	public void pause() {
+		keyManager.pause = true;		
+	}	
+	@SuppressWarnings("static-access")
+	public void unPause() {
+		keyManager.pause = false;
+	}	
+	@SuppressWarnings("static-access")
+	public boolean gameIsPaused() {
+		return keyManager.pause;
+	}
+	
+	public static int getPlayerXPosition() {
+		return handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0F).x;
+	}
+	public static int getPlayerYPosition() {
+		return handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0F).y;
 	}
 }

@@ -3,13 +3,8 @@ package main.inventory;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import main.Handler;
 import main.gfx.Assets;
 import main.items.Item;
@@ -41,9 +36,6 @@ public class Inventory{
 	//objetos de Item para hacer cambios en el inventario
 	
 	protected Item selectedItem, lastGrabbedItem, itemToSwap, craftingOutcome;
-	
-	//valores no nulos del array de crafteo
-	private ArrayList<Integer> notNull = new ArrayList<Integer>();
 	
 	//creamos un array de 6 posiciones para el inventario y otro de 9 para el crafteo en las que pondremos items y cajas de detección de clicks
 	

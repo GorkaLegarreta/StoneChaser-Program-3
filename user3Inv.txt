@@ -1,0 +1,6 @@
+cuero,cuero,43,40,2,6,
+casco,casco,47,49,6,2,
+piedra,stone,34,20,1,6,
+cuerda,cuerda,46,46,3,2,
+espada de Hierro,sword,40,40,7,2,
+hierro,hierro,34,40,4,80,

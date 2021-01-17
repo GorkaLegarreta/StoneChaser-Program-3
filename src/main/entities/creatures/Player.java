@@ -160,8 +160,6 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 	}	
 
 	public void render(Graphics g) {
-//		g.setColor(Color.BLUE);
-//		g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()), (int) (y + bounds.y - handler.getGameCamera().getyOffset()), PLAYER_WIDTH*2, PLAYER_HEIGHT*2);
 		
 		g.drawImage(getCurrentAnimationFrame(), (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), PLAYER_WIDTH*2, PLAYER_HEIGHT*2, null);
 		// ESTO HACE QUE SE VEA KICKRECT
@@ -170,13 +168,9 @@ public class Player extends Creature{ //no longer abstract, so we need to define
 			g.fillRect((int) (punchRect.x - handler.getGameCamera().getxOffset()), (int) (punchRect.y - handler.getGameCamera().getyOffset()), punchRect.width, punchRect.height);
 		}
 		
-//		g.drawImage(getCurrentAnimationFrame(), (int) (x), (int) (y), width, height,  null);
-
 	}
 	
-	private BufferedImage getCurrentAnimationFrame() {
-			
-		
+	private BufferedImage getCurrentAnimationFrame() {		
 		
 		if(xMove < 0 && yMove != 0) { //moves left and in any direction in the y axis
 			lastDirection = 0;

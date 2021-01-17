@@ -1,0 +1,4 @@
+espada de Hierro,sword,40,40,7,21,
+piedra,stone,34,20,1,2,
+cuerda,cuerda,46,46,3,1,
+madera,trunk,36,40,0,2,

@@ -4,9 +4,7 @@ import java.awt.Canvas;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
-
 import javax.swing.SwingUtilities;
-
 import main.utilities.Position;
 
 public class ScreenMouseMovement extends MouseAdapter {

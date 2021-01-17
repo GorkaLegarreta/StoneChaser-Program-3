@@ -10,7 +10,7 @@ import main.gfx.Assets;
 import main.inventory.Inventory;
 import main.items.ItemManager;
 
-public class World {
+public class JungleWorld {
 
 	private Handler handler;
 	private int width, height;
@@ -21,7 +21,7 @@ public class World {
 	
 	private ItemManager im;
 	
-	public World(Handler handler) {
+	public JungleWorld(Handler handler) {
 		this.handler = handler;
 		player = new Player(handler,100,100);
 		entityManager = new EntityManager(handler, player, new BasicEnemy(handler,20,20,50,50));

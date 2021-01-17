@@ -9,11 +9,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import main.Game;
@@ -72,10 +69,7 @@ public class MenuState extends State  {
 			if(GameDB.existsGamePlayer(1)) {
 				GameDB.incSessionNumber(1);
 				world = WorldEnum.MUNDO1;
-				changeToGameState(1);												
-				
-				// TODO más código para que se cargue la posicion del jugador, el mundo en el que estaba, salud items...
-				
+				changeToGameState(1);
 				worldIsloadedLogger(1);
 			} else {
 				createNewUser(1);				
@@ -87,9 +81,6 @@ public class MenuState extends State  {
 				GameDB.incSessionNumber(2);
 				world = WorldEnum.MUNDO2;
 				changeToGameState(2);
-				
-				// TODO más código para que se cargue la posicion del jugador, el mundo en el que estaba, salud items...
-				
 				worldIsloadedLogger(2);
 			} else {
 				createNewUser(2);
@@ -101,9 +92,6 @@ public class MenuState extends State  {
 				GameDB.incSessionNumber(3);
 				world = WorldEnum.MUNDO3;
 				changeToGameState(3);	
-					
-				// TODO más código para que se cargue la posicion del jugador, el mundo en el que estaba, salud items...
-				
 				worldIsloadedLogger(3);
 			} else {
 				createNewUser(3);			
@@ -114,9 +102,6 @@ public class MenuState extends State  {
 				GameDB.incSessionNumber(4);
 				world = WorldEnum.MUNDO4;
 				changeToGameState(4);
-				
-				// TODO más código para que se cargue la posicion del jugador, el mundo en el que estaba, salud items...
-				
 				worldIsloadedLogger(4);
 			} else {
 				createNewUser(4);				
@@ -138,7 +123,7 @@ public class MenuState extends State  {
 			confirmToDeleteUser(4);		
 		}
 		/////////////////////////////////////////////////////////////////
-		//				POSIBLE BOTÓN DE MOSTRAR TABLAS				   //
+		//				 BOTÓN DE PARTE INFERIOR 					   //
 		/////////////////////////////////////////////////////////////////		
 		if (panelIsClicked(window)) {
 			if (!freeze) {
@@ -146,8 +131,6 @@ public class MenuState extends State  {
 				startStop();
 			} 
 		}
-//		openWindow();
-//		solveFreezeProblem();
 	}
 	
 	@Override

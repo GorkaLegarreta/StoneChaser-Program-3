@@ -9,7 +9,7 @@ import main.Game;
 import main.Handler;
 import main.gfx.Assets;
 import main.items.Item;
-import main.worlds.World;
+import main.worlds.JungleWorld;
 
 public class InventoryTest {
 	
@@ -17,7 +17,7 @@ public class InventoryTest {
 	Handler handler;
 	Inventory inv;
 	Item madera;
-	World world;
+	JungleWorld world;
 	
 	@Before
 	public void setUp() {
@@ -25,7 +25,7 @@ public class InventoryTest {
 		handler = new Handler(game);
 		inv = new Inventory(handler);
 		madera = new Item("madera", Assets.trunk, (int) (18*2), (int) (20*2), 0, handler, inv);
-		world = new World(handler);
+		world = new JungleWorld(handler);
 	}
 	
 	@Test

@@ -4,17 +4,12 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.io.Serializable;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import javax.swing.JFrame;
 
-public class Window implements Serializable{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -958194006111817710L;
+public class Window {
+	
 	private JFrame frame;
 	private Canvas canvas; 
 	private String title;
@@ -28,7 +23,6 @@ public class Window implements Serializable{
 		createWindow();
 		//Logger
 		Game.LOGGER.log(Level.FINEST, "Objeto Window creada desde su constructor");
-		//try {SerializablePosition.readFromBinaryFile();} catch (GameDBException e2) {e2.printStackTrace();}
 	}
 	
 	private void createWindow() {
@@ -48,8 +42,6 @@ public class Window implements Serializable{
 		frame.add(canvas);
 		frame.pack();	
 		canvas.setBackground(Color.WHITE);
-		
-		
 	}
 
 	public void add(Component comp) {
