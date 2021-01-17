@@ -44,14 +44,13 @@ public class Game implements Runnable{
 	
 	private BufferStrategy bs;
 	private Graphics g;
-	
+		
 	//States
 	public State menuState;
 	public State gameState;
 	
 	//spotlight
-	private int sPx, sPy;
-	private int velX = 5, velY = 5;
+	@SuppressWarnings("unused")
 	private Spotlight spotlight, craftingTableSpotlight, inventorySpotlight1, inventorySpotlight2, 
 					  inventorySpotlight3, inventorySpotlight4, inventorySpotlight5, inventorySpotlight6, craftingOutcomeSpotlight;
 	
@@ -214,7 +213,11 @@ public class Game implements Runnable{
 		
 		while(running) {	
 			if (gameIsPaused()) {
-				try {TickRender();} catch (GameDBException e) {	e.printStackTrace();}
+				try {
+					TickRender();
+				} catch (GameDBException e) {
+					e.printStackTrace();
+				}
 			} else {
 				try {TickRender();} catch (GameDBException e) {	e.printStackTrace();}
 			}
@@ -261,14 +264,13 @@ public class Game implements Runnable{
 	public static String getItemValues(int user_code) {
 		return playersItems.get(user_code);
 	}
+	public static Window getWindow() {
+		return window;
+	}
 	@SuppressWarnings("static-access")
 	public boolean gameIsPaused() {
 		return keyManager.pause;
 	}
-	public static Window getWindow() {
-		return window;
-	}
-	
 	public Properties getPropertiesFile() {
 		return properties;
 	}

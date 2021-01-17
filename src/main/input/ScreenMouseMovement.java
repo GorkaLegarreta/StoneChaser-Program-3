@@ -1,8 +1,6 @@
 package main.input;
 
 import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;

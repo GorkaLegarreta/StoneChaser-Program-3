@@ -6,7 +6,7 @@ import java.awt.event.MouseMotionListener;
 
 public class MouseManager implements MouseListener, MouseMotionListener{
 
-	private boolean leftPressed, rightPressed, mouseExit = false, hasDragged = false;
+	private boolean leftPressed, rightPressed, mouseExit = false;
 	private int mouseX, clickX, dragX;
 	private int mouseY, clickY, dragY;
 	

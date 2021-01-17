@@ -19,7 +19,6 @@ import main.Handler;
 import main.gfx.Assets;
 import main.input.KeyManager;
 import main.input.MouseManager;
-import main.inventory.Inventory;
 import main.items.Item;
 import main.states.MenuState.WorldEnum;
 import main.worlds.World;
@@ -57,7 +56,7 @@ public class GameState extends State{
 			new Thread( () -> {
 				try {
 					Thread.currentThread().sleep(1000);		
-					GameDB.updatePosition();
+					GameDB.updateUserPosition();
 					GameDB.deleteInventory(getUser());			
 					unPause();
 					currentlySaving = false;

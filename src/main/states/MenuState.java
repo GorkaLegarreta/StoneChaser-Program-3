@@ -15,12 +15,13 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 
 import javax.swing.JOptionPane;
-
+import javax.swing.SwingUtilities;
 import main.Game;
 import main.GameDB;
 import main.GameDBException;
 import main.Handler;
 import main.gfx.Assets;
+import main.gui.Viewer;
 import main.input.MouseManager;
 import main.items.Item;
 
@@ -29,9 +30,11 @@ public class MenuState extends State  {
 	private MouseManager mouseManager;
 	private Rectangle lbl1, lbl2, lbl3, lbl4;	
 	private Rectangle user1, user2, user3, user4;
+	private Rectangle window;
 	private String string1, string2, string3, string4;	
 	private String[] strings = {string1, string2, string3, string4};
 	private String optionPane;
+	private static boolean freeze = false; //freeze is to avoid the tick opening thousands of windows
 	
 	private static WorldEnum world;
 	
@@ -44,8 +47,7 @@ public class MenuState extends State  {
 	}
 	public MenuState(Handler handler) {
 		super(handler);
-		
-		// play = new Rectangle(237,162,225,75); // Boton en el centro de la pantalla  
+		 
 		lbl1 = new Rectangle(30,40,150,50);
 		lbl2 = new Rectangle(30,120,150,50);
 		lbl3 = new Rectangle(30,200,150,50);
@@ -54,12 +56,14 @@ public class MenuState extends State  {
 		user2 = new Rectangle(225,120,425,50);
 		user3 = new Rectangle(225,200,425,50);
 		user4 = new Rectangle(225,280,425,50);
+		window = new Rectangle(270,350,150,40);
 		mouseManager = handler.getMouseManager();	
 		
 	}
 	
 	@Override
 	public void tick() throws GameDBException {	
+		
 		for(int i = 1; i < 5; i++) strings[i-1] = GameDB.getGameUserName(i);
 		/////////////////////////////////////////////////////////////////
 		//				LOS BOTONES A LA IZQUIERDA					   //
@@ -76,7 +80,9 @@ public class MenuState extends State  {
 			} else {
 				createNewUser(1);				
 			}				
-		} else if(panelIsClicked(lbl2)) {			
+		}
+		
+		if(panelIsClicked(lbl2)) {			
 			if(GameDB.existsGamePlayer(2)) {				
 				GameDB.incSessionNumber(2);
 				world = WorldEnum.MUNDO2;
@@ -88,7 +94,9 @@ public class MenuState extends State  {
 			} else {
 				createNewUser(2);
 			}		
-		} else if(panelIsClicked(lbl3)) {			
+		}
+		
+		if(panelIsClicked(lbl3)) {			
 			if(GameDB.existsGamePlayer(3)) {				
 				GameDB.incSessionNumber(3);
 				world = WorldEnum.MUNDO3;
@@ -100,7 +108,8 @@ public class MenuState extends State  {
 			} else {
 				createNewUser(3);			
 			}			
-		} else if(panelIsClicked(lbl4)) {			
+		}
+		if(panelIsClicked(lbl4)) {			
 			if(GameDB.existsGamePlayer(4)) {				
 				GameDB.incSessionNumber(4);
 				world = WorldEnum.MUNDO4;
@@ -114,17 +123,31 @@ public class MenuState extends State  {
 			}			
 		}
 		/////////////////////////////////////////////////////////////////
-		//				POSIBLES BOTONES A LA DERECHA				   //
+		//					 BOTONES A LA DERECHA					   //
 		/////////////////////////////////////////////////////////////////
 		if (panelIsClicked(user1)) {
 			confirmToDeleteUser(1);
-		}else if(panelIsClicked(user2)) {			
+		}
+		if(panelIsClicked(user2)) {			
 			confirmToDeleteUser(2);
-		}else if(panelIsClicked(user3)) {			
+		}
+		if(panelIsClicked(user3)) {			
 			confirmToDeleteUser(3);
-		}else if(panelIsClicked(user4)) {
+		}
+		if(panelIsClicked(user4)) {
 			confirmToDeleteUser(4);		
 		}
+		/////////////////////////////////////////////////////////////////
+		//				POSIBLE BOTÓN DE MOSTRAR TABLAS				   //
+		/////////////////////////////////////////////////////////////////		
+		if (panelIsClicked(window)) {
+			if (!freeze) {
+				changeWindow();
+				startStop();
+			} 
+		}
+//		openWindow();
+//		solveFreezeProblem();
 	}
 	
 	@Override
@@ -147,14 +170,14 @@ public class MenuState extends State  {
 		g.drawString("MUNDO 3", 60, 225);
 		g.drawString("MUNDO 4", 60, 305);
 		
-		/*
-		 * 
-		 */
+		g.setFont(new Font("Arial", Font.TRUETYPE_FONT, 15));
+		g.drawString("OPEN STATISTICS", 280, 375);
+		g.setFont(new Font("Arial", Font.TRUETYPE_FONT, 20));
+		g.drawRect(window.x, window.y, window.width, window.height);		
 		g.drawString(strings[0], 380, 60);
 		g.drawString(strings[1], 380, 145);
 		g.drawString(strings[2], 380, 225);
-		g.drawString(strings[3], 380, 305);
-		
+		g.drawString(strings[3], 380, 305);		
 	}
 	
 	public boolean panelIsClicked(Rectangle obj) {
@@ -165,15 +188,15 @@ public class MenuState extends State  {
 		Game.LOGGER.log(Level.CONFIG,"GameState Cargada e inicializada en Configuracion Mundo"+world);
 	}
 	public void changeToGameState(int user) {
-		
+		// Player
 		GameState.handler.getWorld().getPlayer().setPlayerX(user);
 		GameState.handler.getWorld().getPlayer().setPlayerY(user);
-		
 		handler.setUser(user);
 		
 		if(handler.getPropertiesFile().getProperty("hasUserPlayed"+user).contentEquals("true")) getUserInventory(user);
 		else handler.getPropertiesFile().setProperty("hasUserPlayed"+user, "true");
-		
+	
+		// State
 		State.setState(handler.getGame().gameState);
 	}
 	
@@ -251,5 +274,34 @@ public class MenuState extends State  {
 			
 		}
 	}
-	
+	public void changeWindow() {
+		Game.getWindow().setInvisibility();
+		SwingUtilities.invokeLater(new Runnable() {			
+			@Override
+			public void run() {
+				new Viewer();				
+			}
+		});
+	}
+	public void openWindow() {
+		if (panelIsClicked(window)) {
+			if (!freeze) {
+				changeWindow();
+				startStop();
+			}
+		}
+	}
+	public static void startStop() {
+		if(freeze) {
+			freeze = false;
+		} else {
+			freeze = true;
+		}
+	}
+	@SuppressWarnings("static-access")
+	public void solveFreezeProblem() {
+		if(Game.getWindow().getVisibility()) {
+			freeze=false;
+		}
+	}
 }
