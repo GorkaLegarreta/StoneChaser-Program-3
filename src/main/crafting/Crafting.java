@@ -46,8 +46,8 @@ public class Crafting implements Serializable{
 		updateNotNullIndexes();
 		
 		
-		if(notNull.size() == 2 && notNull.get(0) == 4 && notNull.get(1) == 7 && crafteo[notNull.get(0)].getName() == "hierro" && 
-				crafteo[notNull.get(0)].getItemQuantity() >= 2 && crafteo[notNull.get(1)].getName() == "palo") {
+		if(notNull.size() == 2 && notNull.get(0) == 4 && notNull.get(1) == 7 && crafteo[notNull.get(0)].getName().equals("hierro") && 
+				crafteo[notNull.get(0)].getItemQuantity() >= 2 && crafteo[notNull.get(1)].getName().equals("palo")) {
 			
 			craftingOutcome = ItemManager.espadaHierro.createItem(0, 0, 1);
 			craftingOutcome.setInactive();
@@ -68,7 +68,7 @@ public class Crafting implements Serializable{
 			g.drawImage(Assets.inventarioDesplegado, inventoryX, inventoryY, 384, 61, null);
 			g.drawImage(Assets.craftingOutcome, 530, 118, 62, 61, null);
 			for (Item i : crafteo) {
-				if(i != null)i.render(g);
+				if(i != null) i.render(g);
 			}
 		}
 	}
@@ -129,12 +129,17 @@ public class Crafting implements Serializable{
 	public void updateNotNullIndexes() {
 		
 		notNull.clear();
-		for (int i = 0; i < crafteo.length; i++) if(crafteo[i] != null) notNull.add(i);
+		for (int i = 0; i < crafteo.length; i++) {
+			if(crafteo[i] != null) {
+				notNull.add(i);
+			}
+			
+		}
 		
 	}
 	
 	public void checkItemQuantities() {
-		
+		             
 		for (int i = 0; i < crafteo.length; i++) {
 			if(crafteo[i] != null && crafteo[i].getItemQuantity() < 1) crafteo[i] = null;
 		}	
